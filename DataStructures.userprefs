@@ -1,0 +1,16 @@
+﻿<Properties StartupConfiguration="{7458DBF7-F88E-4CB0-86B4-52C29BBDF37C}|Default">
+  <MonoDevelop.Ide.ItemProperties.BinaryTree PreferredExecutionTarget="MonoDevelop.Default" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="BinaryTree/Program.cs">
+    <Files>
+      <File FileName="BinaryTree/Program.cs" Line="26" Column="1" />
+      <File FileName="LinkedList/Program.cs" Line="7" Column="38" />
+    </Files>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug|x86" />
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MonoDevelop.Ide.ItemProperties.LinkedList PreferredExecutionTarget="MonoDevelop.Default" />
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+  <MultiItemStartupConfigurations />
+</Properties>
