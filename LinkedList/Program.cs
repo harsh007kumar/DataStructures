@@ -5,15 +5,15 @@ namespace LinkedList
     class Node
     {
         public int Data { get; set; }
-        public Node next;
-        public Node prv;
+        public Node next, prv;
 
-        public Node(int no)
+        public Node(int no) //Parametrized Constructor
         {
             Data = no;
-            next = null;
-            prv = null;
+            next = prv = null;
         }
+        public Node()       //Default Constructor
+        { next = prv = null; }
     }
     class DoublyLinkedList
     {

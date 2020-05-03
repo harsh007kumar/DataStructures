@@ -1,8 +1,9 @@
 ﻿using System;
 
-namespace BinaryTree
+namespace Tree
 {
-    class Node
+    // GFG https://www.geeksforgeeks.org/binary-search-tree-set-1-search-and-insertion/
+    public class Node
     {
         public int Data { get; set; }
         public Node Left;
@@ -15,10 +16,10 @@ namespace BinaryTree
         }
     }
 
-    class binaryTree
+    public class BinarySearchTree
     {
         public Node top;
-        public binaryTree() { top = null; }
+        public BinarySearchTree() { top = null; }
 
         public void AddElement(ref Node head, int data)
         {
@@ -30,8 +31,39 @@ namespace BinaryTree
                 AddElement(ref head.Right, data);
         }
 
-        public void DeleteElement(Node head, int data)
+        public void CheckElementExists(Node head, int data)
         {
+            if (head == null)
+                Console.WriteLine($"Element {data} doesn't exists");
+            else if (head.Data == data)
+                Console.WriteLine($"Element {data} Found");
+            else if (data < head.Data)
+                CheckElementExists(head.Left, data);
+            else if (data > head.Data)
+                CheckElementExists(head.Right, data);
+        }
+
+        public Node FindElementNode(Node head, int data)
+        {
+            Node elementFoundAtNode = null;
+            if (head == null)
+                Console.WriteLine($"Element {data} does not exists");
+            else if (head.Data == data)
+            {
+                Console.WriteLine($"Element {data} exists");
+                elementFoundAtNode = head;
+            }
+            else if (data < head.Data)
+                elementFoundAtNode = FindElementNode(head.Left, data);
+            else
+                elementFoundAtNode = FindElementNode(head.Right, data);
+
+            return elementFoundAtNode;
+        }
+
+        public void DeleteElement(ref Node head, int data)
+        {
+            throw new NotImplementedException();
             /* NOT IMPLEMENTED YET
             if (head == null)
                 Console.WriteLine($"Element {data} doesnt exists");
@@ -45,82 +77,87 @@ namespace BinaryTree
                 DeleteElement(head.Right, data);
                 */
         }
-        public void FindElement(Node head,int data)
-        {
-            if (head == null)
-                Console.WriteLine($"Element {data} does not exists");
-            else if (head.Data == data)
-                Console.WriteLine($"Element {data} exists");
-            else if (data < head.Data)
-                FindElement(head.Left, data);
-            else
-                FindElement(head.Right, data);
-        }
-
     }
 
     class MainClass
     {
         public static void Main(string[] args)
         {
-            binaryTree bt = new binaryTree();
+            BinarySearchTree bt = new BinarySearchTree();
             // Adding elements to tree
-            bt.AddElement(ref bt.top,5);
-            bt.AddElement(ref bt.top,10);
-            bt.AddElement(ref bt.top,20);
-            bt.AddElement(ref bt.top,4);
-            bt.AddElement(ref bt.top,9);
-            bt.AddElement(ref bt.top,1);
-            bt.AddElement(ref bt.top,7);
+            bt.AddElement(ref bt.top, 5);
+            bt.AddElement(ref bt.top, 10);
+            bt.AddElement(ref bt.top, 20);
+            bt.AddElement(ref bt.top, 4);
+            bt.AddElement(ref bt.top, 9);
+            bt.AddElement(ref bt.top, 1);
+            bt.AddElement(ref bt.top, 7);
 
             // Searching for given element in tree
-            bt.FindElement(bt.top,7);
+            bt.CheckElementExists(bt.top, 7);
+            // Find Node for given element in tree
+            Node find = bt.FindElementNode(bt.top, 7);
 
             Console.WriteLine("\n\nIn Order Traversal (Left, Root, Right) ");
-            InOrderTraversal(ref bt.top);
+            DFS.InOrderTraversal(bt.top);
             Console.WriteLine("\n\nPre Order Traversal (Root, Left, Right) ");
-            PreOrderTraversal(ref bt.top);
+            DFS.PreOrderTraversal(bt.top);
             Console.WriteLine("\n\nPost Order Traversal (Left, Right, Root) ");
-            PostOrderTraversal(ref bt.top);
+            DFS.PostOrderTraversal(bt.top);
 
             Console.ReadLine();
         }
-        static void InOrderTraversal(ref Node current)
+    }
+
+    public static class DFS
+    {
+        /// <summary>
+        /// Left || Root || Right
+        /// </summary>
+        /// <param name="current"></param>
+        public static void InOrderTraversal(Node current)
         {
             if (current == null)
                 return;
             
             if (current.Left != null)
-                InOrderTraversal(ref current.Left);
+                InOrderTraversal(current.Left);
 
             Console.Write($" {current.Data}");
 
             if (current.Right != null)
-                InOrderTraversal(ref current.Right);
+                InOrderTraversal(current.Right);
         }
-
-        static void PreOrderTraversal(ref Node current)
+        /// <summary>
+        /// Root || Left || Right
+        /// </summary>
+        /// <param name="current"></param>
+        public static void PreOrderTraversal(Node current)
         {
             if (current == null)
                 return;
             Console.Write($" {current.Data}");
 
             if (current.Left != null)
-                PreOrderTraversal(ref current.Left);
+                PreOrderTraversal(current.Left);
 
             if (current.Right != null)
-                PreOrderTraversal(ref current.Right);
+                PreOrderTraversal(current.Right);
         }
-        static void PostOrderTraversal(ref Node current)
+        /// <summary>
+        /// Left || Right || Root
+        /// </summary>
+        /// <param name="current"></param>
+        public static void PostOrderTraversal(Node current)
         {
             if (current == null)
                 return;
 
             if (current.Left != null)
-                PostOrderTraversal(ref current.Left);
+                PostOrderTraversal(current.Left);
 
             if (current.Right != null)
-                PostOrderTraversal(ref current.Right);
+                PostOrderTraversal(current.Right);
 
             Console.Write($" {current.Data}");
         }

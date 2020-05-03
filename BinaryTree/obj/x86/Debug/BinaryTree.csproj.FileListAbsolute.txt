@@ -8,3 +8,7 @@
 /Users/harsh/Projects/DataStructures/BinaryTree/obj/x86/Debug/BinaryTree.csproj.CoreCompileInputs.cache
 /Users/harsh/Projects/DataStructures/BinaryTree/obj/x86/Debug/BinaryTree.exe
 /Users/harsh/Projects/DataStructures/BinaryTree/obj/x86/Debug/BinaryTree.pdb
+C:\Users\harkuma\source\repos\DataStructures\BinaryTree\obj\x86\Debug\BinaryTree.csprojAssemblyReference.cache
+C:\Users\harkuma\source\repos\DataStructures\BinaryTree\obj\x86\Debug\BinaryTree.csproj.CoreCompileInputs.cache
+C:\Users\harkuma\source\repos\DataStructures\BinaryTree\obj\x86\Debug\BinaryTree.exe
+C:\Users\harkuma\source\repos\DataStructures\BinaryTree\obj\x86\Debug\BinaryTree.pdb

@@ -1,0 +1,15 @@
+*.cache
+*.pdb
+*.exe
+*.suo
+*/obj/Debug/
+*/obj/Release/
+*/bin/Debug/
+*/bin/Release/
+.vs/
+*/obj/
+*/bin/
+*.user
+*.pref
+*.userosscache
+*.sln.docstates

@@ -15,3 +15,9 @@
 /Users/harsh/Projects/DataStructures/LinkedList/obj/Debug/LinkedList.csproj.CoreCompileInputs.cache
 /Users/harsh/Projects/DataStructures/LinkedList/obj/Debug/Create_LinkedList.exe
 /Users/harsh/Projects/DataStructures/LinkedList/obj/Debug/Create_LinkedList.pdb
+C:\Users\harkuma\source\repos\DataStructures\LinkedList\bin\Debug\Create_LinkedList.exe
+C:\Users\harkuma\source\repos\DataStructures\LinkedList\bin\Debug\Create_LinkedList.pdb
+C:\Users\harkuma\source\repos\DataStructures\LinkedList\obj\Debug\LinkedList.csprojAssemblyReference.cache
+C:\Users\harkuma\source\repos\DataStructures\LinkedList\obj\Debug\LinkedList.csproj.CoreCompileInputs.cache
+C:\Users\harkuma\source\repos\DataStructures\LinkedList\obj\Debug\Create_LinkedList.exe
+C:\Users\harkuma\source\repos\DataStructures\LinkedList\obj\Debug\Create_LinkedList.pdb

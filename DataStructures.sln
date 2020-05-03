@@ -1,7 +1,8 @@
-
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2012
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BinaryTree", "BinaryTree\BinaryTree.csproj", "{4FFB91FE-D8DD-40DB-AED1-00128B7A3BA9}"
+# Visual Studio 15
+VisualStudioVersion = 15.0.28307.960
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tree", "BinaryTree\Tree.csproj", "{4FFB91FE-D8DD-40DB-AED1-00128B7A3BA9}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LinkedList", "LinkedList\LinkedList.csproj", "{7458DBF7-F88E-4CB0-86B4-52C29BBDF37C}"
 EndProject
@@ -19,5 +20,11 @@ Global
 		{7458DBF7-F88E-4CB0-86B4-52C29BBDF37C}.Debug|x86.Build.0 = Debug|Any CPU
 		{7458DBF7-F88E-4CB0-86B4-52C29BBDF37C}.Release|x86.ActiveCfg = Release|Any CPU
 		{7458DBF7-F88E-4CB0-86B4-52C29BBDF37C}.Release|x86.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {20824283-1B3D-4E0D-AF75-4797ABBAC747}
 	EndGlobalSection
 EndGlobal
