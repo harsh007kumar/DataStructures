@@ -76,8 +76,8 @@ namespace Tree
                     return head.Left;           // as right is null return left node which may have an value or node either way parents node gets deleted.
                 else
                 {   // replace the node data with its inorder successor and call DeleteElement() on node being copied.
-                    head.Data = FindInOrderSuccessor(ref head.Right);
-                    DeleteElement(ref head.Right, head.Data);
+                    head.Data = FindInOrderSuccessor(head.Right);
+                    head.Right = DeleteElement(ref head.Right, head.Data);
                     return head;
                 }
             }
@@ -93,14 +93,29 @@ namespace Tree
             }
         }
 
-        public int FindInOrderSuccessor(ref Node head)
+        /// <summary>
+        /// Element which comes right after, in InOrderTraversal (one on immediate right)
+        /// </summary>
+        /// <param name="head"></param>
+        /// <returns></returns>
+        public int FindInOrderSuccessor(Node head)
         {
-            if (head.Left == null)
-                return head.Right.Data;
-            else if (head.Right == null)
-                return head.Left.Data;
+            if (head.Left != null)
+                return FindInOrderSuccessor(head.Left);
             else
-                return FindInOrderSuccessor(ref head.Left);
+                return head.Data;
+        }
+        /// <summary>
+        /// Element which comes right before, in InOrderTraversal (one on immediate left)
+        /// </summary>
+        /// <param name="head"></param>
+        /// <returns></returns>
+        public int FindInOrderPredeccessor(Node head)
+        {
+            if (head.Right != null)
+                return FindInOrderPredeccessor(head.Right);
+            else
+                return head.Data;
         }
     }
 
