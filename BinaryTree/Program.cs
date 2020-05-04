@@ -18,8 +18,8 @@ namespace Tree
 
     public class BinarySearchTree
     {
-        public Node top;
-        public BinarySearchTree() { top = null; }
+        public Node Top;
+        public BinarySearchTree() { Top = null; }
 
         public void AddElement(ref Node head, int data)
         {
@@ -61,21 +61,46 @@ namespace Tree
             return elementFoundAtNode;
         }
 
-        public void DeleteElement(ref Node head, int data)
+        public Node DeleteElement(ref Node head, int data)
         {
-            throw new NotImplementedException();
-            /* NOT IMPLEMENTED YET
             if (head == null)
+            {
                 Console.WriteLine($"Element {data} doesnt exists");
+                return head;
+            }
             else if (head.Data == data)
             {
-                //
+                if (head.Left == null)
+                    return head.Right;          // as left node is null, return right which make be an node or null either way parent node is removed
+                else if (head.Right == null)
+                    return head.Left;           // as right is null return left node which may have an value or node either way parents node gets deleted.
+                else
+                {   // replace the node data with its inorder successor and call DeleteElement() on node being copied.
+                    head.Data = FindInOrderSuccessor(ref head.Right);
+                    DeleteElement(ref head.Right, head.Data);
+                    return head;
+                }
             }
             else if (data < head.Data)
-                DeleteElement(head.Left, data);
+            {
+                head.Left = DeleteElement(ref head.Left, data);
+                return head;
+            }
             else
-                DeleteElement(head.Right, data);
-                */
+            {
+                head.Right = DeleteElement(ref head.Right, data);
+                return head;
+            }
+        }
+
+        public int FindInOrderSuccessor(ref Node head)
+        {
+            if (head.Left == null)
+                return head.Right.Data;
+            else if (head.Right == null)
+                return head.Left.Data;
+            else
+                return FindInOrderSuccessor(ref head.Left);
         }
     }
 
@@ -85,26 +110,29 @@ namespace Tree
         {
             BinarySearchTree bt = new BinarySearchTree();
             // Adding elements to tree
-            bt.AddElement(ref bt.top, 5);
-            bt.AddElement(ref bt.top, 10);
-            bt.AddElement(ref bt.top, 20);
-            bt.AddElement(ref bt.top, 4);
-            bt.AddElement(ref bt.top, 9);
-            bt.AddElement(ref bt.top, 1);
-            bt.AddElement(ref bt.top, 7);
+            bt.AddElement(ref bt.Top, 5);
+            bt.AddElement(ref bt.Top, 10);
+            bt.AddElement(ref bt.Top, 20);
+            bt.AddElement(ref bt.Top, 4);
+            bt.AddElement(ref bt.Top, 9);
+            bt.AddElement(ref bt.Top, 1);
+            bt.AddElement(ref bt.Top, 7);
 
             // Searching for given element in tree
-            bt.CheckElementExists(bt.top, 7);
+            bt.CheckElementExists(bt.Top, 7);
             // Find Node for given element in tree
-            Node find = bt.FindElementNode(bt.top, 7);
+            Node find = bt.FindElementNode(bt.Top, 7);
 
             Console.WriteLine("\n\nIn Order Traversal (Left, Root, Right) ");
-            DFS.InOrderTraversal(bt.top);
+            DFS.InOrderTraversal(bt.Top);
             Console.WriteLine("\n\nPre Order Traversal (Root, Left, Right) ");
-            DFS.PreOrderTraversal(bt.top);
+            DFS.PreOrderTraversal(bt.Top);
             Console.WriteLine("\n\nPost Order Traversal (Left, Right, Root) ");
-            DFS.PostOrderTraversal(bt.top);
+            DFS.PostOrderTraversal(bt.Top);
 
+            Console.WriteLine("\n\n");
+            bt.DeleteElement(ref bt.Top, 5);
+            DFS.InOrderTraversal(bt.Top);
             Console.ReadLine();
         }
     }
