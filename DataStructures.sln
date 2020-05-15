@@ -8,6 +8,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LinkedList", "LinkedList\Li
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BinaryHeap", "BinaryHeap\BinaryHeap.csproj", "{88EAF043-5CDC-4AB9-A88F-CDCC6790757C}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Hashing", "Hashing\Hashing.csproj", "{AA82A964-958B-4D0E-B58A-3A87A4395D61}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -38,6 +40,14 @@ Global
 		{88EAF043-5CDC-4AB9-A88F-CDCC6790757C}.Release|Any CPU.Build.0 = Release|Any CPU
 		{88EAF043-5CDC-4AB9-A88F-CDCC6790757C}.Release|x86.ActiveCfg = Release|Any CPU
 		{88EAF043-5CDC-4AB9-A88F-CDCC6790757C}.Release|x86.Build.0 = Release|Any CPU
+		{AA82A964-958B-4D0E-B58A-3A87A4395D61}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AA82A964-958B-4D0E-B58A-3A87A4395D61}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AA82A964-958B-4D0E-B58A-3A87A4395D61}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{AA82A964-958B-4D0E-B58A-3A87A4395D61}.Debug|x86.Build.0 = Debug|Any CPU
+		{AA82A964-958B-4D0E-B58A-3A87A4395D61}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AA82A964-958B-4D0E-B58A-3A87A4395D61}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AA82A964-958B-4D0E-B58A-3A87A4395D61}.Release|x86.ActiveCfg = Release|Any CPU
+		{AA82A964-958B-4D0E-B58A-3A87A4395D61}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
