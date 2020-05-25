@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace Graph
 {
     //GFG Link https://www.geeksforgeeks.org/graph-and-its-representations/
-    class Program
+    class EntryPoint
     {
         static void Main(string[] args)
         {
@@ -28,6 +28,12 @@ namespace Graph
             Graph.AddEdge(adj, 2, 3);
             Graph.AddEdge(adj, 3, 4);
             Graph.PrintGraph(adj);
+            //Removing Edges
+            Graph.RemoveEdge(adj, 1, 2);
+            Graph.RemoveEdge(adj, 1, 3);
+            Graph.RemoveEdge(adj, 1, 4);
+            Graph.PrintGraph(adj);
+
             Console.ReadKey();
         }
     }
@@ -39,10 +45,11 @@ namespace Graph
     /// </summary>
     public static class Graph
     {
-        public static void AddEdge(List<int>[] adj, int node1, int node2) => adj[node1].Add(node2);
+        public static void AddEdge(List<int>[] adj, int node1, int node2) => adj[node1].Add(node2);         //O(1)
 
-        public static void PrintGraph(List<int>[] adj)
+        public static void PrintGraph(List<int>[] adj)                                                      //O(v*v)
         {
+            Console.Write("\n\nPrint all connections in graph per Node");
             for(int i=0;i<adj.Length;i++)
             {
                 Console.Write($"\nNode:{i} ");                                  // Print Node
@@ -67,5 +74,7 @@ namespace Graph
                 }
             }
         }
+
+        public static void RemoveEdge(List<int>[] adj, int node1, int node2) => adj[node1].Remove(node2);   //O(1)
     }
 }
