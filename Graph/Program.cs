@@ -39,13 +39,17 @@ namespace Graph
     }
 
     /// <summary>
-    /// Implementing Graphs (Adjacency List)
+    /// Implementing for Un-Weighted Un-Directed Graphs (Adjacency List)
     /// Time Complexity O(V) for Searching connection b/w 2 Nodes/Vertex or Deletion of edge and O(1) for Insertion, where V = no_of_nodes
     /// Space req O(|V|+|E|), In the worst case, it can be C(V, 2) number of edges in a graph thus consuming O(V^2), where V = no_of_nodes & E = no_of_Edges
     /// </summary>
     public static class Graph
     {
-        public static void AddEdge(List<int>[] adj, int node1, int node2) => adj[node1].Add(node2);         //O(1)
+        public static void AddEdge(List<int>[] adj, int node1, int node2)                                   //O(1)
+        {
+            adj[node1].Add(node2);
+            adj[node2].Add(node1);
+        }
 
         public static void PrintGraph(List<int>[] adj)                                                      //O(v*v)
         {
@@ -53,28 +57,15 @@ namespace Graph
             for(int i=0;i<adj.Length;i++)
             {
                 Console.Write($"\nNode:{i} ");                                  // Print Node
-                for (int j = 0; j < adj.Length; j++)
-                {
-                    if(i==j)
-                    {
-                        foreach (int node in adj[j])
+                        foreach (int node in adj[i])
                             Console.Write($"-->{node}");                        // Print all the nodes its connected with
-                    }
-                    else
-                    {
-                        foreach (int node in adj[j])
-                        {
-                            if (node == i)
-                            {
-                                Console.Write($"-->{j}");                       // Print all the nodes which are connected to the node we are traversing for
-                                break;                                          //Break the loop once we have found the connection
-                            }
-                        }
-                    }
-                }
             }
         }
 
-        public static void RemoveEdge(List<int>[] adj, int node1, int node2) => adj[node1].Remove(node2);   //O(1)
+        public static void RemoveEdge(List<int>[] adj, int node1, int node2)                                //O(1)
+        {
+            adj[node1].Remove(node2);
+            adj[node2].Remove(node1);
+        }
     }
 }
