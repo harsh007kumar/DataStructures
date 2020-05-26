@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace Tree
 {
@@ -132,6 +133,7 @@ namespace Tree
             bt.AddElement(ref bt.Top, 9);
             bt.AddElement(ref bt.Top, 1);
             bt.AddElement(ref bt.Top, 7);
+            BFS.BreadthFirstTraversal(bt.Top);
 
             // Searching for given element in tree
             bt.CheckElementExists(bt.Top, 7);
@@ -148,6 +150,7 @@ namespace Tree
             Console.WriteLine("\n\n");
             bt.DeleteElement(ref bt.Top, 5);
             DFS.InOrderTraversal(bt.Top);
+            BFS.LevelOrderTraversal(bt.Top);
             Console.ReadLine();
         }
     }
@@ -203,6 +206,63 @@ namespace Tree
                 PostOrderTraversal(current.Right);
 
             Console.Write($" {current.Data}");
+        }
+    }
+
+    /// <summary>
+    /// https://www.geeksforgeeks.org/level-order-tree-traversal/ Breadth First Traversal or Level Order Tree Traversal
+    /// Using Queue's || Time Complexcity O(n)
+    /// </summary>
+    public static class BFS
+    {
+        public static void LevelOrderTraversal(Node current)
+        {
+            //Step1 : Create empty Queue
+            Queue<Node> q = new Queue<Node>();
+            
+            //Step2: assign root node to temp variable
+            Node temp = current;
+
+            Console.WriteLine("\n Breadth First Traversal/Level Order Travesal");
+
+            //Step3: loop until temp==null
+            while(temp!=null)
+            {
+                Console.Write($" {temp.Data}");                                                  // Print parent node data
+                if (temp.Left != null)
+                    q.Enqueue(temp.Left);                                                       // Push Left child in Queue
+                if (temp.Right != null)
+                    q.Enqueue(temp.Right);                                                      // Push Right child in Queue
+                if (q.Count > 0)
+                    temp = q.Dequeue();
+                else
+                    temp = null;
+            }
+        }
+
+        // Same as above method LevelOrderTraversal() with minor difference in while loop
+        public static void BreadthFirstTraversal(Node current)
+        {
+            if (current == null)
+                return;
+
+            //Step1 : Create empty Queue
+            Queue<Node> q = new Queue<Node>();
+
+            //Step2: add root node to Queue
+            q.Enqueue(current);
+            
+            Console.WriteLine("\n Breadth First Traversal/Level Order Travesal");
+            //Step3: loop until queue is not empty
+            while (q.Count >0)
+            {
+                Node temp = q.Dequeue();
+                Console.Write($" {temp.Data}");                                                  // Print parent node data
+                if (temp.Left != null)
+                    q.Enqueue(temp.Left);                                                       // Push Left child in Queue
+                if (temp.Right != null)
+                    q.Enqueue(temp.Right);                                                      // Push Right child in Queue
+            }
         }
     }
 }
