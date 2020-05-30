@@ -101,10 +101,7 @@ namespace Tree
         /// <returns></returns>
         public int FindInOrderSuccessor(Node head)
         {
-            if (head.Left != null)
-                return FindInOrderSuccessor(head.Left);
-            else
-                return head.Data;
+            return head.Left != null ? FindInOrderSuccessor(head.Left) : head.Data;
         }
         /// <summary>
         /// Element which comes right before, in InOrderTraversal (one on immediate left)
@@ -113,10 +110,7 @@ namespace Tree
         /// <returns></returns>
         public int FindInOrderPredeccessor(Node head)
         {
-            if (head.Right != null)
-                return FindInOrderPredeccessor(head.Right);
-            else
-                return head.Data;
+            return head.Right != null ? FindInOrderPredeccessor(head.Right) : head.Data;
         }
     }
 
@@ -223,7 +217,7 @@ namespace Tree
             //Step2: assign root node to temp variable
             Node temp = current;
 
-            Console.WriteLine("\n Breadth First Traversal/Level Order Travesal");
+            Console.WriteLine("\n Breadth First Traversal/Level Order Traversal");
 
             //Step3: loop until temp==null
             while(temp!=null)
@@ -233,18 +227,14 @@ namespace Tree
                     q.Enqueue(temp.Left);                                                       // Push Left child in Queue
                 if (temp.Right != null)
                     q.Enqueue(temp.Right);                                                      // Push Right child in Queue
-                if (q.Count > 0)
-                    temp = q.Dequeue();
-                else
-                    temp = null;
+                temp = q.Count > 0 ? q.Dequeue() : null;
             }
         }
 
         // Same as above method LevelOrderTraversal() with minor difference in while loop
         public static void BreadthFirstTraversal(Node current)
         {
-            if (current == null)
-                return;
+            if (current == null) return;
 
             //Step1 : Create empty Queue
             Queue<Node> q = new Queue<Node>();
@@ -252,7 +242,7 @@ namespace Tree
             //Step2: add root node to Queue
             q.Enqueue(current);
             
-            Console.WriteLine("\n Breadth First Traversal/Level Order Travesal");
+            Console.WriteLine("\n Breadth First Traversal/Level Order Traversal");
             //Step3: loop until queue is not empty
             while (q.Count >0)
             {
