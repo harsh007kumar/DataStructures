@@ -225,8 +225,10 @@ namespace Graph_DataStructure
 
             //Step2: run DFS & store vertices according to their finish times in stack.
             _IsVisitedArr = new int[_Graph.Length];                                         // Reset Visited vertices Array 
-            Console.Write("\nDFS of current Graph starting from Node 0 : ");
-            FillStackUsingRecursiveDFS(_Graph, 0, ref s);
+            Console.Write("\nDFS of current Graph : ");
+            for (int index = 0; index < _Graph.Length; index++)
+                if(_IsVisitedArr[index]!=1)
+                    FillStackUsingRecursiveDFS(_Graph, 0, ref s);
 
             //Step3: Reverse all directed Edges in Di-Graph || so that 'Source' becomes 'sink' and the 'Sink' becomes 'source'.
             List<int>[] reverse  = GetTranspose(_Graph);
@@ -244,7 +246,6 @@ namespace Graph_DataStructure
             }
             Console.WriteLine();
         }
-            
 
         protected void FillStackUsingRecursiveDFS(List<int>[] graph, int startingNode, ref Stack<int> stack)
         {
