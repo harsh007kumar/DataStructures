@@ -11,7 +11,7 @@ namespace Graph_DataStructure
     {
         static void Main(string[] args)
         {
-            Console.Write("====================  UnDirected-Graph ====================");
+            Console.Write("\n====================  UnDirected-Graph ====================");
             UnDirectedGraph UG = new UnDirectedGraph(5);
             //Adding Edges to Un-Directed Graph
             UG.AddEdge( 0, 1);
@@ -30,7 +30,7 @@ namespace Graph_DataStructure
             UG.PrintGraph();
             UG.BreadthFirstSearch( 2);
 
-            Console.Write("====================  Directed-Graph ======================");
+            Console.Write("\n====================  Directed-Graph ======================");
 
             DiGraph DG = new DiGraph(4);
             //Adding Edges to Di-Graph
@@ -45,6 +45,15 @@ namespace Graph_DataStructure
             DG.PrintGraph();
             DG.BreadthFirstSearch(2);
             DG.DepthFirstSearch(2);
+
+            Console.Write("\n====================  Finding SCC in Di-Graph =============");
+            DiGraph DG1 = new DiGraph(5);
+            DG1.AddEdge(1, 0);
+            DG1.AddEdge(0, 2);
+            DG1.AddEdge(2, 1);
+            DG1.AddEdge(0, 3);
+            DG1.AddEdge(3, 4);
+            DG1.PrintSccInDiGraph();
 
             Console.ReadKey();
         }
@@ -202,6 +211,72 @@ namespace Graph_DataStructure
         /// <param name="node1"></param>
         /// <param name="node2"></param>
         public void RemoveEdge(int node1, int node2) => _Graph[node1].Remove(node2);      //O(1)
+
+        //GFG https://www.geeksforgeeks.org/strongly-connected-components/
+        /// <summary>
+        /// Printing SCC in DiGraph (using Kosaraju’s algorithm)
+        /// </summary>
+        public void PrintSccInDiGraph()
+        {
+            if (_Graph == null) return;
+
+            //Step1: Create a stack to hold the nodes after each iteration of DFS
+            Stack<int> s = new Stack<int>(_Graph.Length);
+
+            //Step2: run DFS & store vertices according to their finish times in stack.
+            _IsVisitedArr = new int[_Graph.Length];                                         // Reset Visited vertices Array 
+            Console.Write("\nDFS of current Graph starting from Node 0 : ");
+            FillStackUsingRecursiveDFS(_Graph, 0, ref s);
+
+            //Step3: Reverse all directed Edges in Di-Graph || so that 'Source' becomes 'sink' and the 'Sink' becomes 'source'.
+            List<int>[] reverse  = GetTranspose(_Graph);
+
+            //Step4: Run DFS of the reversed graph using sequence of vertices in stack (process Vertices from Sink to Source)
+            _IsVisitedArr = new int[_Graph.Length];                                         // Reset Visited vertices Array 
+            Console.Write("\n\nPrinting All Strongly Connected Components in Di-Graph (using Kosaraju’s algorithm) below :");
+            foreach (var node in s)
+            {
+                if (_IsVisitedArr[node] != 1)
+                {
+                    Console.Write("\nSCC : ");
+                    DepthFirstSearch_Recursive(reverse, node); //Base class method
+                }
+            }
+            Console.WriteLine();
+        }
+            
+
+        protected void FillStackUsingRecursiveDFS(List<int>[] graph, int startingNode, ref Stack<int> stack)
+        {
+            if (graph == null || _IsVisitedArr[startingNode] == 1) return;
+            
+            //Step1: Mark current node as visited and print the node
+            _IsVisitedArr[startingNode] = 1;
+            Console.Write($" {startingNode} ");
+
+            //Step2 : Traverse all the adjacent and unmarked nodes
+            foreach (var node in _Graph[startingNode])
+                FillStackUsingRecursiveDFS(graph, node, ref stack);
+
+            //Step3: add starting node to Stack after traversing thru its connected nodes
+            stack.Push(startingNode);
+        }
+
+        protected List<int>[] GetTranspose(List<int>[] graph)
+        {
+            var Len = graph.Length;
+            List<int>[] reverseGraph = new List<int>[Len];
+            for (int i = 0; i < Len; i++)
+            {
+                foreach (var node in graph[i])
+                {
+                    if (reverseGraph[node] == null) reverseGraph[node] = new List<int>();
+
+                    reverseGraph[node].Add(i);
+                }
+            }
+            return reverseGraph;
+        }
 
     }
 }
