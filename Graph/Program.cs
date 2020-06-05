@@ -224,24 +224,24 @@ namespace Graph_DataStructure
             Stack<int> s = new Stack<int>(_Graph.Length);
 
             //Step2: run DFS & store vertices according to their finish times in stack.
-            _IsVisitedArr = new int[_Graph.Length];                                         // Reset Visited vertices Array 
+            _IsVisitedArr = new int[_Graph.Length];             // Reset Visited vertices Array 
             Console.Write("\nDFS of current Graph : ");
             for (int index = 0; index < _Graph.Length; index++)
                 if(_IsVisitedArr[index]!=1)
-                    FillStackUsingRecursiveDFS(_Graph, 0, ref s);
+                    FillStackUsingRecursiveDFS(_Graph, 0, ref s);                     // Time complexity O(V+E) 
 
             //Step3: Reverse all directed Edges in Di-Graph || so that 'Source' becomes 'sink' and the 'Sink' becomes 'source'.
-            List<int>[] reverse  = GetTranspose(_Graph);
+            List<int>[] reverse  = GetTranspose(_Graph);                                        // Time complexity O(V+E)
 
             //Step4: Run DFS of the reversed graph using sequence of vertices in stack (process Vertices from Sink to Source)
-            _IsVisitedArr = new int[_Graph.Length];                                         // Reset Visited vertices Array 
+            _IsVisitedArr = new int[_Graph.Length];             // Reset Visited vertices Array 
             Console.Write("\n\nPrinting All Strongly Connected Components in Di-Graph (using Kosaraju’s algorithm) below :");
             foreach (var node in s)
             {
                 if (_IsVisitedArr[node] != 1)
                 {
                     Console.Write("\nSCC : ");
-                    DepthFirstSearch_Recursive(reverse, node); //Base class method
+                    DepthFirstSearch_Recursive(reverse, node); //Base class method              // Time complexity O(V+E)
                 }
             }
             Console.WriteLine();
