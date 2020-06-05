@@ -29,7 +29,7 @@ namespace LinkedList
         public void AddAtStart(int data)
         {
             Node addOne = new Node(data);   // Create New Node
-            if(Head != null)
+            if (Head != null)
                 Head.prv = addOne;          // Point the previously First Node->Previous to newly added one
             addOne.next = Head;             // Point the newly added Node->Next to previously First Node
             Head = addOne;                  // Pointing the Head of LinkedList to newly added node
@@ -59,7 +59,7 @@ namespace LinkedList
             Node addOne = new Node(data);
             Node temp = Head;
             int currentPos = 1;
-            if (pos <= count)               // Inserting can only be inserted at position which exists
+            if (pos <= count)               // Node can only be inserted at position which exists
             {
                 Console.WriteLine($"Inserting : {data} at Position : {pos}");
                 while (pos != currentPos)
@@ -70,7 +70,7 @@ namespace LinkedList
 
                 (temp.prv).next = addOne;   // Previous Node next should point to newly added Node
                 addOne.prv = temp.prv;      // Newly added Node prv should point to previous of last Node which was there
-                temp.prv = addOne;          // Originaly node's prv should now point to new Node
+                temp.prv = addOne;          // Original node's prv should now point to new Node
                 addOne.next = temp;         // Node next should point to node which was originally present at that position
 
                 count++;                    // Increment size of linkedList
@@ -80,11 +80,11 @@ namespace LinkedList
         public void DeleteByKey(int data)
         {
             Node current = Head;
-            while(current!=null)
+            while (current != null)
             {
-                if(current.Data==data)
+                if (current.Data == data)
                 {
-                    if(current.prv!=null)
+                    if (current.prv != null)
                         (current.prv).next = current.next;
                     if (current.next != null)
                         (current.next).prv = current.prv;
@@ -95,6 +95,49 @@ namespace LinkedList
                 current = current.next;     //Traverse to next Node
             }
         }
+
+        public void DeleteAtStart()
+        {
+            if (Head == null) return;
+
+            Console.WriteLine($"Deleting First Node : {Head.Data} from the list");
+            (Head.next).prv = Head.prv;     //Set prv of 2nd element to prv Node value present in 1st Node/Head
+            Head = Head.next;               //Set Head to point to 2nd element
+            
+            count--;
+        }
+
+        public void DeleteAtPosition(int pos = 1)
+        {
+            // Deletion can only be performed at position which exists
+            if (Head == null || pos > count) return;
+
+            Node temp = Head;
+            int currentPos = 1;
+            while (pos != currentPos)
+            {
+                temp = temp.next;
+                currentPos++;
+            }
+            Console.WriteLine($"Deleting : {temp.Data} present at Position : {pos}");
+            (temp.prv).next = temp.next;
+            (temp.next).prv = temp.prv;
+            count--;
+        }
+
+        public void DeleteAtEnd()
+        {
+            if (Head == null) return;
+            Node temp = Head;
+            while (temp.next != null)
+                temp = temp.next;
+
+            (temp.prv).next = null;         // Set 2nd last element's next pointer to null
+
+            Console.WriteLine($"Deleting Last Node : {temp.Data} from the list");
+            count--;
+        }
+
     }
     class MainClass
     {
@@ -114,11 +157,12 @@ namespace LinkedList
             Console.WriteLine($"No of Node currently in Doubly LinkedList : {myList.Count}");
 
             myList.DeleteByKey(15); // Delete no in between
-            myList.DeleteByKey(30); // Delete Last
+            myList.DeleteAtPosition(2); // Delete no at position
+            myList.DeleteAtEnd();       // Delete Last
             PrintFromStart(myList); // Print from Start
             Console.WriteLine($"No of Node currently in Doubly LinkedList : {myList.Count}");
 
-            myList.DeleteByKey(25); // Delete First
+            myList.DeleteAtStart();     // Delete First
             PrintFromEnd(myList);   // Print from End
             Console.ReadKey();
         }
