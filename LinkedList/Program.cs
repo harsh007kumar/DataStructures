@@ -202,6 +202,7 @@ namespace LinkedList
         public void PrintContent()
         {
             if (Head == null) return;
+            Console.WriteLine("Printing Elements From Start/Head");
             Node temp = Head;
             do
             {
@@ -209,6 +210,7 @@ namespace LinkedList
                 temp = temp.next;
             } while (temp != Head);
 
+            Console.WriteLine();
         }
 
         public void AddAtStart(int data)
@@ -254,6 +256,39 @@ namespace LinkedList
             Console.WriteLine($"Inserting : {data} at the End");
         }
 
+        public void DeleteFirst()
+        {
+            if (Head == null) return;
+
+            Node temp = Head;
+            while (temp.next != Head)
+                temp = temp.next;
+
+            Console.WriteLine($"Deleting First Node : {Head.Data} from the list");
+            temp.next = Head = Head.next;   // Assumption list had atleast 2 nodes
+            
+            count--;
+            
+        }
+
+        public void DeleteLast()
+        {
+            if(Head==null) return;
+            Node last = Head, oneBeforeLast = null ;
+            while (last.next != Head)
+            {
+                oneBeforeLast = last;
+                last = last.next;
+            }
+
+            if (oneBeforeLast != null)
+                oneBeforeLast.next = Head;
+            else
+                Head = null;                // Only 1 node was present in list now list is empty
+
+            count--;
+            Console.WriteLine($"Deleting Last Node : {last.Data} from the list");
+        }
     }
 
     class MainClass
@@ -290,7 +325,10 @@ namespace LinkedList
             circularList.AddAtEnd(75);
             circularList.AddAtStart(100);
             circularList.PrintContent();
-            var my = circularList.CalculateLength();
+            circularList.DeleteFirst();
+            circularList.DeleteLast();
+            var noOfNodes = circularList.CalculateLength();
+            circularList.PrintContent();
             Console.ReadKey();
         }
     }
