@@ -2,7 +2,7 @@
 
 namespace LinkedList
 {
-    class Node
+    public class Node
     {
         public int Data { get; set; }
         public Node next, prv;
@@ -15,40 +15,42 @@ namespace LinkedList
         public Node()       //Default Constructor
         { next = prv = null; }
     }
-    class DoublyLinkedList
+
+    public abstract class BaseLinkedList
     {
         public Node Head;
-        private int count = 0;
-        public int Count
-        {
-            get { return count; }
-        }
+        protected int count = 0;
+        public int Count { get { return count; } }
+        protected BaseLinkedList() => Head = null;
+    }
 
-        public DoublyLinkedList() { Head = null; }
+    public class DoublyLinkedList : BaseLinkedList
+    {
+        public DoublyLinkedList() : base() {}
 
         public void AddAtStart(int data)
         {
-            Node addOne = new Node(data);   // Create New Node
+            Node newNode = new Node(data);   // Create New Node
             if (Head != null)
-                Head.prv = addOne;          // Point the previously First Node->Previous to newly added one
-            addOne.next = Head;             // Point the newly added Node->Next to previously First Node
-            Head = addOne;                  // Pointing the Head of LinkedList to newly added node
+                Head.prv = newNode;          // Point the previously First Node->Previous to newly added one
+            newNode.next = Head;             // Point the newly added Node->Next to previously First Node
+            Head = newNode;                  // Pointing the Head of LinkedList to newly added node
             count++;
             Console.WriteLine($"Inserting : {data} at the Start");
         }
 
         public void AddAtEnd(int data)
         {
-            Node addOne = new Node(data);   // Create New Node
+            Node newNode = new Node(data);   // Create New Node
             if (Head == null)
-                Head = addOne;              // Point Head to first element in List
+                Head = newNode;              // Point Head to first element in List
             else
             {
                 Node Temp = Head;
                 while (Temp.next != null)   // Iterate to the Last Node in List
                     Temp = Temp.next;
-                Temp.next = addOne;         // Point Last Node->Next to new element
-                addOne.prv = Temp;          // Point newly added Node->Previous to previously last element
+                Temp.next = newNode;         // Point Last Node->Next to new element
+                newNode.prv = Temp;          // Point newly added Node->Previous to previously last element
             }
             count++;
             Console.WriteLine($"Inserting : {data} at the End");
@@ -56,7 +58,7 @@ namespace LinkedList
 
         public void AddAtPosition(int data, int pos = 1)
         {
-            Node addOne = new Node(data);
+            Node newNode = new Node(data);
             Node temp = Head;
             int currentPos = 1;
             if (pos <= count)               // Node can only be inserted at position which exists
@@ -68,10 +70,10 @@ namespace LinkedList
                     currentPos++;
                 }
 
-                (temp.prv).next = addOne;   // Previous Node next should point to newly added Node
-                addOne.prv = temp.prv;      // Newly added Node prv should point to previous of last Node which was there
-                temp.prv = addOne;          // Original node's prv should now point to new Node
-                addOne.next = temp;         // Node next should point to node which was originally present at that position
+                (temp.prv).next = newNode;   // Previous Node next should point to newly added Node
+                newNode.prv = temp.prv;      // Newly added Node prv should point to previous of last Node which was there
+                temp.prv = newNode;          // Original node's prv should now point to new Node
+                newNode.next = temp;         // Node next should point to node which was originally present at that position
 
                 count++;                    // Increment size of linkedList
             }
@@ -103,7 +105,7 @@ namespace LinkedList
             Console.WriteLine($"Deleting First Node : {Head.Data} from the list");
             (Head.next).prv = Head.prv;     //Set prv of 2nd element to prv Node value present in 1st Node/Head
             Head = Head.next;               //Set Head to point to 2nd element
-            
+
             count--;
         }
 
@@ -138,67 +140,158 @@ namespace LinkedList
             count--;
         }
 
-    }
-    class MainClass
-    {
-        public static void Main(string[] args)
-        {
-            DoublyLinkedList myList = new DoublyLinkedList();
-            myList.AddAtStart(5);   // 5
-            myList.AddAtStart(10);  // 10 5
-            myList.AddAtEnd(15);    // 10 5 15
-            myList.AddAtEnd(20);    // 10 5 15 20
-            myList.AddAtStart(25);  // 25 10 5 15 20
-            myList.AddAtEnd(30);    // 25 10 5 15 20 30
-            PrintFromStart(myList); // Print from Start
-            Console.WriteLine($"No of Node currently in Doubly LinkedList : {myList.Count}");
-            myList.AddAtPosition(8, 4);
-            PrintFromStart(myList); // Print from Start
-            Console.WriteLine($"No of Node currently in Doubly LinkedList : {myList.Count}");
-
-            myList.DeleteByKey(15); // Delete no in between
-            myList.DeleteAtPosition(2); // Delete no at position
-            myList.DeleteAtEnd();       // Delete Last
-            PrintFromStart(myList); // Print from Start
-            Console.WriteLine($"No of Node currently in Doubly LinkedList : {myList.Count}");
-
-            myList.DeleteAtStart();     // Delete First
-            PrintFromEnd(myList);   // Print from End
-            Console.ReadKey();
-        }
-
         // To Print Elements From Start
-        static void PrintFromStart(DoublyLinkedList myList)
+        public void PrintFromStart()
         {
-            Node current = null;
-            if(myList !=null)
-                current = myList.Head;
+            if (Head == null) return;
 
+            Node current = Head;
             Console.WriteLine("Printing Elements From Start/Head");
-            while(current!=null)
+            while (current != null)
             {
                 Console.Write($"--> {current.Data}");
-                current= current.next;
+                current = current.next;
             }
             Console.WriteLine();
         }
 
         // To Print Elements From Last
-        static void PrintFromEnd(DoublyLinkedList myList)
+        public void PrintFromEnd()
         {
-            Node current = null;
-            if (myList != null)
-                current = myList.Head;
+            if (Head == null) return;
 
+            Node current = Head;
             Console.WriteLine("Printing Elements From End");
             while (current.next != null)
                 current = current.next;
-            while (current!= null)
+            while (current != null)
             {
                 Console.Write($"--> {current.Data}");
                 current = current.prv;
             }
             Console.WriteLine();
+        }
+    }
+
+    /// <summary>
+    /// Circular Linked List implementation where each Node has data element and single pointer 'next' pointing to next node in list
+    /// </summary>
+    public class CircularLinkedList : BaseLinkedList
+    {
+        public CircularLinkedList() : base() { }
+
+        /// <summary>
+        /// Calculates no of nodes present currently in the list
+        /// </summary>
+        /// <returns></returns>
+        public int CalculateLength()
+        {
+            if (Head == null) return 0;
+            int len = 0;
+            Node temp = Head;
+            do
+            {
+                len++;
+                temp = temp.next;
+            } while (temp != Head);
+
+            count = len;                    // Setting the count variable
+            return len;
+        }
+
+        public void PrintContent()
+        {
+            if (Head == null) return;
+            Node temp = Head;
+            do
+            {
+                Console.Write($"--> {temp.Data} ");
+                temp = temp.next;
+            } while (temp != Head);
+
+        }
+
+        public void AddAtStart(int data)
+        {
+            Node newNode = new Node(data);
+            if (Head == null)
+                newNode.next = newNode;
+            else
+            {
+                Node temp = Head;
+                while (temp.next != Head)
+                    temp = temp.next;
+
+                temp.next = newNode;        // Set last node next pointing to newly added node
+                newNode.next = Head;        // Set new node next to 1st element in list
+            }
+            Head = newNode;                 // Set Head to point to new Node
+
+            count++;
+            Console.WriteLine($"Inserting : {data} at the Start");
+        }
+
+        public void AddAtEnd(int data)
+        {
+            Node newNode = new Node(data);
+
+            if (Head == null)
+            {
+                newNode.next = newNode;
+                Head = newNode;
+            }
+            else
+            {
+                Node temp = Head;
+                while (temp.next != Head)
+                    temp = temp.next;
+
+                newNode.next = Head;
+                temp.next = newNode;
+            }
+
+            count++;
+            Console.WriteLine($"Inserting : {data} at the End");
+        }
+
+    }
+
+    class MainClass
+    {
+        public static void Main(string[] args)
+        {
+            Console.WriteLine("\n\n ===================== Doubly LinkedList ==========================");
+            DoublyLinkedList doublyList = new DoublyLinkedList();
+            doublyList.AddAtStart(5);   // 5
+            doublyList.AddAtStart(10);  // 10 5
+            doublyList.AddAtEnd(15);    // 10 5 15
+            doublyList.AddAtEnd(20);    // 10 5 15 20
+            doublyList.AddAtStart(25);  // 25 10 5 15 20
+            doublyList.AddAtEnd(30);    // 25 10 5 15 20 30
+            doublyList.PrintFromStart();    // Print from Start
+            Console.WriteLine($"No of Node currently in Doubly LinkedList : {doublyList.Count}");
+            doublyList.AddAtPosition(8, 4);
+            doublyList.PrintFromStart();    // Print from Start
+            Console.WriteLine($"No of Node currently in Doubly LinkedList : {doublyList.Count}");
+
+            doublyList.DeleteByKey(15); // Delete no in between
+            doublyList.DeleteAtPosition(2); // Delete no at position
+            doublyList.DeleteAtEnd();       // Delete Last
+            doublyList.PrintFromStart();    // Print from Start
+            Console.WriteLine($"No of Node currently in Doubly LinkedList : {doublyList.Count}");
+
+            doublyList.DeleteAtStart();     // Delete First
+            doublyList.PrintFromEnd();      // Print from End
+
+            Console.WriteLine("\n\n ===================== Circular LinkedList =======================");
+            CircularLinkedList circularList = new CircularLinkedList();
+            circularList.AddAtEnd(55);
+            circularList.AddAtStart(90);
+            circularList.AddAtEnd(75);
+            circularList.AddAtStart(100);
+            circularList.PrintContent();
+            var my = circularList.CalculateLength();
+            Console.ReadKey();
         }
     }
 }
