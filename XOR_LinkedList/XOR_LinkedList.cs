@@ -93,18 +93,18 @@ namespace XOR_LinkedList
             newNode.PointerDiff = XOR(LastNode);                                    // same as newNode.PointerDiff = LastNode
             LastNode = &newNode;
             count++;
-            Console.WriteLine($"Inserting : {data} at the Start, Address : {PrintAddress(LastNode)}");
+            Console.WriteLine($"Inserting : {data} at the Address : {PrintAddress(LastNode)}");
 
         }
 
         public void Delete()
         {
             if (Head == (Node*)0) return;
-            Node* prvNode = (Node*)((int)LastNode->PointerDiff ^ (int)0);
-            prvNode->PointerDiff = (Node*)((int)prvNode->PointerDiff ^ (int)LastNode->PointerDiff);
+            Node* prvNode = XOR(LastNode->PointerDiff);
+            prvNode->PointerDiff = XOR(prvNode->PointerDiff, LastNode->PointerDiff);
             LastNode = prvNode;
             count--;
-            Console.WriteLine($"Deleting First Node : {(*LastNode).Data} from the list");
+            Console.WriteLine($"Deleting Last Node : {(*LastNode).Data} from the list");
         }
 
 
