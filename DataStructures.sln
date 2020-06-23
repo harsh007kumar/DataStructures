@@ -1,6 +1,6 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.28307.960
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30204.135
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tree", "BinaryTree\Tree.csproj", "{4FFB91FE-D8DD-40DB-AED1-00128B7A3BA9}"
 EndProject
@@ -13,6 +13,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Graph", "Graph\Graph.csproj", "{BE5EC0A3-B4A8-476C-9983-DE3D90DB40EB}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XOR_LinkedList", "XOR_LinkedList\XOR_LinkedList.csproj", "{FC95736A-82AD-48C6-86C0-4D3F35D03830}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Stack", "Stack\Stack.csproj", "{06DE8799-5F61-434C-B4CE-C6FBB0372C3A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -68,6 +70,14 @@ Global
 		{FC95736A-82AD-48C6-86C0-4D3F35D03830}.Release|Any CPU.Build.0 = Release|Any CPU
 		{FC95736A-82AD-48C6-86C0-4D3F35D03830}.Release|x86.ActiveCfg = Release|Any CPU
 		{FC95736A-82AD-48C6-86C0-4D3F35D03830}.Release|x86.Build.0 = Release|Any CPU
+		{06DE8799-5F61-434C-B4CE-C6FBB0372C3A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{06DE8799-5F61-434C-B4CE-C6FBB0372C3A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{06DE8799-5F61-434C-B4CE-C6FBB0372C3A}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{06DE8799-5F61-434C-B4CE-C6FBB0372C3A}.Debug|x86.Build.0 = Debug|Any CPU
+		{06DE8799-5F61-434C-B4CE-C6FBB0372C3A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{06DE8799-5F61-434C-B4CE-C6FBB0372C3A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{06DE8799-5F61-434C-B4CE-C6FBB0372C3A}.Release|x86.ActiveCfg = Release|Any CPU
+		{06DE8799-5F61-434C-B4CE-C6FBB0372C3A}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
