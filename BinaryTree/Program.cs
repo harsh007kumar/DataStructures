@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Security;
+using System.Security.Cryptography;
 
 namespace Tree
 {
@@ -165,48 +166,88 @@ namespace Tree
             return level;
         }
 
-        public Node FindLeastCommonAnscestor(Node head, int data1, int data2)
+        /// <summary>
+        /// Time Complexity is O(n) but requires 3 scans of the tree || Space Complexity O(n) for storing the Trace-path
+        /// </summary>
+        /// <param name="head"></param>
+        /// <param name="data1"></param>
+        /// <param name="data2"></param>
+        /// <returns></returns>
+        public static int FindLeastCommonAnscestor(Node head, int data1, int data2)
         {
-            //Trace the path for 1st Node
-            //Trace the path for 2nd Node
+            // Trace the path for both nodes from root to data
+            Queue<int> q1 = new Queue<int>();
+            Queue<int> q2 = new Queue<int>();
 
-            Queue<Node> q1 = new Queue<Node>();
-            Queue<Node> q2 = new Queue<Node>();
-
-            TracePathFromRoot(ref q1, head, data1);
-            TracePathFromRoot(ref q2, head, data2);
+            if (head == null || !TracePathFromRoot(ref q1, head, data1) || !TracePathFromRoot(ref q2, head, data2))
+            {
+                Console.WriteLine("Can't Find LCA for pair of Nodes which don't exists in Tree");
+                return -1;
+            }
 
             
-            Node lastParent = q1.Dequeue();     // Storing the root Node
+            var lastParent = q1.Dequeue();     // Storing the root Node
             q2.Dequeue();
 
-            Node curParent1, curParent2;
-            curParent1 = curParent2 = null;
-            while (q1.Count > 0)
+            while (q1.Count > 0 && q2.Count > 0)
             {
-                // Keep Popping the nodes and compare it they are same for both child than
-                // it is are closet LCA
-                curParent1 = q1.Dequeue();
-                curParent2 = q2.Dequeue();
-                if (curParent1.Data != curParent2.Data)
-                    break;
+                // Keep DeQueing the nodes and compare it they are same for both child than continue 
+                // and if different last parent was the LCA for pair of Nodes
+                var curParent1 = q1.Dequeue();
+                var curParent2 = q2.Dequeue();
+                if (curParent1 == curParent2)
+                    lastParent = curParent1;
                 else
-                    lastParent = curParent2;
+                    break;
             }
-            Console.WriteLine($" LCA for {data1} and {data2} is : {lastParent.Data}");
+            Console.WriteLine($" LCA for Node '{data1}' and '{data2}' is : '{lastParent}'");
             return lastParent;
         }
 
-        protected void TracePathFromRoot(ref Queue<Node> st, Node head, int data)
+        /// <summary>
+        /// Time Complexity O(n)
+        /// </summary>
+        /// <param name="st"></param>
+        /// <param name="head"></param>
+        /// <param name="data"></param>
+        /// <returns></returns>
+        public static bool TracePathFromRoot(ref Queue<int> st, Node head, int data)
         {
-            if (head == null) return;
-            st.Enqueue(head);
+            if (head == null) return false;
+
+            bool found = false;
+            st.Enqueue(head.Data);
             if (head.Data == data)
-                Console.WriteLine($" Node found {data}");
+            {
+                Console.WriteLine($" '{data}' Node found");
+                found = true;
+            }
             else if (data < head.Data)
-                TracePathFromRoot(ref st, head.Left, data);
+                found = TracePathFromRoot(ref st, head.Left, data);
             else
-                TracePathFromRoot(ref st, head.Right, data);
+                found = TracePathFromRoot(ref st, head.Right, data);
+            return found;
+        }
+
+        /// <summary>
+        /// Time Complexity O(n) same as FindLeastCommonAnscestor() but scans required is 1
+        /// Space Complexity O(n) required for CallStack in System for recursion
+        /// Assumption both Nodes are present in the tree
+        /// </summary>
+        /// <param name="head"></param>
+        /// <param name="data1"></param>
+        /// <param name="data2"></param>
+        /// <returns></returns>
+        public static int FindLCA_Recursive(Node head, int data1, int data2)
+        {
+            var LCA = -1;
+            if (head == null) return LCA;                                        // Head is null return -1 to indicate no LCA exists
+            LCA = head.Data;                                                    // Set LCA as root that is common anscestor for all nodes of tree
+            if (data1 < head.Data && data2 < head.Data)
+                LCA = FindLCA_Recursive(head.Left, data1, data2);               // Both child are in Left subtree
+            else if (data1 > head.Data && data2 > head.Data)
+                LCA = FindLCA_Recursive(head.Right, data1, data2);              // Both child are in Right subtree
+            return LCA;
         }
     }
 
@@ -246,7 +287,12 @@ namespace Tree
             int getSum = -1;
             var level = bt.LevelWithMaxSum(ref getSum, bt.Top);
             Console.WriteLine($"\n The Level : {level} has the max sum : {getSum} in the Tree");
-            bt.FindLeastCommonAnscestor(bt.Top, 9, 20);
+            int c1 = 10;
+            int c2 = 20;
+            BinarySearchTree.FindLeastCommonAnscestor(bt.Top, c1, c2);
+
+            //c1 = 4;
+            Console.WriteLine($" LCA for '{c1}' and '{c2}' is : '{BinarySearchTree.FindLCA(bt.Top, c1, c2)}'");
             Console.ReadKey();
         }
     }
