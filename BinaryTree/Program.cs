@@ -121,48 +121,88 @@ namespace Tree
 
         public int HeightOfTree(Node head)
         {
-            if (head == null) return-1;
+            if (head == null) return -1;
             int ht = 0;                         // Tree with one node has height of 0
-            int left = HeightOfTree(head.Left)+1;
-            int right = HeightOfTree(head.Right)+1;
+            int left = HeightOfTree(head.Left) + 1;
+            int right = HeightOfTree(head.Right) + 1;
             ht = left > right ? left : right;
             return ht;
         }
 
-        public int LevelWithMaxSum(ref int max,Node head)
+        public int LevelWithMaxSum(ref int max, Node head)
         {
             int level = -1;
             if (head == null) return level;
 
             Queue<Node> q = new Queue<Node>();
             q.Enqueue(head);
-            Node n = null;
+            Node nullNode = null;
             int currLevel = -1;
-            while (q.Count>0)
+            while (q.Count > 0)                   // At First it might look like TIme complexity O(n*n) but we are only adding and removing each node max 1 time in Queue
             {
-                currLevel++;
-                q.Enqueue(n);   // adding null Node to mark the end of the level
-                int currentMax = 0;
-                while (q.Count >0)  // Traversing at Level 'n'
+                currLevel++;                    // if elements are left in Queue increment current level by 1
+                q.Enqueue(nullNode);            // adding null Node to mark the end of the last level
+                int levelMax = 0;
+                while (q.Count > 0)              // Traversing at Level 'n'
                 {
                     Node curr = q.Dequeue();
                     if (curr == null)
                         break;
 
-                    currentMax += curr.Data;
+                    levelMax += curr.Data;
                     if (curr.Left != null)
-                        q.Enqueue(curr.Left);
+                        q.Enqueue(curr.Left);   // add current Node->left child to Queue if it's not null
                     if (curr.Right != null)
-                        q.Enqueue(curr.Right);
-                    
+                        q.Enqueue(curr.Right);  // add current Node->Right child to Queue if it's not null
+
                 }
-                if (max < currentMax)
+                if (levelMax > max)
                 {
                     level = currLevel;
-                    max = currentMax;
+                    max = levelMax;
                 }
             }
             return level;
+        }
+
+        public Node FindLeastCommonAnscestor(Node head, int data1, int data2)
+        {
+            //Trace the path for 1st Node
+            //Trace the path for 2nd Node
+
+            Stack<Node> st1 = new Stack<Node>();
+            Stack<Node> st2 = new Stack<Node>();
+
+            TracePathFromRoot(ref st1, head, data1);
+            TracePathFromRoot(ref st2, head, data2);
+
+            st1.Pop();
+            st2.Pop();
+            Node parent1, parent2;
+            parent1 = parent2 = null;
+            while (st1.Count > 0)
+            {
+                // Keep Popping the nodes and compare it they are same for both child than
+                // it is are closet LCA
+                parent1 = st1.Pop();
+                parent2 = st2.Pop();
+                if (parent1.Data == parent2.Data)
+                    break;
+            }
+            Console.WriteLine($" LCA for {data1} and {data2} is : {parent1.Data}");
+            return parent1;
+        }
+
+        protected void TracePathFromRoot(ref Stack<Node> st, Node head, int data)
+        {
+            if (head == null) return;
+            st.Push(head);
+            if (head.Data == data)
+                Console.WriteLine($" Node found {data}");
+            else if (data < head.Data)
+                TracePathFromRoot(ref st, head.Left, data);
+            else
+                TracePathFromRoot(ref st, head.Right, data);
         }
     }
 
@@ -202,6 +242,7 @@ namespace Tree
             int getSum = -1;
             var level = bt.LevelWithMaxSum(ref getSum, bt.Top);
             Console.WriteLine($"\n The Level : {level} has the max sum : {getSum} in the Tree");
+            bt.FindLeastCommonAnscestor(bt.Top, 4, 20);
             Console.ReadKey();
         }
     }
