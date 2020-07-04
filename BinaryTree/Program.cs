@@ -170,33 +170,37 @@ namespace Tree
             //Trace the path for 1st Node
             //Trace the path for 2nd Node
 
-            Stack<Node> st1 = new Stack<Node>();
-            Stack<Node> st2 = new Stack<Node>();
+            Queue<Node> q1 = new Queue<Node>();
+            Queue<Node> q2 = new Queue<Node>();
 
-            TracePathFromRoot(ref st1, head, data1);
-            TracePathFromRoot(ref st2, head, data2);
+            TracePathFromRoot(ref q1, head, data1);
+            TracePathFromRoot(ref q2, head, data2);
 
-            st1.Pop();
-            st2.Pop();
-            Node parent1, parent2;
-            parent1 = parent2 = null;
-            while (st1.Count > 0)
+            
+            Node lastParent = q1.Dequeue();     // Storing the root Node
+            q2.Dequeue();
+
+            Node curParent1, curParent2;
+            curParent1 = curParent2 = null;
+            while (q1.Count > 0)
             {
                 // Keep Popping the nodes and compare it they are same for both child than
                 // it is are closet LCA
-                parent1 = st1.Pop();
-                parent2 = st2.Pop();
-                if (parent1.Data == parent2.Data)
+                curParent1 = q1.Dequeue();
+                curParent2 = q2.Dequeue();
+                if (curParent1.Data != curParent2.Data)
                     break;
+                else
+                    lastParent = curParent2;
             }
-            Console.WriteLine($" LCA for {data1} and {data2} is : {parent1.Data}");
-            return parent1;
+            Console.WriteLine($" LCA for {data1} and {data2} is : {lastParent.Data}");
+            return lastParent;
         }
 
-        protected void TracePathFromRoot(ref Stack<Node> st, Node head, int data)
+        protected void TracePathFromRoot(ref Queue<Node> st, Node head, int data)
         {
             if (head == null) return;
-            st.Push(head);
+            st.Enqueue(head);
             if (head.Data == data)
                 Console.WriteLine($" Node found {data}");
             else if (data < head.Data)
@@ -242,7 +246,7 @@ namespace Tree
             int getSum = -1;
             var level = bt.LevelWithMaxSum(ref getSum, bt.Top);
             Console.WriteLine($"\n The Level : {level} has the max sum : {getSum} in the Tree");
-            bt.FindLeastCommonAnscestor(bt.Top, 4, 20);
+            bt.FindLeastCommonAnscestor(bt.Top, 9, 20);
             Console.ReadKey();
         }
     }
