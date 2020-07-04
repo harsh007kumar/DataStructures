@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Security;
 
 namespace Tree
 {
@@ -71,6 +72,7 @@ namespace Tree
             }
             else if (head.Data == data)
             {
+                Console.WriteLine($"Node with data :\t{data} is Deleted/Moved");
                 if (head.Left == null)
                     return head.Right;          // as left node is null, return right which make be an node or null either way parent node is removed
                 else if (head.Right == null)
@@ -99,18 +101,68 @@ namespace Tree
         /// </summary>
         /// <param name="head"></param>
         /// <returns></returns>
-        public int FindInOrderSuccessor(Node head)
-        {
-            return head.Left != null ? FindInOrderSuccessor(head.Left) : head.Data;
-        }
+        public int FindInOrderSuccessor(Node head) => head.Left != null ? FindInOrderSuccessor(head.Left) : head.Data;
+
         /// <summary>
         /// Element which comes right before, in InOrderTraversal (one on immediate left)
         /// </summary>
         /// <param name="head"></param>
         /// <returns></returns>
-        public int FindInOrderPredeccessor(Node head)
+        public int FindInOrderPredeccessor(Node head) => head.Right != null ? FindInOrderPredeccessor(head.Right) : head.Data;
+
+        public int SizeOfTree(Node head)
         {
-            return head.Right != null ? FindInOrderPredeccessor(head.Right) : head.Data;
+            if (head == null) return 0;
+            int size = 1;                       // Since Head is not null
+            size += SizeOfTree(head.Left);      // add size of left tree
+            size += SizeOfTree(head.Right);     // add size of right tree
+            return size;
+        }
+
+        public int HeightOfTree(Node head)
+        {
+            if (head == null) return-1;
+            int ht = 0;                         // Tree with one node has height of 0
+            int left = HeightOfTree(head.Left)+1;
+            int right = HeightOfTree(head.Right)+1;
+            ht = left > right ? left : right;
+            return ht;
+        }
+
+        public int LevelWithMaxSum(ref int max,Node head)
+        {
+            int level = -1;
+            if (head == null) return level;
+
+            Queue<Node> q = new Queue<Node>();
+            q.Enqueue(head);
+            Node n = null;
+            int currLevel = -1;
+            while (q.Count>0)
+            {
+                currLevel++;
+                q.Enqueue(n);   // adding null Node to mark the end of the level
+                int currentMax = 0;
+                while (q.Count >0)  // Traversing at Level 'n'
+                {
+                    Node curr = q.Dequeue();
+                    if (curr == null)
+                        break;
+
+                    currentMax += curr.Data;
+                    if (curr.Left != null)
+                        q.Enqueue(curr.Left);
+                    if (curr.Right != null)
+                        q.Enqueue(curr.Right);
+                    
+                }
+                if (max < currentMax)
+                {
+                    level = currLevel;
+                    max = currentMax;
+                }
+            }
+            return level;
         }
     }
 
@@ -141,11 +193,16 @@ namespace Tree
             Console.WriteLine("\n\nPost Order Traversal (Left, Right, Root) ");
             DFS.PostOrderTraversal(bt.Top);
 
-            Console.WriteLine("\n\n");
+            Console.WriteLine();
+            BFS.BreadthFirstTraversal(bt.Top);
             bt.DeleteElement(ref bt.Top, 5);
-            DFS.InOrderTraversal(bt.Top);
             BFS.LevelOrderTraversal(bt.Top);
-            Console.ReadLine();
+            Console.WriteLine($"\n Size of Tree : '{bt.SizeOfTree(bt.Top)}'");
+            Console.WriteLine($"\n Height of Tree : '{bt.HeightOfTree(bt.Top)}'");
+            int getSum = -1;
+            var level = bt.LevelWithMaxSum(ref getSum, bt.Top);
+            Console.WriteLine($"\n The Level : {level} has the max sum : {getSum} in the Tree");
+            Console.ReadKey();
         }
     }
 
@@ -229,6 +286,7 @@ namespace Tree
                     q.Enqueue(temp.Right);                                                      // Push Right child in Queue
                 temp = q.Count > 0 ? q.Dequeue() : null;
             }
+            Console.WriteLine();
         }
 
         // Same as above method LevelOrderTraversal() with minor difference in while loop
@@ -253,6 +311,7 @@ namespace Tree
                 if (temp.Right != null)
                     q.Enqueue(temp.Right);                                                      // Push Right child in Queue
             }
+            Console.WriteLine();
         }
     }
 }

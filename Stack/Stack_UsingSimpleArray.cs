@@ -44,9 +44,9 @@ namespace Stack
 
         public int Size() => (Top < 0) ? 0 : Top + 1;
 
-        public bool isEmptyStack() => Top < 0;
+        public bool IsEmptyStack() => Top < 0;
 
-        public bool isFullStack() => Top < Capacity - 1;
+        public bool IsFullStack() => Top < Capacity - 1;
 
         public void PrintStack()
         {

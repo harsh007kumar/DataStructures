@@ -16,8 +16,8 @@ namespace Stack
             
             Console.WriteLine($"Size of current Stack is : {sOb.Size()}");
             Console.WriteLine($"Top Element(Peek) in Stack returned : {sOb.Peek()}");
-            Console.WriteLine($"Is Stack Full : {sOb.isFullStack()}");
-            Console.WriteLine($"Is Stack Empty : {sOb.isEmptyStack()}");
+            Console.WriteLine($"Is Stack Full : {sOb.IsFullStack()}");
+            Console.WriteLine($"Is Stack Empty : {sOb.IsEmptyStack()}");
             Console.WriteLine("Printing Stack from Bottom To Top\n");
             sOb.PrintStack();
 
