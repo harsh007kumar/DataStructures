@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Net;
 using System.Security;
 using System.Security.Cryptography;
 
@@ -256,7 +257,7 @@ namespace Tree
         public static void Main(string[] args)
         {
             BinarySearchTree bt = new BinarySearchTree();
-            // Adding elements to tree
+            #region Adding elements to tree
             bt.AddElement(ref bt.Top, 5);
             bt.AddElement(ref bt.Top, 10);
             bt.AddElement(ref bt.Top, 20);
@@ -264,35 +265,47 @@ namespace Tree
             bt.AddElement(ref bt.Top, 9);
             bt.AddElement(ref bt.Top, 1);
             bt.AddElement(ref bt.Top, 7);
+            #endregion
+            // Level Order Traversal
             BFS.BreadthFirstTraversal(bt.Top);
 
-            // Searching for given element in tree
+            // Checking existance for given element in tree
             bt.CheckElementExists(bt.Top, 7);
-            // Find Node for given element in tree
+
+            // Find and return Node for given element in tree
             Node find = bt.FindElementNode(bt.Top, 7);
 
-            Console.WriteLine("\n\nIn Order Traversal (Left, Root, Right) ");
+            // Depth First Traversals
+            Console.Write("\nIn Order Traversal (Left, Root, Right) :\t");
             DFS.InOrderTraversal(bt.Top);
-            Console.WriteLine("\n\nPre Order Traversal (Root, Left, Right) ");
+            DFS.InOrderTraveral_Iterative(bt.Top);
+            Console.Write("\nPre Order Traversal (Root, Left, Right) :\t");
             DFS.PreOrderTraversal(bt.Top);
-            Console.WriteLine("\n\nPost Order Traversal (Left, Right, Root) ");
+            DFS.PreOrderTraveral_Iterative(bt.Top);
+            Console.Write("\nPost Order Traversal (Left, Right, Root) :\t");
             DFS.PostOrderTraversal(bt.Top);
+            DFS.PostOrderTraversal_Iterartive(bt.Top);
+
 
             Console.WriteLine();
-            BFS.BreadthFirstTraversal(bt.Top);
+            // Deleting a Node in Tree
             bt.DeleteElement(ref bt.Top, 5);
+
             BFS.LevelOrderTraversal(bt.Top);
+
             Console.WriteLine($"\n Size of Tree : '{bt.SizeOfTree(bt.Top)}'");
             Console.WriteLine($"\n Height of Tree : '{bt.HeightOfTree(bt.Top)}'");
-            int getSum = -1;
-            var level = bt.LevelWithMaxSum(ref getSum, bt.Top);
-            Console.WriteLine($"\n The Level : {level} has the max sum : {getSum} in the Tree");
-            int c1 = 10;
-            int c2 = 20;
-            BinarySearchTree.FindLeastCommonAnscestor(bt.Top, c1, c2);
 
+            int getSum = -1, level = bt.LevelWithMaxSum(ref getSum, bt.Top);
+            Console.WriteLine($"\n The Level : {level} has the max sum : {getSum} in the Tree");
+
+            // Finding Least Common Anscestor for pair of Nodes in Tree
+            int c1 = 10, c2 = 20;
+            BinarySearchTree.FindLeastCommonAnscestor(bt.Top, c1, c2);
             //c1 = 4;
-            Console.WriteLine($" LCA for '{c1}' and '{c2}' is : '{BinarySearchTree.FindLCA(bt.Top, c1, c2)}'");
+            Console.WriteLine($" LCA for '{c1}' and '{c2}' is : '{BinarySearchTree.FindLCA_Recursive(bt.Top, c1, c2)}'");
+
+
             Console.ReadKey();
         }
     }
@@ -348,6 +361,79 @@ namespace Tree
                 PostOrderTraversal(current.Right);
 
             Console.Write($" {current.Data}");
+        }
+    
+        public static void PreOrderTraveral_Iterative(Node current)
+        {
+            if (current == null) return;
+            Stack<Node> st = new Stack<Node>();
+            Console.Write("\nIterative Pre Order Traversal (Root, Left, Right) :\t");
+            while (true)
+            {
+                while (current != null)
+                {
+                    Console.Write($" {current.Data}");
+                    st.Push(current);
+                    current = current.Left;
+                }
+                if (st.Count <= 0) break;
+                current = st.Pop().Right;
+            }
+            Console.WriteLine();
+        }
+
+        public static void InOrderTraveral_Iterative(Node current)
+        {
+            if (current == null) return;
+            Stack<Node> st = new Stack<Node>();
+            Console.Write("\nIterative In Order Traversal (Left, Root, Right) :\t");
+            while (true)
+            {
+                while (current != null)
+                {
+                    st.Push(current);
+                    current = current.Left;
+                }
+                if (st.Count <= 0) break;
+                Console.Write($" {st.Peek().Data}");
+                current = st.Pop().Right;
+            }
+            Console.WriteLine();
+        }
+
+        /// <summary>
+        /// Non-Recursive Postorder Traversal
+        /// Karumanchi, Narasimha.Data Structures and Algorithms Made Easy: Data Structures and Algorithmic Puzzles(p. 239). Kindle Edition.
+        /// </summary>
+        /// <param name="current"></param>
+        public static void PostOrderTraversal_Iterartive(Node current)
+        {
+            if (current == null) return;
+            Stack<Node> st = new Stack<Node>();
+            Console.Write("\nIterative Post Order Traversal (Left, Right, Root) :\t");
+            Node prv = null;
+            while (true)
+            {
+                while (current != null)
+                {
+                    st.Push(current);
+                    current = current.Left;
+                }
+                while (current==null && st.Count>0)
+                {
+                    current = st.Peek();
+                    if (current.Right == null || current.Right == prv)
+                    {
+                        Console.Write($" {current.Data}");
+                        prv = st.Pop();
+                        current = null;
+                    }
+                    else
+                        current = current.Right;
+                }
+                if (st.Count <= 0) break;
+            }
+            Console.WriteLine();
         }
     }
 
