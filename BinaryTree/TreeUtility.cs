@@ -1,4 +1,5 @@
 ﻿using System;
+using System.CodeDom.Compiler;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -141,7 +142,6 @@ namespace BinaryTree
         }
 
 
-
         /// <summary>
         /// https://www.geeksforgeeks.org/level-order-tree-traversal/ Breadth First Traversal or Level Order Tree Traversal
         /// Using Queue's || Time Complexcity O(n)
@@ -199,6 +199,27 @@ namespace BinaryTree
                 }
                 Console.WriteLine();
             }
+
+            public static void LevelOrderReverse(Node root)
+            {
+                if (root == null) return;
+                Queue<Node> q = new Queue<Node>();
+                Stack<Node> st = new Stack<Node>();
+                q.Enqueue(root);
+                Console.Write(" Print the Nodes of the tree in reverse level order :\t");
+                while(q.Count>0)
+                {
+                    var temp = q.Dequeue();
+                    st.Push(temp);
+
+                    if (temp.Left != null)
+                        q.Enqueue(temp.Left);
+                    if (temp.Right != null)
+                        q.Enqueue(temp.Right);
+                }
+                while(st.Count>0)
+                    Console.Write($" {st.Pop().Data}");
+            }
         }
 
 
@@ -209,12 +230,23 @@ namespace BinaryTree
         /// </summary>
         /// <param name="head"></param>
         /// <returns></returns>
-        public static int SizeOfTree(Node head)
+        public static int SizeOfTree(Node head) => (head == null) ? 0 : SizeOfTree(head.Left) + SizeOfTree(head.Right) + 1;
+
+        public static int SizeOfTree_Iterative(Node root)
         {
-            if (head == null) return 0;
-            int size = 1;                       // Since Head is not null
-            size += SizeOfTree(head.Left);      // add size of left tree
-            size += SizeOfTree(head.Right);     // add size of right tree
+            if (root == null) return 0;
+            int size = 0;
+            Queue<Node> q = new Queue<Node>();
+            q.Enqueue(root);
+            while(q.Count>0)
+            {
+                var temp = q.Dequeue();
+                size++;
+                if (temp.Left != null)
+                    q.Enqueue(temp.Left);
+                if (temp.Right != null)
+                    q.Enqueue(temp.Right);
+            }
             return size;
         }
 
@@ -379,7 +411,71 @@ namespace BinaryTree
             
             return BST;
         }
+
+        /// <summary>
+        /// Time Complexity O(n) || Space O(n) for system call stack
+        /// </summary>
+        /// <param name="root"></param>
+        /// <returns></returns>
+        public static int MaxElementInBinaryTree_Recursive(Node root)
+        {
+            if (root == null) return -1;
+            var left = MaxElementInBinaryTree_Recursive(root.Left);
+            var right = MaxElementInBinaryTree_Recursive(root.Right);
+
+            var maxChild = left > right ? left : right;
+            return root.Data > maxChild ? root.Data : maxChild;
+        }
+
+        public static int MaxElementInBinaryTree_Iterative(Node root)
+        {
+            if (root == null) return -1;
+            int max = -1;
+            Queue<Node> q = new Queue<Node>();
+            q.Enqueue(root);
+            while(q.Count>0)
+            {
+                var temp = q.Dequeue();
+                max = max < temp.Data ? temp.Data : max;
+                if(temp.Left!=null)
+                    q.Enqueue(temp.Left);
+                if(temp.Right!=null)
+                    q.Enqueue(temp.Right);
+            }
+            return max;
+        }
+
+        public static bool SearchElementInBinaryTree_Recursive(Node root, int data)
+        {
+            if (root == null) return false;
+
+            bool elementFound = false;
+            if (root.Data == data)
+                elementFound = true;
+            else if (SearchElementInBinaryTree_Recursive(root.Left, data) != false)
+                elementFound = true;
+            else if (SearchElementInBinaryTree_Recursive(root.Right, data) != false)
+                elementFound = true;
+
+            return elementFound;
+        }
+
+        public static bool SearchElementInBinaryTree_Iterative(Node root, int data)
+        {
+            if (root == null) return false;
+            Queue<Node> q = new Queue<Node>();
+            q.Enqueue(root);
+            while(q.Count>0)
+            {
+                var temp = q.Dequeue();
+                if (temp.Data == data) 
+                    return true;
+                if(temp.Left!=null)
+                    q.Enqueue(temp.Left);
+                if (temp.Right!= null) 
+                    q.Enqueue(temp.Right);
+            }
+            return false;
+        }
     }
-
-
 }
