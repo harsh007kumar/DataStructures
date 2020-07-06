@@ -222,8 +222,39 @@ namespace BinaryTree
             }
         }
 
+        internal static bool BinaryTreesIdentical(Node bt1, Node bt2)
+        {
+            if (bt1 == null && bt2 == null)
+                return true;
+            else if (bt1 == null || bt2 == null)
+                return false;
+            return (bt1.Data == bt2.Data && BinaryTreesIdentical(bt1.Left, bt2.Left) && BinaryTreesIdentical(bt1.Right, bt2.Right));
+        }
 
+        public static Node DeepestNodeInTree(Node root)
+        {
+            if (root == null) return root;
 
+            //Step1 : Create empty Queue
+            Queue<Node> q = new Queue<Node>();
+
+            //Step2: add root node to Queue
+            q.Enqueue(root);
+
+            Console.Write("Deepest Node is Tree is :\t");
+            Node lastNode=null;
+            //Step3: loop until queue is not empty
+            while (q.Count > 0)
+            {
+                lastNode = q.Dequeue();
+                if (lastNode.Left != null)
+                    q.Enqueue(lastNode.Left);                                                       // Push Left child in Queue
+                if (lastNode.Right != null)
+                    q.Enqueue(lastNode.Right);                                                      // Push Right child in Queue
+            }
+            Console.WriteLine(lastNode.Data);
+            return lastNode;
+        }
 
         /// <summary>
         /// Function which count no of items in left + right subtree + 1 and return TOTAL_NO_OF_NODES in Binary Tree
@@ -264,6 +295,33 @@ namespace BinaryTree
             int right = HeightOfTree(head.Right) + 1;
             ht = left > right ? left : right;
             return ht;
+        }
+
+        public static int HeightOfTree_Iterative(Node root)
+        {
+            if (root == null) return 0;
+            int level = -1;
+            Queue<Node> q = new Queue<Node>();
+            q.Enqueue(root);
+            q.Enqueue(null);
+            while (q.Count > 0)
+            {
+                var temp = q.Dequeue();
+                if (temp == null)
+                {
+                    level++;
+                    if (q.Count > 0)            // If Node present in Queue add null to mark end of level
+                        q.Enqueue(null);
+                }
+                else
+                {
+                    if (temp.Left != null)
+                        q.Enqueue(temp.Left);
+                    if (temp.Right != null)
+                        q.Enqueue(temp.Right);
+                }
+            }
+            return level;
         }
 
         /// <summary>
@@ -401,13 +459,13 @@ namespace BinaryTree
         public static BinarySearchTree GetBinaryTree()
         {
             var BST = new BinarySearchTree();
-            BST.AddElement(ref BST.Top, 5);
-            BST.AddElement(ref BST.Top, 10);
-            BST.AddElement(ref BST.Top, 20);
-            BST.AddElement(ref BST.Top, 4);
-            BST.AddElement(ref BST.Top, 9);
-            BST.AddElement(ref BST.Top, 1);
-            BST.AddElement(ref BST.Top, 7);
+            BST.AddElement(ref BST.root, 5);
+            BST.AddElement(ref BST.root, 10);
+            BST.AddElement(ref BST.root, 20);
+            BST.AddElement(ref BST.root, 4);
+            BST.AddElement(ref BST.root, 9);
+            BST.AddElement(ref BST.root, 1);
+            BST.AddElement(ref BST.root, 17);
             
             return BST;
         }

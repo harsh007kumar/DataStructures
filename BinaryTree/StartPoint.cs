@@ -19,6 +19,7 @@ namespace BinaryTree
             FindMaxInBinaryTree();
             SearchElementInBinaryTree();
             LevelOrderInReverse();
+            CheckTwoBinaryTreesIdentical();
             Console.ReadKey();
         }
 
@@ -32,14 +33,14 @@ namespace BinaryTree
             BinarySearchTree bt = TreeUtility.GetBinaryTree();
 
             // Checking existance for given element in tree
-            bt.CheckElementExists(bt.Top, 7);
+            bt.CheckElementExists(bt.root, 7);
 
             // Find and return Node for given element in tree
-            Node find = bt.FindElementNode(bt.Top, 7);
+            Node find = bt.FindElementNode(bt.root, 7);
 
             Console.WriteLine();
             // Deleting a Node in Tree
-            bt.DeleteElement(ref bt.Top, 5);
+            bt.DeleteElement(ref bt.root, 5);
         }
 
         public static void DepthFirstTraversals()
@@ -49,16 +50,16 @@ namespace BinaryTree
             BinarySearchTree bt = TreeUtility.GetBinaryTree();
             
             Console.Write("\nIn Order Traversal (Left, Root, Right) :\t");
-            TreeUtility.DFS.InOrderTraversal(bt.Top);
-            TreeUtility.DFS.InOrderTraveral_Iterative(bt.Top);
+            TreeUtility.DFS.InOrderTraversal(bt.root);
+            TreeUtility.DFS.InOrderTraveral_Iterative(bt.root);
 
             Console.Write("\nPre Order Traversal (Root, Left, Right) :\t");
-            TreeUtility.DFS.PreOrderTraversal(bt.Top);
-            TreeUtility.DFS.PreOrderTraveral_Iterative(bt.Top);
+            TreeUtility.DFS.PreOrderTraversal(bt.root);
+            TreeUtility.DFS.PreOrderTraveral_Iterative(bt.root);
             
             Console.Write("\nPost Order Traversal (Left, Right, Root) :\t");
-            TreeUtility.DFS.PostOrderTraversal(bt.Top);
-            TreeUtility.DFS.PostOrderTraversal_Iterartive(bt.Top);
+            TreeUtility.DFS.PostOrderTraversal(bt.root);
+            TreeUtility.DFS.PostOrderTraversal_Iterartive(bt.root);
         }
 
         public static void BreadthFirstTraversals()
@@ -67,8 +68,8 @@ namespace BinaryTree
 
             BinarySearchTree bt = TreeUtility.GetBinaryTree();
 
-            TreeUtility.BFS.BreadthFirstTraversal(bt.Top);
-            TreeUtility.BFS.LevelOrderTraversal(bt.Top);
+            TreeUtility.BFS.BreadthFirstTraversal(bt.root);
+            TreeUtility.BFS.LevelOrderTraversal(bt.root);
         }
 
         public static void AuxillaryFunctionOnBinaryTree()
@@ -77,15 +78,19 @@ namespace BinaryTree
 
             BinarySearchTree bt = TreeUtility.GetBinaryTree();
 
-            Console.WriteLine($"Size of Tree (Recursive): '{TreeUtility.SizeOfTree(bt.Top)}'");
-            Console.WriteLine($"Size of Tree (Iterative): '{TreeUtility.SizeOfTree_Iterative(bt.Top)}'");
+            Console.WriteLine($"Size of Tree (Recursive): '{TreeUtility.SizeOfTree(bt.root)}'");
+            Console.WriteLine($"Size of Tree (Iterative): '{TreeUtility.SizeOfTree_Iterative(bt.root)}'");
 
-            Console.WriteLine($"Height of Tree : '{TreeUtility.HeightOfTree(bt.Top)}'");
+            Console.WriteLine($"Height of Tree (Recursive) :\t'{TreeUtility.HeightOfTree(bt.root)}'");
+            Console.WriteLine($"Height of Tree (Iterative) :\t'{TreeUtility.HeightOfTree_Iterative(bt.root)}'");
 
             // level with max sum of nodes in the Binary Tree
             int maxSum = -1;
-            var level = TreeUtility.LevelWithMaxSum(ref maxSum, bt.Top);
+            var level = TreeUtility.LevelWithMaxSum(ref maxSum, bt.root);
             Console.WriteLine($"The Level : {level} has the max sum : {maxSum} in the Tree");
+
+            // Deepest Node in the Tree
+            TreeUtility.DeepestNodeInTree(bt.root);
         }
 
         public static void FindFindLeastCommonAnscestor()
@@ -95,12 +100,12 @@ namespace BinaryTree
             int c1 = 10, c2 = 20;
             // Iterative Method
             Console.WriteLine("Iterative Method");
-            TreeUtility.FindLeastCommonAnscestor(bt.Top, c1, c2);
+            TreeUtility.FindLeastCommonAnscestor(bt.root, c1, c2);
 
             // Recursive Method
             Console.WriteLine("Recursive Method");
             c1 = 4;
-            Console.WriteLine($" LCA for '{c1}' and '{c2}' is : '{TreeUtility.FindLCA_Recursive(bt.Top, c1, c2)}'");
+            Console.WriteLine($" LCA for '{c1}' and '{c2}' is : '{TreeUtility.FindLCA_Recursive(bt.root, c1, c2)}'");
             
         }
 
@@ -109,9 +114,9 @@ namespace BinaryTree
             TreeUtility.Print("Problem - 1 & 2 Give an algorithm for finding maximum element in binary tree(p. 241)");
             BinarySearchTree bt = TreeUtility.GetBinaryTree();
             // Iterative Method
-            Console.WriteLine($" Max element in Binary Tree is (Recursive Func) :\t {TreeUtility.MaxElementInBinaryTree_Recursive(bt.Top)}");
+            Console.WriteLine($" Max element in Binary Tree is (Recursive Func) :\t {TreeUtility.MaxElementInBinaryTree_Recursive(bt.root)}");
             // Recursive Method
-            Console.WriteLine($" Max element in Binary Tree is (Iterative Func) :\t {TreeUtility.MaxElementInBinaryTree_Iterative(bt.Top)}");
+            Console.WriteLine($" Max element in Binary Tree is (Iterative Func) :\t {TreeUtility.MaxElementInBinaryTree_Iterative(bt.root)}");
         }
 
         public static void SearchElementInBinaryTree()
@@ -119,9 +124,9 @@ namespace BinaryTree
             TreeUtility.Print("Problem - 3 & 4 Give an algorithm for searching an element in binary tree.(p. 242)");
             BinarySearchTree bt = TreeUtility.GetBinaryTree();
             // Recursive Method
-            Console.WriteLine($" Searching element in Binary Tree is (Recursive Func) :\t {TreeUtility.SearchElementInBinaryTree_Recursive(bt.Top, 99)}");
+            Console.WriteLine($" Searching element in Binary Tree is (Recursive Func) :\t {TreeUtility.SearchElementInBinaryTree_Recursive(bt.root, 99)}");
             // Iterative Method
-            Console.WriteLine($" Searching element in Binary Tree is (Iterative Func) :\t {TreeUtility.SearchElementInBinaryTree_Iterative(bt.Top, 10)}");
+            Console.WriteLine($" Searching element in Binary Tree is (Iterative Func) :\t {TreeUtility.SearchElementInBinaryTree_Iterative(bt.root, 10)}");
 
         }
     
@@ -131,8 +136,19 @@ namespace BinaryTree
             BinarySearchTree bt = TreeUtility.GetBinaryTree();
 
 
-            TreeUtility.BFS.LevelOrderTraversal(bt.Top);
-            TreeUtility.BFS.LevelOrderReverse(bt.Top);
+            TreeUtility.BFS.LevelOrderTraversal(bt.root);
+            TreeUtility.BFS.LevelOrderReverse(bt.root);
+            
+        }
+    
+        public static void CheckTwoBinaryTreesIdentical()
+        {
+            TreeUtility.Print("Problem - 17 Given two binary trees, return true if they are structurally identical.(p. 250)");
+
+            BinarySearchTree bt1 = TreeUtility.GetBinaryTree();
+            BinarySearchTree bt2 = TreeUtility.GetBinaryTree();
+            //bt2.AddElement(ref bt2.root,111);
+            Console.WriteLine($" Given two binary trees are identicial or not returned :\t{TreeUtility.BinaryTreesIdentical(bt1.root, bt2.root) }");
             
         }
     }

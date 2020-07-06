@@ -22,17 +22,17 @@ namespace BinaryTree
     public class BinarySearchTree
     {
 
-        public Node Top;
-        public BinarySearchTree() { Top = null; }
+        public Node root;
+        public BinarySearchTree() { root = null; }
 
-        public void AddElement(ref Node head, int data)
+        public void AddElement(ref Node root, int data)
         {
-            if (head == null)
-                head = new Node(data);
-            else if (data < head.Data)
-                AddElement(ref head.Left, data);
+            if (root == null)
+                root = new Node(data);
+            else if (data < root.Data)
+                AddElement(ref root.Left, data);
             else
-                AddElement(ref head.Right, data);
+                AddElement(ref root.Right, data);
         }
 
         public void CheckElementExists(Node head, int data)
