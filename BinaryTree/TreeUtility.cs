@@ -566,5 +566,28 @@ namespace BinaryTree
             height = (lh > rh ? lh : rh) + 1;
             return Math.Max(lh + rh + 1, Math.Max(leftD, rtD));
         }
+
+        /// <summary>
+        /// Time Complexity O(n) || Space Complexity O(h) for array
+        /// where, h = height of tree
+        /// </summary>
+        /// <param name="root"></param>
+        /// <param name="arr"></param>
+        /// <param name="printTillIndex"></param>
+        public static void PrintRootToLeafPaths(Node root, Node[] arr, int printTillIndex)
+        {
+            if (root == null) return;
+            arr[++printTillIndex] =root;
+            if (root.Left == null && root.Right == null)
+            {
+                Console.Write("\n Printing Path from Root to Leaf Node :\t");
+                for (int i = 0; i <= printTillIndex; i++)
+                    Console.Write($" {arr[i].Data}");
+            }
+            if (root.Left != null)
+                PrintRootToLeafPaths(root.Left, arr, printTillIndex);
+            if (root.Right != null)
+                PrintRootToLeafPaths(root.Right, arr, printTillIndex);
+        }
     }
 }

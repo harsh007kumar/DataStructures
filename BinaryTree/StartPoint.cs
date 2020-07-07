@@ -21,6 +21,7 @@ namespace BinaryTree
             LevelOrderInReverse();
             CheckTwoBinaryTreesIdentical();
             FindDiameterOfBinaryTree();
+            PrintAllPathsFromRootToLeafNodesInBinaryTree();
             Console.ReadKey();
         }
 
@@ -162,6 +163,17 @@ namespace BinaryTree
             int treeHeight = 0;
             diameter = TreeUtility.DiameterOfBinaryTreeInOn(bt.root, ref treeHeight);
             Console.WriteLine($"Diameter of the Binary Tree is :\t{diameter}\tcalculate in O(n) time");
+        }
+
+        public static void PrintAllPathsFromRootToLeafNodesInBinaryTree()
+        {
+            TreeUtility.Print("Problem - 20 Given a binary tree, print out all its root - to - leaf paths.(p. 254)");
+
+            BinarySearchTree bt = TreeUtility.GetBinaryTree();
+            Console.WriteLine();
+            var len = TreeUtility.HeightOfTree(bt.root);
+            Node[] arr = new Node[len];                 // creating array of size = height of tree
+            TreeUtility.PrintRootToLeafPaths(bt.root, arr, -1);
         }
     }
 }
