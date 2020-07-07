@@ -1,7 +1,9 @@
 ﻿using System;
 using System.CodeDom.Compiler;
 using System.Collections.Generic;
+using System.ComponentModel.Design.Serialization;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -287,20 +289,12 @@ namespace BinaryTree
         /// </summary>
         /// <param name="head"></param>
         /// <returns></returns>
-        public static int HeightOfTree(Node head)
-        {
-            if (head == null) return -1;
-            int ht = 0;                         // Tree with one node has height of 0
-            int left = HeightOfTree(head.Left) + 1;
-            int right = HeightOfTree(head.Right) + 1;
-            ht = left > right ? left : right;
-            return ht;
-        }
+        public static int HeightOfTree(Node head) => (head == null) ? 0 : 1 + Math.Max(HeightOfTree(head.Left), HeightOfTree(head.Right));
 
         public static int HeightOfTree_Iterative(Node root)
         {
             if (root == null) return 0;
-            int level = -1;
+            int level = 1;
             Queue<Node> q = new Queue<Node>();
             q.Enqueue(root);
             q.Enqueue(null);
@@ -534,6 +528,43 @@ namespace BinaryTree
                     q.Enqueue(temp.Right);
             }
             return false;
+        }
+        
+        /// <summary>
+        /// Time Complexity O(n^2) as we are caculating height for each sub node in tree || Space Complexity O(n) for callStack
+        /// </summary>
+        /// <param name="root"></param>
+        /// <returns></returns>
+        public static int DiameterOfBinaryTree(Node root)
+        {
+            if (root == null) return 0;
+            var leftHeight = HeightOfTree(root.Left);
+            var rightHeight = HeightOfTree(root.Right);
+
+            var leftDiameter = DiameterOfBinaryTree(root.Left);
+            var rightDiameter = DiameterOfBinaryTree(root.Right);
+
+            return Math.Max(leftHeight + rightHeight + 1, Math.Max(leftDiameter, rightDiameter));
+        }
+
+        /// <summary>
+        /// Time Complexicty O(n) || Space Complexity O(n) for callStack
+        /// </summary>
+        /// <param name="root"></param>
+        /// <param name="height"></param>
+        /// <returns></returns>
+        public static int DiameterOfBinaryTreeInOn(Node root, ref int height)
+        {
+            if (root == null)
+            {
+                height = 0;
+                return 0;
+            }
+            int lh = 0, rh = 0;
+            var leftD = DiameterOfBinaryTreeInOn(root.Left, ref lh);
+            var rtD = DiameterOfBinaryTreeInOn(root.Right, ref rh);
+            height = (lh > rh ? lh : rh) + 1;
+            return Math.Max(lh + rh + 1, Math.Max(leftD, rtD));
         }
     }
 }

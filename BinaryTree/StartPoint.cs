@@ -20,6 +20,7 @@ namespace BinaryTree
             SearchElementInBinaryTree();
             LevelOrderInReverse();
             CheckTwoBinaryTreesIdentical();
+            FindDiameterOfBinaryTree();
             Console.ReadKey();
         }
 
@@ -150,6 +151,17 @@ namespace BinaryTree
             //bt2.AddElement(ref bt2.root,111);
             Console.WriteLine($" Given two binary trees are identicial or not returned :\t{TreeUtility.BinaryTreesIdentical(bt1.root, bt2.root) }");
             
+        }
+    
+        public static void FindDiameterOfBinaryTree()
+        {
+            TreeUtility.Print("Problem - 18 Give an algorithm for finding the diameter of the binary tree.(p. 251)");
+            BinarySearchTree bt = TreeUtility.GetBinaryTree();
+            int diameter = TreeUtility.DiameterOfBinaryTree(bt.root);
+            Console.WriteLine($"Diameter of the Binary Tree is :\t{diameter}\tcalculate in O(n^2) time");
+            int treeHeight = 0;
+            diameter = TreeUtility.DiameterOfBinaryTreeInOn(bt.root, ref treeHeight);
+            Console.WriteLine($"Diameter of the Binary Tree is :\t{diameter}\tcalculate in O(n) time");
         }
     }
 }
