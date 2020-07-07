@@ -22,6 +22,7 @@ namespace BinaryTree
             CheckTwoBinaryTreesIdentical();
             FindDiameterOfBinaryTree();
             PrintAllPathsFromRootToLeafNodesInBinaryTree();
+            ForGivenSUMCheckIfPathExists();
             Console.ReadKey();
         }
 
@@ -174,6 +175,17 @@ namespace BinaryTree
             var len = TreeUtility.HeightOfTree(bt.root);
             Node[] arr = new Node[len];                 // creating array of size = height of tree
             TreeUtility.PrintRootToLeafPaths(bt.root, arr, -1);
+        }
+    
+        public static void ForGivenSUMCheckIfPathExists()
+        {
+            TreeUtility.Print("Problem - 21 Give an algorithm for checking the existence of path with given sum.That means, given a sum, check whether there exists a path from root to any of the nodes.(p. 255)");
+            BinarySearchTree bt = TreeUtility.GetBinaryTree();
+            int checkForPathWithSUM = 10;
+
+            Console.WriteLine($" Path with given sum :\t{checkForPathWithSUM}, Exists : {TreeUtility.CheckIfPathwithGivenSumExists(bt.root, checkForPathWithSUM)}");
+
+            
         }
     }
 }

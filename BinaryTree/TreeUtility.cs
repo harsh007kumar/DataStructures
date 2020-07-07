@@ -589,5 +589,24 @@ namespace BinaryTree
             if (root.Right != null)
                 PrintRootToLeafPaths(root.Right, arr, printTillIndex);
         }
+
+        /// <summary>
+        /// Time Complexity O(n) || Space O(n) for CallStack
+        /// </summary>
+        /// <param name="root"></param>
+        /// <param name="remainingPathSum"></param>
+        /// <returns></returns>
+        public static bool CheckIfPathwithGivenSumExists(Node root, int remainingPathSum)
+        {
+            if (root == null || root.Data > remainingPathSum) return false;
+            
+            if (remainingPathSum - root.Data == 0 && root.Left == null && root.Right == null)   // Check if Leaf Node & pathSum - Leaf.Data == 0 means Path is Valid
+                return true;
+            else if (CheckIfPathwithGivenSumExists(root.Left, remainingPathSum - root.Data))
+                return true;
+            else if (CheckIfPathwithGivenSumExists(root.Right, remainingPathSum - root.Data))
+                return true;
+            return false;
+        }
     }
 }
