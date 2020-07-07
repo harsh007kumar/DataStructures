@@ -23,6 +23,7 @@ namespace BinaryTree
             FindDiameterOfBinaryTree();
             PrintAllPathsFromRootToLeafNodesInBinaryTree();
             ForGivenSUMCheckIfPathExists();
+            ConverTreeIntoMirror();
             Console.ReadKey();
         }
 
@@ -184,8 +185,22 @@ namespace BinaryTree
             int checkForPathWithSUM = 10;
 
             Console.WriteLine($" Path with given sum :\t{checkForPathWithSUM}, Exists : {TreeUtility.CheckIfPathwithGivenSumExists(bt.root, checkForPathWithSUM)}");
+        }
+    
+        public static void ConverTreeIntoMirror()
+        {
+            TreeUtility.Print("Problem - 24 Give an algorithm for converting a tree to its mirror.(p. 256)");
+            BinarySearchTree bt = TreeUtility.GetBinaryTree();
+            TreeUtility.BFS.LevelOrderTraversal(bt.root);
+            TreeUtility.ConvertTreeToItsMirror(bt.root);
+            TreeUtility.BFS.LevelOrderTraversal(bt.root);
 
-            
+
+            TreeUtility.Print("Problem - 25 Given two trees, give an algorithm for checking whether they are mirrors of each other.(p. 257)");
+            BinarySearchTree mirror = TreeUtility.GetBinaryTree();
+            //mirror.AddElement(ref bt.root, 123);
+            Console.WriteLine($" Tree are mirror : {TreeUtility.CheckGivenTreesAreMirror(mirror.root,bt.root)}");
+
         }
     }
 }

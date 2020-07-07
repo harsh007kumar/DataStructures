@@ -608,5 +608,22 @@ namespace BinaryTree
                 return true;
             return false;
         }
+    
+        public static void ConvertTreeToItsMirror(Node root)
+        {
+            if (root == null) return;
+            Node temp = root.Left;
+            root.Left = root.Right;
+            root.Right = temp;
+            ConvertTreeToItsMirror(root.Left);
+            ConvertTreeToItsMirror(root.Right);
+        }
+
+        public static bool CheckGivenTreesAreMirror(Node n1, Node n2)
+        {
+            if (n1 == null && n2 == null) return true;
+            if (n1 == null || n2 == null) return false;
+            return (n1.Data == n2.Data && CheckGivenTreesAreMirror(n1.Left, n2.Right) && CheckGivenTreesAreMirror(n1.Right, n2.Left));
+        }
     }
 }
