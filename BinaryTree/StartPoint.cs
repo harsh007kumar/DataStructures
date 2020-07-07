@@ -15,7 +15,7 @@ namespace BinaryTree
             DepthFirstTraversals();
             BreadthFirstTraversals();
             AuxillaryFunctionOnBinaryTree();
-            FindFindLeastCommonAnscestor();
+            FindFindLeastCommonAnscestorInBinarySearchTree();
             FindMaxInBinaryTree();
             SearchElementInBinaryTree();
             LevelOrderInReverse();
@@ -24,6 +24,7 @@ namespace BinaryTree
             PrintAllPathsFromRootToLeafNodesInBinaryTree();
             ForGivenSUMCheckIfPathExists();
             ConverTreeIntoMirror();
+            FindLCAInBinaryTree();
             Console.ReadKey();
         }
 
@@ -97,19 +98,19 @@ namespace BinaryTree
             TreeUtility.DeepestNodeInTree(bt.root);
         }
 
-        public static void FindFindLeastCommonAnscestor()
+        public static void FindFindLeastCommonAnscestorInBinarySearchTree()
         {
             TreeUtility.Print("Finding Least Common Anscestor for pair of Nodes in Binary Search Tree");
             BinarySearchTree bt = TreeUtility.GetBinaryTree();
             int c1 = 10, c2 = 20;
             // Iterative Method
             Console.WriteLine("Iterative Method");
-            TreeUtility.FindLeastCommonAnscestor(bt.root, c1, c2);
+            TreeUtility.FindLeastCommonAnscestor_InBinarySearchTree(bt.root, c1, c2);
 
             // Recursive Method
             Console.WriteLine("Recursive Method");
             c1 = 4;
-            Console.WriteLine($" LCA for '{c1}' and '{c2}' is : '{TreeUtility.FindLCA_Recursive(bt.root, c1, c2)}'");
+            Console.WriteLine($" LCA for '{c1}' and '{c2}' is : '{TreeUtility.FindLCA_Recursive_InBinarySearchTree(bt.root, c1, c2)}'");
             
         }
 
@@ -201,6 +202,15 @@ namespace BinaryTree
             //mirror.AddElement(ref bt.root, 123);
             Console.WriteLine($" Tree are mirror : {TreeUtility.CheckGivenTreesAreMirror(mirror.root,bt.root)}");
 
+        }
+    
+        public static void FindLCAInBinaryTree()
+        {
+            TreeUtility.Print("Problem - 26 Give an algorithm for finding LCA (Least Common Ancestor) of two nodes in a Binary Tree.(p. 257)");
+            BinarySearchTree bt = TreeUtility.GetBinaryTree();
+            int n1 = 10, n2 = 17;
+            var LCA = TreeUtility.FindLCA_Recursive_InBinaryTree(bt.root, n1, n2);
+            Console.WriteLine($" LCA of {n1} {n2} is :\t{LCA.Data}");
         }
     }
 }

@@ -367,7 +367,7 @@ namespace BinaryTree
         /// <param name="data1"></param>
         /// <param name="data2"></param>
         /// <returns></returns>
-        public static int FindLeastCommonAnscestor(Node head, int data1, int data2)
+        public static int FindLeastCommonAnscestor_InBinarySearchTree(Node head, int data1, int data2)
         {
             // Trace the path for both nodes from root to data
             Queue<int> q1 = new Queue<int>();
@@ -432,19 +432,19 @@ namespace BinaryTree
         /// <param name="data1"></param>
         /// <param name="data2"></param>
         /// <returns></returns>
-        public static int FindLCA_Recursive(Node head, int data1, int data2)
+        public static int FindLCA_Recursive_InBinarySearchTree(Node head, int data1, int data2)
         {
             var LCA = -1;
             if (head == null) return LCA;                                        // Head is null return -1 to indicate no LCA exists
             LCA = head.Data;                                                    // Set LCA as root that is common anscestor for all nodes of tree
             if (data1 < head.Data && data2 < head.Data)
-                LCA = FindLCA_Recursive(head.Left, data1, data2);               // Both child are in Left subtree
+                LCA = FindLCA_Recursive_InBinarySearchTree(head.Left, data1, data2);               // Both child are in Left subtree
             else if (data1 > head.Data && data2 > head.Data)
-                LCA = FindLCA_Recursive(head.Right, data1, data2);              // Both child are in Right subtree
+                LCA = FindLCA_Recursive_InBinarySearchTree(head.Right, data1, data2);              // Both child are in Right subtree
             return LCA;
         }
 
-        public static void Print(string input) => Console.WriteLine($"\n========= {input} =========");
+        public static void Print(string input="") => Console.WriteLine($"\n========= {input} =========");
 
         /// <summary>
         /// return Binary Search Tree Object after adding couple of Nodes
@@ -608,7 +608,11 @@ namespace BinaryTree
                 return true;
             return false;
         }
-    
+
+        /// <summary>
+        /// Time Complexity O(n) || Space O(n) for CallStack
+        /// </summary>
+        /// <param name="root"></param>
         public static void ConvertTreeToItsMirror(Node root)
         {
             if (root == null) return;
@@ -619,11 +623,39 @@ namespace BinaryTree
             ConvertTreeToItsMirror(root.Right);
         }
 
+        /// <summary>
+        /// Time Complexity O(n) || Space O(n) for CallStack
+        /// </summary>
+        /// <param name="n1"></param>
+        /// <param name="n2"></param>
+        /// <returns></returns>
         public static bool CheckGivenTreesAreMirror(Node n1, Node n2)
         {
             if (n1 == null && n2 == null) return true;
             if (n1 == null || n2 == null) return false;
             return (n1.Data == n2.Data && CheckGivenTreesAreMirror(n1.Left, n2.Right) && CheckGivenTreesAreMirror(n1.Right, n2.Left));
+        }
+
+        /// <summary>
+        /// Time Complexity O(n) || Space O(n) for CallStack
+        /// </summary>
+        /// <param name="root"></param>
+        /// <param name="n1"></param>
+        /// <param name="n2"></param>
+        /// <returns></returns>
+        public static Node FindLCA_Recursive_InBinaryTree(Node root, int n1, int n2)
+        {
+            if (root == null) return root;
+            if (root.Data == n1 || root.Data == n2) return root;        // If either n1 or n2 matches root data than current root is LCA
+
+            Node LCA = null;
+            var Left = FindLCA_Recursive_InBinaryTree(root.Left, n1, n2);
+            var rt = FindLCA_Recursive_InBinaryTree(root.Right, n1, n2);
+            if (Left != null && rt != null)                             // left and right both Not Null idicate pair of Node is present in both subtrees hence Root is the LCA
+                LCA = root;
+            else
+                LCA = Left != null ? Left : rt;                         // If both pair of Nodes exist in either left or right subtree return the LCA from that subtree
+            return LCA;
         }
     }
 }
