@@ -19,6 +19,26 @@ namespace BinaryTree
         }
     }
 
+    public class BinaryTree
+    {
+        public Node root;
+        public BinaryTree() => root = null;
+
+        public static void AddToLeft(ref Node current, int data)
+        {
+            if (current == null) Console.WriteLine("Cannot add left child to an null parent node");
+            else current.Left = new Node(data);
+        }
+
+        public static void AddToRight(ref Node current, int data)
+        {
+            if (current == null) Console.WriteLine("Cannot add right child to an null parent node");
+            else current.Right = new Node(data);
+        }
+
+        public static void AddParent(ref Node current, int data) => current = new Node(data);
+    }
+
     public class BinarySearchTree
     {
 

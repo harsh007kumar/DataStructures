@@ -265,6 +265,7 @@ namespace BinaryTree
         /// <returns></returns>
         public static int SizeOfTree(Node head) => (head == null) ? 0 : SizeOfTree(head.Left) + SizeOfTree(head.Right) + 1;
 
+        
         public static int SizeOfTree_Iterative(Node root)
         {
             if (root == null) return 0;
@@ -657,5 +658,56 @@ namespace BinaryTree
                 LCA = Left != null ? Left : rt;                         // If both pair of Nodes exist in either left or right subtree return the LCA from that subtree
             return LCA;
         }
+
+        public static BinaryTree BuildTree(char[] inOrder, char[] preOrder)
+        {
+            BinaryTree bt = new BinaryTree();
+            if (inOrder == null || preOrder == null || inOrder.Length != preOrder.Length) return bt;
+
+            int len = inOrder.Length;
+
+            int[] inArr = new int[len];
+            for (int i = 0; i < len; i++)                   // loop to convert char array to int
+                inArr[i] = Convert.ToInt32(inOrder[i]);
+
+            int[] preArr = new int[len];
+            for (int i = 0; i < len; i++)                   // loop to convert char array to int
+                preArr[i] = Convert.ToInt32(preOrder[i]);
+
+            int preOrderIndex = 0;
+
+            BuildTree_Recursive(ref bt.root, inArr, preArr, 0, len - 1, ref preOrderIndex);
+            return bt;
+        }
+
+        /// <summary>
+        /// Time Complexity O(n) || Space Complexity O(n)
+        /// </summary>
+        /// <param name="root"></param>
+        /// <param name="inOrder"></param>
+        /// <param name="preOrder"></param>
+        /// <param name="inOrderStart"></param>
+        /// <param name="inOrderEnd"></param>
+        /// <param name="preOrderIndex"></param>
+        public static void BuildTree_Recursive(ref Node root, int[] inOrder, int[] preOrder, int inOrderStart, int inOrderEnd, ref int preOrderIndex)
+        {
+            if (inOrderStart > inOrderEnd) return;            // Means we have traversed thru all the nodes in inOrder array
+            root = new Node(preOrder[preOrderIndex++]);
+
+            // Find this Node index in InOrder array
+            int indexInInOrder = ReturnIndexWhoseDataMatches(inOrder, inOrderStart, inOrderEnd, root.Data);
+
+            BuildTree_Recursive(ref root.Left, inOrder, preOrder, inOrderStart, indexInInOrder - 1, ref preOrderIndex);
+            BuildTree_Recursive(ref root.Right, inOrder, preOrder, indexInInOrder + 1, inOrderEnd, ref preOrderIndex);
+        }
+
+        public static int ReturnIndexWhoseDataMatches(int[] array, int startingIndex, int endIndex, int data)
+        {
+            for (int i = startingIndex; i <= endIndex; i++)
+                if (array[i] == data)
+                    return i;
+            return -1;
+        }
+
     }
 }

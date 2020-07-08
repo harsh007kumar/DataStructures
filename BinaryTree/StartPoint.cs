@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net;
 using System.Security;
 using System.Security.Cryptography;
@@ -25,6 +26,7 @@ namespace BinaryTree
             ForGivenSUMCheckIfPathExists();
             ConverTreeIntoMirror();
             FindLCAInBinaryTree();
+            ConstructBinaryTreeFromItsInOrderAndPreOrderTraversals();
             Console.ReadKey();
         }
 
@@ -211,6 +213,40 @@ namespace BinaryTree
             int n1 = 10, n2 = 17;
             var LCA = TreeUtility.FindLCA_Recursive_InBinaryTree(bt.root, n1, n2);
             Console.WriteLine($" LCA of {n1} {n2} is :\t{LCA.Data}");
+        }
+    
+        public static void ConstructBinaryTreeFromItsInOrderAndPreOrderTraversals()
+        {
+            TreeUtility.Print("Problem - 27 Give an algorithm for constructing binary tree from given Inorder and Preorder traversals.(p. 257)");
+            var inOrder = "DBEAFC";
+            var preOrder = "ABDECF";
+            Console.WriteLine($" In Order :\t{inOrder}");
+            Console.WriteLine($" Pre Order :\t{preOrder}");
+
+            BinaryTree bt = TreeUtility.BuildTree(inOrder.ToCharArray(), preOrder.ToCharArray());
+            LevelOrderTraversal(bt.root);
+            void LevelOrderTraversal(Node current)
+            {
+                //Step1 : Create empty Queue
+                Queue<Node> q = new Queue<Node>();
+
+                //Step2: assign root node to temp variable
+                Node temp = current;
+
+                Console.Write(" Level Order :\t");
+
+                //Step3: loop until temp==null
+                while (temp != null)
+                {
+                    Console.Write($"{(char)temp.Data}");                                           // Print parent node data
+                    if (temp.Left != null)
+                        q.Enqueue(temp.Left);                                                       // Push Left child in Queue
+                    if (temp.Right != null)
+                        q.Enqueue(temp.Right);                                                      // Push Right child in Queue
+                    temp = q.Count > 0 ? q.Dequeue() : null;
+                }
+                Console.WriteLine();
+            }
         }
     }
 }
