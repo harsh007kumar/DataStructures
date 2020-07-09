@@ -451,7 +451,7 @@ namespace BinaryTree
         /// return Binary Search Tree Object after adding couple of Nodes
         /// </summary>
         /// <returns></returns>
-        public static BinarySearchTree GetBinaryTree()
+        public static BinarySearchTree GetBinarySearchTree()
         {
             var BST = new BinarySearchTree();
             BST.AddElement(ref BST.root, 5);
@@ -681,7 +681,8 @@ namespace BinaryTree
         }
 
         /// <summary>
-        /// Time Complexity O(n) || Space Complexity O(n)
+        /// Time Complexity O(n^2) || Space Complexity O(n)
+        /// Worst case occurs when tree is left skewed. Example Preorder and Inorder traversals for worst case are {A, B, C, D} and {D, C, B, A}.
         /// </summary>
         /// <param name="root"></param>
         /// <param name="inOrder"></param>
@@ -695,8 +696,13 @@ namespace BinaryTree
             root = new Node(preOrder[preOrderIndex++]);
 
             // Find this Node index in InOrder array
-            int indexInInOrder = ReturnIndexWhoseDataMatches(inOrder, inOrderStart, inOrderEnd, root.Data);
+            // or use Hashtable created before-hand storing the inOrderArray 'value as Key' and those key 'index in array as value' || Time Complexicty of Algo goes down to O(n)
+            //Dictionary<int, int> dict = new Dictionary<int, int>();
+            //dict.Add(inOrder[0], 0);
+            //int indexInInOrder = dict[root.Data];
 
+            int indexInInOrder = ReturnIndexWhoseDataMatches(inOrder, inOrderStart, inOrderEnd, root.Data);
+            
             BuildTree_Recursive(ref root.Left, inOrder, preOrder, inOrderStart, indexInInOrder - 1, ref preOrderIndex);
             BuildTree_Recursive(ref root.Right, inOrder, preOrder, indexInInOrder + 1, inOrderEnd, ref preOrderIndex);
         }
@@ -709,5 +715,30 @@ namespace BinaryTree
             return -1;
         }
 
+        public static bool PrintAllAnscestorsInBinaryTree(Node root, int data)
+        {
+            if (root == null) return false;
+            if (root.Data == data)
+                return true;
+            else if (PrintAllAnscestorsInBinaryTree(root.Left, data) || PrintAllAnscestorsInBinaryTree(root.Right, data))
+            {
+                Console.Write($">> {root.Data} ");
+                return true;
+            }
+            return false;
+        }
+
+        public static BinaryTree GetBinaryTree()
+        {
+            var bt = new BinaryTree();
+            BinaryTree.AddParent(ref bt.root, 1);
+            BinaryTree.AddToLeft(ref bt.root, 2);
+            BinaryTree.AddToRight(ref bt.root, 3);
+            BinaryTree.AddToLeft(ref bt.root.Left, 4);
+            BinaryTree.AddToRight(ref bt.root.Left, 5);
+            BinaryTree.AddToLeft(ref bt.root.Right, 6);
+            BinaryTree.AddToRight(ref bt.root.Right, 7);
+            return bt;
+        }
     }
 }

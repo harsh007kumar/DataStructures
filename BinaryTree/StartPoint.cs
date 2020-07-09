@@ -27,6 +27,7 @@ namespace BinaryTree
             ConverTreeIntoMirror();
             FindLCAInBinaryTree();
             ConstructBinaryTreeFromItsInOrderAndPreOrderTraversals();
+            PrintingAllAnscestorsOfAnNodeInBinaryTree();
             Console.ReadKey();
         }
 
@@ -37,7 +38,7 @@ namespace BinaryTree
         {
             TreeUtility.Print("Search, Insert & Delete Operation on a Binary Search Tree");
             // Inserting Elements
-            BinarySearchTree bt = TreeUtility.GetBinaryTree();
+            BinarySearchTree bt = TreeUtility.GetBinarySearchTree();
 
             // Checking existance for given element in tree
             bt.CheckElementExists(bt.root, 7);
@@ -54,7 +55,7 @@ namespace BinaryTree
         {
             TreeUtility.Print("Depth First Traversals");
 
-            BinarySearchTree bt = TreeUtility.GetBinaryTree();
+            BinarySearchTree bt = TreeUtility.GetBinarySearchTree();
             
             Console.Write("\nIn Order Traversal (Left, Root, Right) :\t");
             TreeUtility.DFS.InOrderTraversal(bt.root);
@@ -73,7 +74,7 @@ namespace BinaryTree
         {
             TreeUtility.Print("Breadth First Traversals");
 
-            BinarySearchTree bt = TreeUtility.GetBinaryTree();
+            BinarySearchTree bt = TreeUtility.GetBinarySearchTree();
 
             TreeUtility.BFS.BreadthFirstTraversal(bt.root);
             TreeUtility.BFS.LevelOrderTraversal(bt.root);
@@ -83,7 +84,7 @@ namespace BinaryTree
         {
             TreeUtility.Print("Auxillary Func : SizeOfTree() || HeightOfTree() || LevelWithMaxSum() || LeastCommonAnscestor()");
 
-            BinarySearchTree bt = TreeUtility.GetBinaryTree();
+            BinarySearchTree bt = TreeUtility.GetBinarySearchTree();
 
             Console.WriteLine($"Size of Tree (Recursive): '{TreeUtility.SizeOfTree(bt.root)}'");
             Console.WriteLine($"Size of Tree (Iterative): '{TreeUtility.SizeOfTree_Iterative(bt.root)}'");
@@ -103,7 +104,7 @@ namespace BinaryTree
         public static void FindFindLeastCommonAnscestorInBinarySearchTree()
         {
             TreeUtility.Print("Finding Least Common Anscestor for pair of Nodes in Binary Search Tree");
-            BinarySearchTree bt = TreeUtility.GetBinaryTree();
+            BinarySearchTree bt = TreeUtility.GetBinarySearchTree();
             int c1 = 10, c2 = 20;
             // Iterative Method
             Console.WriteLine("Iterative Method");
@@ -119,7 +120,7 @@ namespace BinaryTree
         public static void FindMaxInBinaryTree()
         {
             TreeUtility.Print("Problem - 1 & 2 Give an algorithm for finding maximum element in binary tree(p. 241)");
-            BinarySearchTree bt = TreeUtility.GetBinaryTree();
+            BinarySearchTree bt = TreeUtility.GetBinarySearchTree();
             // Iterative Method
             Console.WriteLine($" Max element in Binary Tree is (Recursive Func) :\t {TreeUtility.MaxElementInBinaryTree_Recursive(bt.root)}");
             // Recursive Method
@@ -129,7 +130,7 @@ namespace BinaryTree
         public static void SearchElementInBinaryTree()
         {
             TreeUtility.Print("Problem - 3 & 4 Give an algorithm for searching an element in binary tree.(p. 242)");
-            BinarySearchTree bt = TreeUtility.GetBinaryTree();
+            BinarySearchTree bt = TreeUtility.GetBinarySearchTree();
             // Recursive Method
             Console.WriteLine($" Searching element in Binary Tree is (Recursive Func) :\t {TreeUtility.SearchElementInBinaryTree_Recursive(bt.root, 99)}");
             // Iterative Method
@@ -140,7 +141,7 @@ namespace BinaryTree
         public static void LevelOrderInReverse()
         {
             TreeUtility.Print("Problem - 8 Give an algorithm for printing the level order data in reverse order.(p. 245)");
-            BinarySearchTree bt = TreeUtility.GetBinaryTree();
+            BinarySearchTree bt = TreeUtility.GetBinarySearchTree();
 
 
             TreeUtility.BFS.LevelOrderTraversal(bt.root);
@@ -152,8 +153,8 @@ namespace BinaryTree
         {
             TreeUtility.Print("Problem - 17 Given two binary trees, return true if they are structurally identical.(p. 250)");
 
-            BinarySearchTree bt1 = TreeUtility.GetBinaryTree();
-            BinarySearchTree bt2 = TreeUtility.GetBinaryTree();
+            BinarySearchTree bt1 = TreeUtility.GetBinarySearchTree();
+            BinarySearchTree bt2 = TreeUtility.GetBinarySearchTree();
             //bt2.AddElement(ref bt2.root,111);
             Console.WriteLine($" Given two binary trees are identicial or not returned :\t{TreeUtility.BinaryTreesIdentical(bt1.root, bt2.root) }");
             
@@ -162,7 +163,7 @@ namespace BinaryTree
         public static void FindDiameterOfBinaryTree()
         {
             TreeUtility.Print("Problem - 18 Give an algorithm for finding the diameter of the binary tree.(p. 251)");
-            BinarySearchTree bt = TreeUtility.GetBinaryTree();
+            BinarySearchTree bt = TreeUtility.GetBinarySearchTree();
             int diameter = TreeUtility.DiameterOfBinaryTree(bt.root);
             Console.WriteLine($"Diameter of the Binary Tree is :\t{diameter}\tcalculate in O(n^2) time");
             int treeHeight = 0;
@@ -174,7 +175,7 @@ namespace BinaryTree
         {
             TreeUtility.Print("Problem - 20 Given a binary tree, print out all its root - to - leaf paths.(p. 254)");
 
-            BinarySearchTree bt = TreeUtility.GetBinaryTree();
+            BinarySearchTree bt = TreeUtility.GetBinarySearchTree();
             Console.WriteLine();
             var len = TreeUtility.HeightOfTree(bt.root);
             Node[] arr = new Node[len];                 // creating array of size = height of tree
@@ -184,7 +185,7 @@ namespace BinaryTree
         public static void ForGivenSUMCheckIfPathExists()
         {
             TreeUtility.Print("Problem - 21 Give an algorithm for checking the existence of path with given sum.That means, given a sum, check whether there exists a path from root to any of the nodes.(p. 255)");
-            BinarySearchTree bt = TreeUtility.GetBinaryTree();
+            BinarySearchTree bt = TreeUtility.GetBinarySearchTree();
             int checkForPathWithSUM = 10;
 
             Console.WriteLine($" Path with given sum :\t{checkForPathWithSUM}, Exists : {TreeUtility.CheckIfPathwithGivenSumExists(bt.root, checkForPathWithSUM)}");
@@ -193,14 +194,14 @@ namespace BinaryTree
         public static void ConverTreeIntoMirror()
         {
             TreeUtility.Print("Problem - 24 Give an algorithm for converting a tree to its mirror.(p. 256)");
-            BinarySearchTree bt = TreeUtility.GetBinaryTree();
+            BinarySearchTree bt = TreeUtility.GetBinarySearchTree();
             TreeUtility.BFS.LevelOrderTraversal(bt.root);
             TreeUtility.ConvertTreeToItsMirror(bt.root);
             TreeUtility.BFS.LevelOrderTraversal(bt.root);
 
 
             TreeUtility.Print("Problem - 25 Given two trees, give an algorithm for checking whether they are mirrors of each other.(p. 257)");
-            BinarySearchTree mirror = TreeUtility.GetBinaryTree();
+            BinarySearchTree mirror = TreeUtility.GetBinarySearchTree();
             //mirror.AddElement(ref bt.root, 123);
             Console.WriteLine($" Tree are mirror : {TreeUtility.CheckGivenTreesAreMirror(mirror.root,bt.root)}");
 
@@ -209,7 +210,7 @@ namespace BinaryTree
         public static void FindLCAInBinaryTree()
         {
             TreeUtility.Print("Problem - 26 Give an algorithm for finding LCA (Least Common Ancestor) of two nodes in a Binary Tree.(p. 257)");
-            BinarySearchTree bt = TreeUtility.GetBinaryTree();
+            BinarySearchTree bt = TreeUtility.GetBinarySearchTree();
             int n1 = 10, n2 = 17;
             var LCA = TreeUtility.FindLCA_Recursive_InBinaryTree(bt.root, n1, n2);
             Console.WriteLine($" LCA of {n1} {n2} is :\t{LCA.Data}");
@@ -247,6 +248,15 @@ namespace BinaryTree
                 }
                 Console.WriteLine();
             }
+        }
+
+        public static void PrintingAllAnscestorsOfAnNodeInBinaryTree()
+        {
+            TreeUtility.Print("Problem - 29 Give an algorithm for printing all the ancestors of a node in a Binary tree.(p. 261)");
+            BinaryTree bt = TreeUtility.GetBinaryTree();
+            TreeUtility.BFS.LevelOrderTraversal(bt.root);
+            Console.Write($"Printing Anscestor of a Node '7' in Binary Tree are :\t");
+            TreeUtility.PrintAllAnscestorsInBinaryTree(bt.root, 7);
         }
     }
 }
