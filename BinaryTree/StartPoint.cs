@@ -28,6 +28,7 @@ namespace BinaryTree
             FindLCAInBinaryTree();
             ConstructBinaryTreeFromItsInOrderAndPreOrderTraversals();
             PrintingAllAnscestorsOfAnNodeInBinaryTree();
+            PrintBinaryTreeInZigZagOrder();
             Console.ReadKey();
         }
 
@@ -257,6 +258,13 @@ namespace BinaryTree
             TreeUtility.BFS.LevelOrderTraversal(bt.root);
             Console.Write($"Printing Anscestor of a Node '7' in Binary Tree are :\t");
             TreeUtility.PrintAllAnscestorsInBinaryTree(bt.root, 7);
+        }
+    
+        public static void PrintBinaryTreeInZigZagOrder()
+        {
+            TreeUtility.Print("Problem - 30 Zigzag Tree Traversal: Give an algorithm to traverse a binary tree in Zigzag order.(p. 262)");
+            BinaryTree bt = TreeUtility.GetBinaryTree();
+            TreeUtility.BFS.ZigZagTraversal(bt.root);
         }
     }
 }

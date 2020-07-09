@@ -222,6 +222,48 @@ namespace BinaryTree
                 while(st.Count>0)
                     Console.Write($" {st.Pop().Data}");
             }
+
+            /// <summary>
+            /// Time Complexity O(n) || Space Complexity O(n)
+            /// </summary>
+            /// <param name="root"></param>
+            public static void ZigZagTraversal(Node root)
+            {
+                if (root == null) return;
+                Stack<Node> currlevel = new Stack<Node>();
+                Stack<Node> nextLevel = new Stack<Node>();
+                bool leftToRight = false;
+                currlevel.Push(null);
+                currlevel.Push(root);
+                Console.Write($" Printing Tree in Zig-Zag order :\t");
+                while (currlevel.Count > 0)
+                {
+                    var temp = currlevel.Pop();
+                    if (temp != null)
+                    {
+                        if (nextLevel.Count == 0) nextLevel.Push(null);
+                        Console.Write($" {temp.Data}");
+                        if (leftToRight)
+                        {
+                            if (temp.Right != null) nextLevel.Push(temp.Right);
+                            if (temp.Left != null) nextLevel.Push(temp.Left);
+                        }
+                        else
+                        {
+                            if (temp.Left != null) nextLevel.Push(temp.Left);
+                            if (temp.Right != null) nextLevel.Push(temp.Right);
+                        }
+                    }
+                    else
+                    {
+                        leftToRight = !leftToRight;                 // Inverse the order
+                        var swapLevel = currlevel;
+                        currlevel = nextLevel;
+                        nextLevel = swapLevel;
+                    }
+                }
+                Console.WriteLine();
+            }
         }
 
         internal static bool BinaryTreesIdentical(Node bt1, Node bt2)
@@ -728,6 +770,10 @@ namespace BinaryTree
             return false;
         }
 
+        /// <summary>
+        /// returns Binary Tree Object after adding couple of Nodes
+        /// </summary>
+        /// <returns></returns>
         public static BinaryTree GetBinaryTree()
         {
             var bt = new BinaryTree();
@@ -740,5 +786,6 @@ namespace BinaryTree
             BinaryTree.AddToRight(ref bt.root.Right, 7);
             return bt;
         }
+    
     }
 }
