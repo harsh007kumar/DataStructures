@@ -69,7 +69,7 @@ namespace BinaryTree
                 Console.Write($" {current.Data}");
             }
 
-            public static void PreOrderTraveral_Iterative(Node current)
+            public static void PreOrderTraversal_Iterative(Node current)
             {
                 if (current == null) return;
                 Stack<Node> st = new Stack<Node>();
@@ -88,7 +88,7 @@ namespace BinaryTree
                 Console.WriteLine();
             }
 
-            public static void InOrderTraveral_Iterative(Node current)
+            public static void InOrderTraversal_Iterative(Node current)
             {
                 if (current == null) return;
                 Stack<Node> st = new Stack<Node>();
@@ -786,6 +786,16 @@ namespace BinaryTree
             BinaryTree.AddToRight(ref bt.root.Right, 7);
             return bt;
         }
-    
+
+        public static void VerticalSumInBinaryTree(Node root, int column, ref Dictionary<int, int> dt)
+        {
+            if (root == null) return;
+            VerticalSumInBinaryTree(root.Left, column - 1, ref dt);
+            if (dt.ContainsKey(column))
+                dt[column] += root.Data;
+            else
+                dt.Add(column, root.Data);
+            VerticalSumInBinaryTree(root.Right, column + 1, ref dt);
+        }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Net;
 using System.Security;
@@ -29,6 +30,8 @@ namespace BinaryTree
             ConstructBinaryTreeFromItsInOrderAndPreOrderTraversals();
             PrintingAllAnscestorsOfAnNodeInBinaryTree();
             PrintBinaryTreeInZigZagOrder();
+            CalculateVerticalSumInBinaryTree();
+            ContructTreeFromPreOrderTraversalWhereInternalNodeisIandLeafNodeisL();
             Console.ReadKey();
         }
 
@@ -60,11 +63,11 @@ namespace BinaryTree
             
             Console.Write("\nIn Order Traversal (Left, Root, Right) :\t");
             TreeUtility.DFS.InOrderTraversal(bt.root);
-            TreeUtility.DFS.InOrderTraveral_Iterative(bt.root);
+            TreeUtility.DFS.InOrderTraversal_Iterative(bt.root);
 
             Console.Write("\nPre Order Traversal (Root, Left, Right) :\t");
             TreeUtility.DFS.PreOrderTraversal(bt.root);
-            TreeUtility.DFS.PreOrderTraveral_Iterative(bt.root);
+            TreeUtility.DFS.PreOrderTraversal_Iterative(bt.root);
             
             Console.Write("\nPost Order Traversal (Left, Right, Root) :\t");
             TreeUtility.DFS.PostOrderTraversal(bt.root);
@@ -264,7 +267,50 @@ namespace BinaryTree
         {
             TreeUtility.Print("Problem - 30 Zigzag Tree Traversal: Give an algorithm to traverse a binary tree in Zigzag order.(p. 262)");
             BinaryTree bt = TreeUtility.GetBinaryTree();
+            TreeUtility.BFS.LevelOrderTraversal(bt.root);
             TreeUtility.BFS.ZigZagTraversal(bt.root);
+        }
+    
+        public static void CalculateVerticalSumInBinaryTree()
+        {
+            TreeUtility.Print("Problem - 31 Give an algorithm for finding the vertical sum of a binary tree.(p. 263)");
+            BinaryTree bt = TreeUtility.GetBinaryTree();
+            Dictionary<int, int> dt = new Dictionary<int, int>();
+            TreeUtility.VerticalSumInBinaryTree(bt.root, 0, ref dt);
+            TreeUtility.DFS.InOrderTraversal_Iterative(bt.root);
+            Console.WriteLine("Vertical sum of a binary tree");
+            foreach(var col in dt)
+                Console.Write($"|| Column {col.Key} Value {col.Value} ");
+        }
+
+        public static void ContructTreeFromPreOrderTraversalWhereInternalNodeisIandLeafNodeisL()
+        {
+            TreeUtility.Print("Problem - 33 Given a tree with a special property where leaves are represented with ‘L’ and internal node with ‘I’." +
+                "Also, assume that each node has either 0 or 2 children.Given preorder traversal of this tree, construct the tree.(p. 265)");
+            string preOrder = "ILILL";
+            Console.WriteLine($" Provided Pre-Order\t{preOrder}");
+            BinaryTree bt = new BinaryTree();
+            int startFrom = 0;
+            ConvertFromPreOrder(ref bt.root,preOrder.ToCharArray(), ref startFrom);
+            Console.Write(" Pre-Order of generated Tree :\t");
+            PreOrderTraversal(bt.root);
+            #region Local Func
+            void ConvertFromPreOrder(ref Node root, char[] arr,ref int index)
+            {
+                if (index>=arr.Length) return;
+                root = new Node(arr[index++]);
+                if (arr[index - 1] == 'L') return;
+                ConvertFromPreOrder(ref root.Left, arr, ref index);
+                ConvertFromPreOrder(ref root.Right, arr, ref index);
+            }
+            void PreOrderTraversal(Node current)
+            {
+                if (current == null) return;
+                Console.Write($"{(char)current.Data}");
+                PreOrderTraversal(current.Left);
+                PreOrderTraversal(current.Right);
+            }
+            #endregion
         }
     }
 }
