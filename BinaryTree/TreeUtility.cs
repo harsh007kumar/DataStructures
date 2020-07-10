@@ -837,5 +837,86 @@ namespace BinaryTree
                 return IsISOMorphic(root1.FirstChild, root2.FirstChild) && IsISOMorphic(root1.NextSibling, root2.NextSibling);
             }
         }
+
+        public static class ThreadedBinaryTree_Operation
+        {
+            /// <summary>
+            /// Inorder Successor in Inorder Full Threaded Binary Tree(p. 283)
+            /// Time Complexity O(n) || Space O(1)
+            /// </summary>
+            /// <param name="root"></param>
+            /// <returns></returns>
+            public static NodeThreaded InOrderSuccessorInThreadedBinaryTree(NodeThreaded root)
+            {
+                if (root.RTag == 0)                             // if RTag is 0 mean right node is empty its pointing to InOrder Successor
+                    return root.Right;
+                else
+                {                                               // Else return the left most child in the right subtree
+                    var temp = root.Right;
+                    while (temp.LTag == 1)
+                        temp = temp.Left;
+                    return temp;
+                }
+            }
+
+            /// <summary>
+            /// Inorder Traversal in Inorder Threaded Binary Tree (p. 283)
+            /// Karumanchi, Narasimha.Data Structures and Algorithms Made Easy: Data Structures and Algorithmic Puzzles
+            /// Time Complexity O(n) || Space O(1)
+            /// </summary>
+            /// <param name="dummyNode"></param>
+            public static void InOrderTraversalInInOrderedThreadBinaryTree(NodeThreaded dummyNode)
+            {
+                if (dummyNode.LTag == 0) return;                     // Tree is empty
+                var temp = dummyNode.Left;                           // Fetch left child from dummy node
+                // Goto very first child on the left
+                while (temp.LTag != 0)
+                    temp = temp.Left;
+
+                // While we dont get back to our starting dummyNode print the elements
+                while (temp != dummyNode)
+                {
+                    Console.Write($" {temp.Data}");
+                    temp = InOrderSuccessorInThreadedBinaryTree(temp);
+                }
+            }
+
+            public static NodeThreaded PreOrderSuccessorInInOrderFullyThreadedBinaryTree(NodeThreaded root)
+            {
+                if (root.LTag == 1) 
+                    return root.Left;
+                while (root.RTag != 1)
+                    root = root.Right;
+                return root.Right;
+            }
+
+            /// <summary>
+            /// Insertion of Nodes in InOrder Threaded Binary Trees (p. 285)
+            /// Karumanchi, Narasimha.Data Structures and Algorithms Made Easy: Data Structures and Algorithmic Puzzles
+            /// </summary>
+            /// <param name="parentNode"></param>
+            /// <param name="data"></param>
+            public static void InsertRightChildInInOrderThreadedBinaryTree(NodeThreaded parentNode, int data)
+            {
+                NodeThreaded nodeToBeInserted = new NodeThreaded(data)
+                {
+                    RTag = parentNode.RTag,
+                    Right = parentNode.Right,
+                    LTag = 0,
+                    Left = parentNode
+                };
+
+                parentNode.Right = nodeToBeInserted;
+                parentNode.RTag = 1;
+
+                if (nodeToBeInserted.RTag == 1)                                 // Right Child exist of parent Node
+                {
+                    var leftMostNodeInRtSubtree = nodeToBeInserted.Right;
+                    while (leftMostNodeInRtSubtree.LTag != 0)
+                        leftMostNodeInRtSubtree = leftMostNodeInRtSubtree.Left; // fetch left most child in rt subtree
+                    leftMostNodeInRtSubtree.Left = nodeToBeInserted;            // assign LeftMost child Left to newly added Node
+                }
+            }
+        }
     }
 }

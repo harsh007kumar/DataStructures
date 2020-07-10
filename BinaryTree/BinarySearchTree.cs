@@ -29,6 +29,22 @@ namespace BinaryTree
         { Data = data; FirstChild = NextSibling = null; }
     }
 
+    public class NodeThreaded
+    {
+        public int Data { get; set; }
+        public int LTag { get; set; }
+        public int RTag { get; set; }
+        public NodeThreaded Left;
+        public NodeThreaded Right;
+
+        public NodeThreaded(int data)
+        {
+            Data = data;
+            LTag = RTag = 0;
+            Left = Right = null;
+        }
+    }
+
     public class BinaryTree
     {
         public Node root;
