@@ -32,6 +32,7 @@ namespace BinaryTree
             PrintBinaryTreeInZigZagOrder();
             CalculateVerticalSumInBinaryTree();
             ContructTreeFromPreOrderTraversalWhereInternalNodeisIandLeafNodeisL();
+            FindSumOfAllInGenericTree();
             Console.ReadKey();
         }
 
@@ -291,9 +292,12 @@ namespace BinaryTree
             Console.WriteLine($" Provided Pre-Order\t{preOrder}");
             BinaryTree bt = new BinaryTree();
             int startFrom = 0;
+
             ConvertFromPreOrder(ref bt.root,preOrder.ToCharArray(), ref startFrom);
+
             Console.Write(" Pre-Order of generated Tree :\t");
             PreOrderTraversal(bt.root);
+            Console.WriteLine("\n");
             #region Local Func
             void ConvertFromPreOrder(ref Node root, char[] arr,ref int index)
             {
@@ -311,6 +315,20 @@ namespace BinaryTree
                 PreOrderTraversal(current.Right);
             }
             #endregion
+        }
+
+        public static void FindSumOfAllInGenericTree()
+        {
+            TreeUtility.Print("Problem - 36 Given a generic tree, give an algorithm for finding the sum of all the elements of the tree.(p. 271)");
+            GenericTree gt = TreeUtility.GenericTree_Operations.GetGenericTree();
+            var sum = TreeUtility.GenericTree_Operations.FindSum(gt.root);
+            Console.WriteLine($"Sum of all Node in Generic-Tree(N-ary Tree) is :\t{sum}");
+
+            // CheckIfTwoGenericTreesAreIsoMorphic
+            TreeUtility.Print("Problem - 42 Given two generic trees how do we check whether the trees are isomorphic to each other or not? (p. 275)");
+            GenericTree gt2 = TreeUtility.GenericTree_Operations.GetGenericTree();
+            var isISO = TreeUtility.GenericTree_Operations.IsISOMorphic(gt.root, gt2.root);
+            Console.WriteLine($"Given Two Trees are Iso-Morphic : {isISO}");
         }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.Design.Serialization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -19,6 +20,15 @@ namespace BinaryTree
         }
     }
 
+    public class NodeGeneric
+    {
+        public int Data { get; set; }
+        public NodeGeneric FirstChild;
+        public NodeGeneric NextSibling;
+        public NodeGeneric(int data)        // Parameterized Constructor
+        { Data = data; FirstChild = NextSibling = null; }
+    }
+
     public class BinaryTree
     {
         public Node root;
@@ -36,7 +46,7 @@ namespace BinaryTree
             else current.Right = new Node(data);
         }
 
-        public static void AddParent(ref Node current, int data) => current = new Node(data);
+        public static void AddRoot(ref Node current, int data) => current = new Node(data);
     }
 
     public class BinarySearchTree
@@ -132,5 +142,26 @@ namespace BinaryTree
         /// <returns></returns>
         public int FindInOrderPredeccessor(Node head) => head.Right != null ? FindInOrderPredeccessor(head.Right) : head.Data;
 
+    }
+
+    public class GenericTree
+    {
+        public NodeGeneric root;
+        public GenericTree() => root = null;
+
+        public static void AddRoot(ref NodeGeneric current, int data) => current = new NodeGeneric(data);
+        public static void AddChild(ref NodeGeneric root, int data)
+        {
+            var newChild = new NodeGeneric(data);
+            if (root.FirstChild == null)
+                root.FirstChild = newChild;
+            else
+            {
+                var lastSibiling = root.FirstChild;
+                while (lastSibiling.NextSibling != null)
+                    lastSibiling = lastSibiling.NextSibling;
+                lastSibiling.NextSibling = newChild;
+            }
+        }
     }
 }

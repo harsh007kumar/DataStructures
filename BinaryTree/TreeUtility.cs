@@ -777,7 +777,7 @@ namespace BinaryTree
         public static BinaryTree GetBinaryTree()
         {
             var bt = new BinaryTree();
-            BinaryTree.AddParent(ref bt.root, 1);
+            BinaryTree.AddRoot(ref bt.root, 1);
             BinaryTree.AddToLeft(ref bt.root, 2);
             BinaryTree.AddToRight(ref bt.root, 3);
             BinaryTree.AddToLeft(ref bt.root.Left, 4);
@@ -796,6 +796,46 @@ namespace BinaryTree
             else
                 dt.Add(column, root.Data);
             VerticalSumInBinaryTree(root.Right, column + 1, ref dt);
+        }
+
+        public static class GenericTree_Operations
+        {
+            /// <summary>
+            /// returns Generic Tree Object after adding couple of Nodes
+            /// </summary>
+            /// <returns></returns>
+            public static GenericTree GetGenericTree()
+            {
+                var gt = new GenericTree();
+                GenericTree.AddRoot(ref gt.root, 1);
+                GenericTree.AddChild(ref gt.root, 2);
+                GenericTree.AddChild(ref gt.root, 3);
+                GenericTree.AddChild(ref gt.root, 4);
+                GenericTree.AddChild(ref gt.root, 5);
+                GenericTree.AddChild(ref gt.root, 6);
+                GenericTree.AddChild(ref gt.root.FirstChild, 11);
+                GenericTree.AddChild(ref gt.root.FirstChild, 12);
+                GenericTree.AddChild(ref gt.root.FirstChild.NextSibling, 22);
+                GenericTree.AddChild(ref gt.root.FirstChild.NextSibling, 23);
+                return gt;
+            }
+
+            /// <summary>
+            /// Time Complexity O(n) || Space Complexity O(n)
+            /// </summary>
+            /// <param name="root"></param>
+            /// <returns></returns>
+            public static int FindSum(NodeGeneric root)
+            {
+                if (root == null) return 0;
+                return root.Data + FindSum(root.FirstChild) + FindSum(root.NextSibling);
+            }
+            public static bool IsISOMorphic(NodeGeneric root1, NodeGeneric root2)
+            {
+                if (root1 == null && root2 == null) return true;
+                else if (root1 == null || root2 == null) return false;
+                return IsISOMorphic(root1.FirstChild, root2.FirstChild) && IsISOMorphic(root1.NextSibling, root2.NextSibling);
+            }
         }
     }
 }
