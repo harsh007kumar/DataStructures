@@ -5,6 +5,7 @@ using System.ComponentModel.Design.Serialization;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace BinaryTree
@@ -487,7 +488,7 @@ namespace BinaryTree
             return LCA;
         }
 
-        public static void Print(string input="") => Console.WriteLine($"\n========= {input} =========");
+        public static void Print(string input = "") => Console.WriteLine($"\n========= {input} =========");
 
         /// <summary>
         /// return Binary Search Tree Object after adding couple of Nodes
@@ -917,6 +918,31 @@ namespace BinaryTree
                     leftMostNodeInRtSubtree.Left = nodeToBeInserted;            // assign LeftMost child Left to newly added Node
                 }
             }
+        }
+
+        public static BinaryTree GenerateExpressionTreeFromPostFix(char[] postFixArr)
+        {
+            var len = postFixArr.Length;
+            List<char> operators = new List<char>();
+            operators.Add('+');
+            operators.Add('-');
+            operators.Add('/');
+            operators.Add('*');
+
+            Stack<Node> st = new Stack<Node>();
+            for(int i=0;i<len;i++)
+            {
+                if(operators.Contains(postFixArr[i]))   // operator
+                {
+                    var rightChild = st.Pop();  // 1st Pop will be rt
+                    var leftChild = st.Pop();   // 2nd Pop will be left
+                    Node op = new Node(postFixArr[i]) { Left = leftChild, Right = rightChild };
+                    st.Push(op);
+                }
+                else                                    // operand
+                    st.Push(new Node(postFixArr[i]));
+            }
+            return new BinaryTree() { root = st.Pop() };
         }
     }
 }

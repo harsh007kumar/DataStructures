@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Globalization;
 using System.Linq;
 using System.Net;
 using System.Security;
@@ -33,6 +34,7 @@ namespace BinaryTree
             CalculateVerticalSumInBinaryTree();
             ContructTreeFromPreOrderTraversalWhereInternalNodeisIandLeafNodeisL();
             FindSumOfAllInGenericTree();
+            BuildExpressionTreeFromPostFixExpression();
             Console.ReadKey();
         }
 
@@ -329,6 +331,24 @@ namespace BinaryTree
             GenericTree gt2 = TreeUtility.GenericTree_Operations.GetGenericTree();
             var isISO = TreeUtility.GenericTree_Operations.IsISOMorphic(gt.root, gt2.root);
             Console.WriteLine($"Given Two Trees are Iso-Morphic : {isISO}");
+        }
+
+        public static void BuildExpressionTreeFromPostFixExpression()
+        {
+            TreeUtility.Print("Building Expression Tree from Postfix Expression(p. 289)");
+            string postFixExpression = "ABC*+D/";
+            Console.WriteLine($"Provided PostFix Expression :\t{postFixExpression}");
+            BinaryTree bt = TreeUtility.GenerateExpressionTreeFromPostFix(postFixExpression.ToCharArray());
+            Console.Write($"PostFix Expression of Expression Tree :\t");
+            PostFix(bt.root);
+            // local function
+            void PostFix(Node root)
+            {
+                if (root == null) return;
+                PostFix(root.Left);
+                PostFix(root.Right);
+                Console.Write($" {(char)root.Data}");
+            }
         }
     }
 }
