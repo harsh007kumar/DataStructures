@@ -462,13 +462,13 @@ namespace BinaryTree
             }
             else if (data < head.Data)
                 found = TracePathFromRoot(ref st, head.Left, data);
-            else
+            else if (data > head.Data)
                 found = TracePathFromRoot(ref st, head.Right, data);
             return found;
         }
 
         /// <summary>
-        /// Time Complexity O(n) same as FindLeastCommonAnscestor() but scans required is 1
+        /// Time Complexity O(n) same as FindLeastCommonAnscestor_InBinarySearchTree() but scans required is 1
         /// Space Complexity O(n) required for CallStack in System for recursion
         /// Assumption both Nodes are present in the tree
         /// </summary>
@@ -504,7 +504,7 @@ namespace BinaryTree
             BST.AddElement(ref BST.root, 9);
             BST.AddElement(ref BST.root, 1);
             BST.AddElement(ref BST.root, 17);
-            
+
             return BST;
         }
 
@@ -943,6 +943,36 @@ namespace BinaryTree
                     st.Push(new Node(postFixArr[i]));
             }
             return new BinaryTree() { root = st.Pop() };
+        }
+
+        public static bool CheckIfBST(Node root)
+        {
+            if (root == null) return true;
+            bool leftCheck = true, rtCheck = true;
+            if (root.Left != null && root.Left.Data > root.Data)
+                leftCheck = false;
+            if (root.Right != null && root.Right.Data < root.Data)
+                rtCheck = false;
+            return (leftCheck && rtCheck && CheckIfBST(root.Left) && CheckIfBST(root.Right));
+        }
+
+        public static Node ConvertBSTToCircularLinkedList(Node root)
+        {
+            if (root == null) return root;
+            Node leftSubtree = null, rtSubtree = null;
+            if (root.Left != null)
+            {
+                leftSubtree = ConvertBSTToCircularLinkedList(root.Left);
+                root.Left.Right = root;
+            }
+            
+            if (root.Right != null)
+            {
+                rtSubtree = ConvertBSTToCircularLinkedList(root.Right);
+                root.Right = rtSubtree;
+            }
+
+            return leftSubtree != null ? leftSubtree : root;
         }
     }
 }

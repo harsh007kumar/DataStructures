@@ -54,8 +54,9 @@ namespace BinaryTree
             Node find = bst.FindElementNode_Recursive(bst.root, 7);
             find = bst.FindElementNode_Iterative(7);
 
-            Console.WriteLine();
             // Deleting a Node in Tree
+            TreeUtility.DFS.InOrderTraversal(bst.root);
+            Console.WriteLine();
             bst.DeleteElement(ref bst.root, 5);
         }
 
@@ -109,8 +110,15 @@ namespace BinaryTree
             TreeUtility.DeepestNodeInTree(bst.root);
 
             // Min Value in Tree
-            Console.WriteLine($"Min Value in Tree (Recursive) :\t'{bst.FindMin_Recursive(bst.root)}");
-            Console.WriteLine($"Min Value in Tree (Iterative) :\t'{bst.FindMin_Iterative(bst.root)}");
+            Console.WriteLine($"Min Value in Tree (Recursive) :\t'{bst.FindMin_Recursive(bst.root)}'");
+            Console.WriteLine($"Min Value in Tree (Iterative) :\t'{bst.FindMin_Iterative(bst.root)}'");
+
+            // Check BST or not
+            Console.WriteLine($"Checking if is tree is BST (Recursive) :\t'{TreeUtility.CheckIfBST(bst.root)}'");
+
+
+            // Convert BST to DoublyLinkedList
+            TreeUtility.ConvertBSTToCircularLinkedList(bst.root);
         }
 
         public static void FindFindLeastCommonAnscestorInBinarySearchTree()

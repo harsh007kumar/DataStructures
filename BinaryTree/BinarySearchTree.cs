@@ -71,13 +71,19 @@ namespace BinaryTree
         public Node root;
         public BinarySearchTree() { root = null; }
 
+        /// <summary>
+        /// Adds data to BST, data is already there then we can simply neglect and come out
+        /// Time Complexity: O(n), in worst case (when BST is a left/right skew tree)
+        /// </summary>
+        /// <param name="root"></param>
+        /// <param name="data"></param>
         public void AddElement(ref Node root, int data)
         {
             if (root == null)
                 root = new Node(data);
             else if (data < root.Data)
                 AddElement(ref root.Left, data);
-            else
+            else if (data > root.Data)
                 AddElement(ref root.Right, data);
         }
 
@@ -162,6 +168,21 @@ namespace BinaryTree
         }
 
         /// <summary>
+        /// Element which comes right after, in InOrderTraversal (one on immediate right)
+        /// </summary>
+        /// <param name="head"></param>
+        /// <returns></returns>
+        public int FindInOrderSuccessor(Node head) => head.Left != null ? FindInOrderSuccessor(head.Left) : head.Data;
+
+        /// <summary>
+        /// Element which comes right before, in InOrderTraversal (one on immediate left)
+        /// </summary>
+        /// <param name="head"></param>
+        /// <returns></returns>
+        public int FindInOrderPredeccessor(Node head) => head.Right != null ? FindInOrderPredeccessor(head.Right) : head.Data;
+
+
+        /// <summary>
         /// Time Complexity: O(n), in worst case (when BST is a left skew tree) || Space Complexity: O(n), for recursive stack.(p. 299)
         /// </summary>
         /// <param name="head"></param>
@@ -185,26 +206,10 @@ namespace BinaryTree
         public int FindMin_Iterative(Node head)
         {
             if (head == null) return -1;
-            var temp = head;
-            while (temp.Left != null)
-                temp = temp.Left;
-            return temp.Data;
+            while (head.Left != null)
+                head = head.Left;
+            return head.Data;
         }
-
-        /// <summary>
-        /// Element which comes right after, in InOrderTraversal (one on immediate right)
-        /// </summary>
-        /// <param name="head"></param>
-        /// <returns></returns>
-        public int FindInOrderSuccessor(Node head) => head.Left != null ? FindInOrderSuccessor(head.Left) : head.Data;
-
-        /// <summary>
-        /// Element which comes right before, in InOrderTraversal (one on immediate left)
-        /// </summary>
-        /// <param name="head"></param>
-        /// <returns></returns>
-        public int FindInOrderPredeccessor(Node head) => head.Right != null ? FindInOrderPredeccessor(head.Right) : head.Data;
-
     }
 
     public class GenericTree
