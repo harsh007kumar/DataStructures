@@ -45,17 +45,18 @@ namespace BinaryTree
         {
             TreeUtility.Print("Search, Insert & Delete Operation on a Binary Search Tree");
             // Inserting Elements
-            BinarySearchTree bt = TreeUtility.GetBinarySearchTree();
+            BinarySearchTree bst = TreeUtility.GetBinarySearchTree();
 
             // Checking existance for given element in tree
-            bt.CheckElementExists(bt.root, 7);
+            bst.CheckElementExists(bst.root, 7);
 
             // Find and return Node for given element in tree
-            Node find = bt.FindElementNode(bt.root, 7);
+            Node find = bst.FindElementNode_Recursive(bst.root, 7);
+            find = bst.FindElementNode_Iterative(7);
 
             Console.WriteLine();
             // Deleting a Node in Tree
-            bt.DeleteElement(ref bt.root, 5);
+            bst.DeleteElement(ref bst.root, 5);
         }
 
         public static void DepthFirstTraversals()
@@ -91,21 +92,25 @@ namespace BinaryTree
         {
             TreeUtility.Print("Auxillary Func : SizeOfTree() || HeightOfTree() || LevelWithMaxSum() || LeastCommonAnscestor()");
 
-            BinarySearchTree bt = TreeUtility.GetBinarySearchTree();
+            BinarySearchTree bst = TreeUtility.GetBinarySearchTree();
 
-            Console.WriteLine($"Size of Tree (Recursive): '{TreeUtility.SizeOfTree(bt.root)}'");
-            Console.WriteLine($"Size of Tree (Iterative): '{TreeUtility.SizeOfTree_Iterative(bt.root)}'");
+            Console.WriteLine($"Size of Tree (Recursive): '{TreeUtility.SizeOfTree(bst.root)}'");
+            Console.WriteLine($"Size of Tree (Iterative): '{TreeUtility.SizeOfTree_Iterative(bst.root)}'");
 
-            Console.WriteLine($"Height of Tree (Recursive) :\t'{TreeUtility.HeightOfTree(bt.root)}'");
-            Console.WriteLine($"Height of Tree (Iterative) :\t'{TreeUtility.HeightOfTree_Iterative(bt.root)}'");
+            Console.WriteLine($"Height of Tree (Recursive) :\t'{TreeUtility.HeightOfTree(bst.root)}'");
+            Console.WriteLine($"Height of Tree (Iterative) :\t'{TreeUtility.HeightOfTree_Iterative(bst.root)}'");
 
             // level with max sum of nodes in the Binary Tree
             int maxSum = -1;
-            var level = TreeUtility.LevelWithMaxSum(ref maxSum, bt.root);
+            var level = TreeUtility.LevelWithMaxSum(ref maxSum, bst.root);
             Console.WriteLine($"The Level : {level} has the max sum : {maxSum} in the Tree");
 
             // Deepest Node in the Tree
-            TreeUtility.DeepestNodeInTree(bt.root);
+            TreeUtility.DeepestNodeInTree(bst.root);
+
+            // Min Value in Tree
+            Console.WriteLine($"Min Value in Tree (Recursive) :\t'{bst.FindMin_Recursive(bst.root)}");
+            Console.WriteLine($"Min Value in Tree (Iterative) :\t'{bst.FindMin_Iterative(bst.root)}");
         }
 
         public static void FindFindLeastCommonAnscestorInBinarySearchTree()

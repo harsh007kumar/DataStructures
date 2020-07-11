@@ -93,7 +93,7 @@ namespace BinaryTree
                 CheckElementExists(head.Right, data);
         }
 
-        public Node FindElementNode(Node head, int data)
+        public Node FindElementNode_Recursive(Node head, int data)
         {
             Node elementFoundAtNode = null;
             if (head == null)
@@ -104,11 +104,28 @@ namespace BinaryTree
                 elementFoundAtNode = head;
             }
             else if (data < head.Data)
-                elementFoundAtNode = FindElementNode(head.Left, data);
-            else
-                elementFoundAtNode = FindElementNode(head.Right, data);
+                elementFoundAtNode = FindElementNode_Recursive(head.Left, data);
+            else if (data > head.Data)
+                elementFoundAtNode = FindElementNode_Recursive(head.Right, data);
 
             return elementFoundAtNode;
+        }
+
+        public Node FindElementNode_Iterative(int data)
+        {
+            if (root == null) return null;
+            
+            var temp = root;
+            while(temp!=null)
+            {
+                if (temp.Data == data)
+                    return root;
+                if (data < temp.Data)
+                    temp = temp.Left;
+                else
+                    temp = temp.Right;
+            }
+            return null;
         }
 
         public Node DeleteElement(ref Node head, int data)
@@ -142,6 +159,36 @@ namespace BinaryTree
                 head.Right = DeleteElement(ref head.Right, data);
                 return head;
             }
+        }
+
+        /// <summary>
+        /// Time Complexity: O(n), in worst case (when BST is a left skew tree) || Space Complexity: O(n), for recursive stack.(p. 299)
+        /// </summary>
+        /// <param name="head"></param>
+        /// <returns></returns>
+        public int FindMin_Recursive(Node head)
+        {
+            int min = -1;
+            if (head == null) return min;
+            else if (head.Left == null)
+                min = head.Data;
+            else
+                min = FindMin_Recursive(head.Left);
+            return min;
+        }
+
+        /// <summary>
+        /// Time Complexity: O(n), in worst case (when BST is a left skew tree) || Space O(1)
+        /// </summary>
+        /// <param name="head"></param>
+        /// <returns></returns>
+        public int FindMin_Iterative(Node head)
+        {
+            if (head == null) return -1;
+            var temp = head;
+            while (temp.Left != null)
+                temp = temp.Left;
+            return temp.Data;
         }
 
         /// <summary>
