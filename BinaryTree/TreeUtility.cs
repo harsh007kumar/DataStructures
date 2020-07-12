@@ -965,8 +965,9 @@ namespace BinaryTree
         {
             if (root == null) return root;
             Node leftSubtree = null, rtSubtree = null;
-            var tempRt = root.Right;
-            if (root.Left != null)
+            var rootRt = root.Right;
+
+            if (root.Left != null)      // Left Subtree Not Null
             {
                 leftSubtree = ConvertBSTToCircularLinkedList(ref root.Left);
                 leftSubtree.Left = root;            // Head->left = last
@@ -974,16 +975,23 @@ namespace BinaryTree
                 root.Left.Right = root;
             }
             
-            if (tempRt != null)
+            if (rootRt != null)         // Rt Subtree Not Null
             {
-                rtSubtree = ConvertBSTToCircularLinkedList(ref tempRt);
-                leftSubtree.Left.Right = rtSubtree; // current circular list last i.e,  Last->Next = new circular List's Head
-                var temp = leftSubtree.Left;
-                leftSubtree.Left = rtSubtree.Left;  // current circular list Head i.e,  Head->Prv = new circular list Last Node
+                rtSubtree = ConvertBSTToCircularLinkedList(ref rootRt);
 
+                var temp = root;
+                if (root.Left != null)
+                {
+                    root.Right.Left = rtSubtree.Left;// PrvTree circular list Head i.e,  Head->Prv = new circular list Last Node
+                    temp = root.Right;
+                }
+                else
+                    root.Left = rtSubtree.Left;     // PrvTree circular list Head i.e,  Head->Prv = new circular list Last Node
 
-                rtSubtree.Left.Right = leftSubtree; // new circular List's last i.e,    Last->Next = leftSubtree->Head
-                rtSubtree.Left = temp;              // new circular List's i.e,         Head.Previous = leftSubtree Last Node
+                root.Right = rtSubtree;             // PrvTree circular list last i.e,  Last->Next = new circular List's Head
+
+                rtSubtree.Left.Right = temp;        // new circular List's last i.e,    Last->Next = PrvTree->Head
+                rtSubtree.Left = root;              // new circular List's Head i.e,    Head.Previous = PrvTree's Last Node
             }
 
             return leftSubtree != null ? leftSubtree : root;
