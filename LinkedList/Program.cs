@@ -39,7 +39,7 @@ namespace LinkedList
             Console.WriteLine($"Inserting : {data} at the Start");
         }
 
-        public void AddAtEnd(int data)
+        public void AddAtEnd(int data, bool silent = false)
         {
             Node newNode = new Node(data);   // Create New Node
             if (Head == null)
@@ -53,7 +53,7 @@ namespace LinkedList
                 newNode.prv = Temp;          // Point newly added Node->Previous to previously last element
             }
             count++;
-            Console.WriteLine($"Inserting : {data} at the End");
+            if(!silent) Console.WriteLine($"Inserting : {data} at the End");
         }
 
         public void AddAtPosition(int data, int pos = 1)
@@ -140,13 +140,13 @@ namespace LinkedList
             count--;
         }
 
-        // To Print Elements From Start
+        // To Print Elements From Head
         public void PrintFromStart()
         {
             if (Head == null) return;
 
             Node current = Head;
-            Console.WriteLine("Printing Elements From Start/Head");
+            Console.Write("\nPrinting Doubly Linked List from Head to Last :\t");
             while (current != null)
             {
                 Console.Write($"--> {current.Data}");
@@ -161,7 +161,7 @@ namespace LinkedList
             if (Head == null) return;
 
             Node current = Head;
-            Console.WriteLine("Printing Elements From End");
+            Console.Write("\nPrinting Doubly Linked List from Last to Head:\t");
             while (current.next != null)
                 current = current.next;
             while (current != null)
@@ -291,6 +291,44 @@ namespace LinkedList
         }
     }
 
+    public static class LinkedListUtility
+    {
+        public static Node FindMiddle(Node head)
+        {
+            if (head == null) return null;
+            var tempSlow = head;
+            var tempFast = head;
+            while (tempFast?.next != null)
+            {
+                tempSlow = tempSlow.next;
+                tempFast = tempFast.next.next;
+            }
+            return tempSlow;
+        }
+
+        public static DoublyLinkedList GetDoublyLinkledList()
+        {
+            var dll = new DoublyLinkedList();
+            for(int i=10;i<1001;i=i+10)
+                dll.AddAtEnd(i,true);
+            return dll;
+        }
+
+        public static void PrintTreeInOrderTraversal(Node head)
+        {
+            if (head == null) return;
+            PrintTreeInOrderTraversal(head.prv);
+            Console.Write($" >> {head.Data}");
+            PrintTreeInOrderTraversal(head.next);
+        }
+        public static void PrintTreePreOrderTraversal(Node head)
+        {
+            if (head == null) return;
+            Console.Write($" >> {head.Data}");
+            PrintTreePreOrderTraversal(head.prv);
+            PrintTreePreOrderTraversal(head.next);
+        }
+    }
     class MainClass
     {
         public static void Main(string[] args)

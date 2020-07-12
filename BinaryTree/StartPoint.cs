@@ -6,6 +6,7 @@ using System.Linq;
 using System.Net;
 using System.Security;
 using System.Security.Cryptography;
+using LinkedList;
 
 namespace BinaryTree
 {
@@ -36,6 +37,7 @@ namespace BinaryTree
             FindSumOfAllInGenericTree();
             BuildExpressionTreeFromPostFixExpression();
             ConvertBinaryTreeToDoublyLinkedList_InPlace();
+            ConvertSortedDoublyLinkedListToBalancedBST_InPlace();
             Console.ReadKey();
         }
 
@@ -359,6 +361,7 @@ namespace BinaryTree
                 PostFix(root.Right);
                 Console.Write($" {(char)root.Data}");
             }
+            Console.WriteLine();
         }
 
         public static void ConvertBinaryTreeToDoublyLinkedList_InPlace()
@@ -372,6 +375,7 @@ namespace BinaryTree
             TreeUtility.PrintLinkedListFromHeadToLast(head);
             TreeUtility.PrintLinkedListFromLastToHead(head.Left);
 
+            // Efficient Approach || Divide and Conquer Approach
             // GFG https://www.geeksforgeeks.org/convert-a-binary-tree-to-a-circular-doubly-link-list/
             BinaryTree bt = TreeUtility.GetBinaryTree();
             TreeUtility.DFS.InOrderTraversal_Iterative(bt.root);
@@ -379,6 +383,19 @@ namespace BinaryTree
             head = TreeUtility.ConvertBinaryTreeToCircularLinkedList(bt.root);
             TreeUtility.PrintLinkedListFromHeadToLast(head);
             TreeUtility.PrintLinkedListFromLastToHead(head.Left);
+        }
+
+        public static void ConvertSortedDoublyLinkedListToBalancedBST_InPlace()
+        {
+            TreeUtility.Print("Problem - 56 Given a sorted doubly linked list, give an algorithm for converting it into balanced binary search tree.(p. 314)");
+            DoublyLinkedList dll = LinkedListUtility.GetDoublyLinkledList();
+            dll.PrintFromStart();
+
+            var root = TreeUtility.ConvertSortedDoublyLinkedListToBalancedBST(dll.Head);
+            Console.Write("\nPrint Binary Tree in InOrder Traversal:\t\t");
+            LinkedListUtility.PrintTreeInOrderTraversal(root);
+            Console.Write("\n\nPrint Binary Tree in PreOrder Traversal:\t");
+            LinkedListUtility.PrintTreePreOrderTraversal(root);
         }
     }
 }

@@ -7,7 +7,7 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-
+using LinkedList;
 namespace BinaryTree
 {
     public static class TreeUtility
@@ -1060,6 +1060,25 @@ namespace BinaryTree
                 temp = temp.Left;              // temp = temp.Previous
             }
             Console.Write($" >> {temp.Data}\n");
+        }
+    
+        public static LinkedList.Node ConvertSortedDoublyLinkedListToBalancedBST(LinkedList.Node head)
+        {
+            if (head == null) return null;
+            var middle = LinkedList.LinkedListUtility.FindMiddle(head);
+
+            var temp = middle.prv;
+            if (temp != null) temp.next = null;
+            
+            temp = middle.next;
+            if (temp != null) temp.prv = null;
+            
+            middle.prv = middle.next = null;
+
+            if (middle != head) middle.prv = ConvertSortedDoublyLinkedListToBalancedBST(head);
+            if (middle != temp) middle.next = ConvertSortedDoublyLinkedListToBalancedBST(temp);
+
+            return middle;
         }
     }
 }
