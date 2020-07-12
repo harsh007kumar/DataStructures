@@ -956,20 +956,34 @@ namespace BinaryTree
             return (leftCheck && rtCheck && CheckIfBST(root.Left) && CheckIfBST(root.Right));
         }
 
-        public static Node ConvertBSTToCircularLinkedList(Node root)
+        /// <summary>
+        /// Converts BST to Doubly Circular Linked List and returns List Head
+        /// </summary>
+        /// <param name="root"></param>
+        /// <returns></returns>
+        public static Node ConvertBSTToCircularLinkedList(ref Node root)
         {
             if (root == null) return root;
             Node leftSubtree = null, rtSubtree = null;
+            var tempRt = root.Right;
             if (root.Left != null)
             {
-                leftSubtree = ConvertBSTToCircularLinkedList(root.Left);
+                leftSubtree = ConvertBSTToCircularLinkedList(ref root.Left);
+                leftSubtree.Left = root;            // Head->left = last
+                root.Right = leftSubtree;           // LastNode->Right = head
                 root.Left.Right = root;
             }
             
-            if (root.Right != null)
+            if (tempRt != null)
             {
-                rtSubtree = ConvertBSTToCircularLinkedList(root.Right);
-                root.Right = rtSubtree;
+                rtSubtree = ConvertBSTToCircularLinkedList(ref tempRt);
+                leftSubtree.Left.Right = rtSubtree; // current circular list last i.e,  Last->Next = new circular List's Head
+                var temp = leftSubtree.Left;
+                leftSubtree.Left = rtSubtree.Left;  // current circular list Head i.e,  Head->Prv = new circular list Last Node
+
+
+                rtSubtree.Left.Right = leftSubtree; // new circular List's last i.e,    Last->Next = leftSubtree->Head
+                rtSubtree.Left = temp;              // new circular List's i.e,         Head.Previous = leftSubtree Last Node
             }
 
             return leftSubtree != null ? leftSubtree : root;

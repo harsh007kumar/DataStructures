@@ -118,7 +118,32 @@ namespace BinaryTree
 
 
             // Convert BST to DoublyLinkedList
-            TreeUtility.ConvertBSTToCircularLinkedList(bst.root);
+            bst.root = TreeUtility.ConvertBSTToCircularLinkedList(ref bst.root);
+            PrintLinkedListFromHeadToLast(bst.root);
+            PrintLinkedListFromLastToHead(bst.root.Left);
+            // Local Func()
+            void PrintLinkedListFromHeadToLast(Node head)
+            {
+                Console.Write("Printing Linked List from head to Last Node :\t");
+                var temp = head;
+                while(temp.Right!=head)             // temp.Next!=Head
+                {
+                    Console.Write($" >> {temp.Data}");
+                    temp = temp.Right;              // temp = temp.Next
+                }
+                Console.Write($" >> {temp.Data}\n");
+            }
+            void PrintLinkedListFromLastToHead(Node last)
+            {
+                Console.Write("Printing Linked List from last to head Node :\t");
+                var temp = last;
+                while (temp.Left != last)             // last.Previous != last
+                {
+                    Console.Write($" >> {temp.Data}");
+                    temp = temp.Left;              // temp = temp.Previous
+                }
+                Console.Write($" >> {temp.Data}\n");
+            }
         }
 
         public static void FindFindLeastCommonAnscestorInBinarySearchTree()
