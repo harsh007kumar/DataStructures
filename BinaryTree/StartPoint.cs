@@ -38,6 +38,7 @@ namespace BinaryTree
             BuildExpressionTreeFromPostFixExpression();
             ConvertBinaryTreeToDoublyLinkedList_InPlace();
             ConvertSortedDoublyLinkedListToBalancedBST_InPlace();
+            ConvertingArrayToBST();
             Console.ReadKey();
         }
 
@@ -396,6 +397,24 @@ namespace BinaryTree
             LinkedListUtility.PrintTreeInOrderTraversal(root);
             Console.Write("\n\nPrint Binary Tree in PreOrder Traversal:\t");
             LinkedListUtility.PrintTreePreOrderTraversal(root);
+            Console.WriteLine();
+        }
+
+        public static void ConvertingArrayToBST()
+        {
+            TreeUtility.Print("Problem - 57 Given a sorted array, give an algorithm for converting the array to BST.(pp. 314 - 315)");
+            int[] arr = new int[51];
+            Console.Write("\nPrinting Sorted Array from Start :\t");
+            for (int i = 0; i < arr.Length; i++)
+            {
+                arr[i] = i * 10;
+                Console.Write($" {arr[i]}");
+            }
+
+            var root = TreeUtility.GenerateBalancedBSTFromSortedArray(arr, 0, arr.Length - 1);
+            Console.Write("\n\nPrinting Balanced BST in PreOrder Traversal (Root || Left || Right) :\t");
+            TreeUtility.DFS.PreOrderTraversal(root);
+            Console.WriteLine();
         }
     }
 }

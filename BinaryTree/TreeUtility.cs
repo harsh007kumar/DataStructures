@@ -1061,24 +1061,52 @@ namespace BinaryTree
             }
             Console.Write($" >> {temp.Data}\n");
         }
-    
+        
+        /// <summary>
+        /// Convert an Sorted Doubled Linked List in-place into Balanced BST
+        /// Time Complexity O(n*Logn) || Space O(n) for recursion stack
+        /// </summary>
+        /// <param name="head"></param>
+        /// <returns></returns>
         public static LinkedList.Node ConvertSortedDoublyLinkedListToBalancedBST(LinkedList.Node head)
         {
             if (head == null) return null;
             var middle = LinkedList.LinkedListUtility.FindMiddle(head);
 
             var temp = middle.prv;
-            if (temp != null) temp.next = null;
+            if (temp != null) temp.next = null;                 // Mark last Node->next of first Half null
             
             temp = middle.next;
-            if (temp != null) temp.prv = null;
-            
+            if (temp != null) temp.prv = null;                  // Mark Head Node->Prv of second Half null
+
             middle.prv = middle.next = null;
 
-            if (middle != head) middle.prv = ConvertSortedDoublyLinkedListToBalancedBST(head);
-            if (middle != temp) middle.next = ConvertSortedDoublyLinkedListToBalancedBST(temp);
+            if (middle != head) middle.prv = ConvertSortedDoublyLinkedListToBalancedBST(head);      // root->Left
+            if (middle != temp) middle.next = ConvertSortedDoublyLinkedListToBalancedBST(temp);     // root->right
 
             return middle;
+        }
+
+        /// <summary>
+        /// Convert an Sorted Array into Balanced BST
+        /// Time Complexity O(n) || Space O(n) for recursion stack
+        /// Divide and Conquer methodology
+        /// </summary>
+        /// <param name="arr"></param>
+        /// <param name="start"></param>
+        /// <param name="end"></param>
+        /// <returns></returns>
+        public static Node GenerateBalancedBSTFromSortedArray(int[] arr, int start, int end)
+        {
+            if (start > end || arr.Length == 0) return null;
+            if (start == end) return new Node(arr[start]);
+
+            var middle = (start + end) / 2;
+            Node root = new Node(arr[middle]);                  // Create root node
+
+            root.Left = GenerateBalancedBSTFromSortedArray(arr, start, middle - 1);
+            root.Right = GenerateBalancedBSTFromSortedArray(arr, middle + 1, end);
+            return root;
         }
     }
 }
