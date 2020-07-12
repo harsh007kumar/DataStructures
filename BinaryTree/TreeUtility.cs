@@ -1108,5 +1108,29 @@ namespace BinaryTree
             root.Right = GenerateBalancedBSTFromSortedArray(arr, middle + 1, end);
             return root;
         }
+
+        /// <summary>
+        /// GFG https://www.geeksforgeeks.org/sorted-linked-list-to-balanced-bst/
+        /// Time Complexity O(n) || Space Complexity O(n) for recursion stack
+        /// We fetch the length of linked list before hand and than add that many elements to are tree, half on left & half - 1 on right
+        /// Ex List 1..2..3 we add 1 on left of 2(root) and 3 on rt
+        /// Ex list 1..2..3..4..5 we add 1..2 on left of 3(Root) and 4..5 on its rt
+        /// </summary>
+        /// <param name="head"></param>
+        /// <param name="size"></param>
+        /// <returns></returns>
+        public static Node ConvertSortedSinglyLinkedListToHeightBalancedBST(ref LinkedList.Node head, int size)
+        {
+            if (head == null || size <= 0) return null;
+            Node leftSubTree = ConvertSortedSinglyLinkedListToHeightBalancedBST(ref head, size / 2);        // add half element in lt tree
+            Node root = new Node(head.Data);                                                                // create root
+            root.Left = leftSubTree;
+
+            head = head.next;                   // Move head to next node
+
+            Node rtSubTree = ConvertSortedSinglyLinkedListToHeightBalancedBST(ref head, size - size / 2 - 1);// add (Total - half) - 1 (i.e,Root) elements to rt tree
+            root.Right = rtSubTree;
+            return root;
+        }
     }
 }

@@ -39,6 +39,7 @@ namespace BinaryTree
             ConvertBinaryTreeToDoublyLinkedList_InPlace();
             ConvertSortedDoublyLinkedListToBalancedBST_InPlace();
             ConvertingArrayToBST();
+            ConvertSingleSortedLinkedListToBalanceBST_BottomUpApporach();
             Console.ReadKey();
         }
 
@@ -415,6 +416,15 @@ namespace BinaryTree
             Console.Write("\n\nPrinting Balanced BST in PreOrder Traversal (Root || Left || Right) :\t");
             TreeUtility.DFS.PreOrderTraversal(root);
             Console.WriteLine();
+        }
+
+        public static void ConvertSingleSortedLinkedListToBalanceBST_BottomUpApporach()
+        {
+            TreeUtility.Print("Problem - 58 Given a singly linked list where elements are sorted in ascending order, convert it to a height balanced BST.(p. 315)");
+            SinglyLinkedList sll = LinkedList.LinkedListUtility.GetSinglyLinkedList();
+            LinkedList.LinkedListUtility.PrintContent(sll.Head);
+            var root = TreeUtility.ConvertSortedSinglyLinkedListToHeightBalancedBST(ref sll.Head, sll.Count);
+            TreeUtility.DFS.PreOrderTraversal_Iterative(root);
         }
     }
 }

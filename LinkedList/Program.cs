@@ -24,6 +24,20 @@ namespace LinkedList
         protected BaseLinkedList() => Head = null;
     }
 
+    public class SinglyLinkedList : BaseLinkedList
+    {
+        public SinglyLinkedList() : base() { }
+
+        public void AddAtStart(int data, bool silent = false)
+        {
+            Node newNode = new Node(data);   // Create New Node
+            newNode.next = Head;             // Point the newly added Node->Next to previously First Node
+            Head = newNode;                  // Pointing the Head of LinkedList to newly added node
+            count++;
+            if(!silent) Console.WriteLine($"Inserting : {data} at the Start");
+        }
+    }
+
     public class DoublyLinkedList : BaseLinkedList
     {
         public DoublyLinkedList() : base() {}
@@ -313,6 +327,13 @@ namespace LinkedList
                 dll.AddAtEnd(i,true);
             return dll;
         }
+        public static SinglyLinkedList GetSinglyLinkedList()
+        {
+            var dll = new SinglyLinkedList();
+            for (int i = 100; i >= 10; i = i - 10)
+                dll.AddAtStart(i, true);
+            return dll;
+        }
 
         public static void PrintTreeInOrderTraversal(Node head)
         {
@@ -327,6 +348,18 @@ namespace LinkedList
             Console.Write($" >> {head.Data}");
             PrintTreePreOrderTraversal(head.prv);
             PrintTreePreOrderTraversal(head.next);
+        }
+        public static void PrintContent(Node head)
+        {
+            if (head == null) return;
+            Console.Write("\nPrinting Elements From Start/Head :\t");
+            Node temp = head;
+            while(temp!=null)
+            {
+                Console.Write($"--> {temp.Data} ");
+                temp = temp.next;
+            }
+            Console.WriteLine();
         }
     }
 
