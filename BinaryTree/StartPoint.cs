@@ -9,7 +9,7 @@ using System.Security.Cryptography;
 
 namespace BinaryTree
 {
-    
+
     class StartPoint
     {
         public static void Main(string[] args)
@@ -35,6 +35,7 @@ namespace BinaryTree
             ContructTreeFromPreOrderTraversalWhereInternalNodeisIandLeafNodeisL();
             FindSumOfAllInGenericTree();
             BuildExpressionTreeFromPostFixExpression();
+            ConvertBinaryTreeToDoublyLinkedList_InPlace();
             Console.ReadKey();
         }
 
@@ -65,7 +66,7 @@ namespace BinaryTree
             TreeUtility.Print("Depth First Traversals");
 
             BinarySearchTree bt = TreeUtility.GetBinarySearchTree();
-            
+
             Console.Write("\nIn Order Traversal (Left, Root, Right) :\t");
             TreeUtility.DFS.InOrderTraversal(bt.root);
             TreeUtility.DFS.InOrderTraversal_Iterative(bt.root);
@@ -73,7 +74,7 @@ namespace BinaryTree
             Console.Write("\nPre Order Traversal (Root, Left, Right) :\t");
             TreeUtility.DFS.PreOrderTraversal(bt.root);
             TreeUtility.DFS.PreOrderTraversal_Iterative(bt.root);
-            
+
             Console.Write("\nPost Order Traversal (Left, Right, Root) :\t");
             TreeUtility.DFS.PostOrderTraversal(bt.root);
             TreeUtility.DFS.PostOrderTraversal_Iterartive(bt.root);
@@ -115,35 +116,6 @@ namespace BinaryTree
 
             // Check BST or not
             Console.WriteLine($"Checking if is tree is BST (Recursive) :\t'{TreeUtility.CheckIfBST(bst.root)}'");
-
-
-            // Convert BST to DoublyLinkedList
-            bst.root = TreeUtility.ConvertBSTToCircularLinkedList(ref bst.root);
-            PrintLinkedListFromHeadToLast(bst.root);
-            PrintLinkedListFromLastToHead(bst.root.Left);
-            // Local Func()
-            void PrintLinkedListFromHeadToLast(Node head)
-            {
-                Console.Write("Printing Linked List from head to Last Node :\t");
-                var temp = head;
-                while(temp.Right!=head)             // temp.Next!=Head
-                {
-                    Console.Write($" >> {temp.Data}");
-                    temp = temp.Right;              // temp = temp.Next
-                }
-                Console.Write($" >> {temp.Data}\n");
-            }
-            void PrintLinkedListFromLastToHead(Node last)
-            {
-                Console.Write("Printing Linked List from last to head Node :\t");
-                var temp = last;
-                while (temp.Left != last)             // last.Previous != last
-                {
-                    Console.Write($" >> {temp.Data}");
-                    temp = temp.Left;              // temp = temp.Previous
-                }
-                Console.Write($" >> {temp.Data}\n");
-            }
         }
 
         public static void FindFindLeastCommonAnscestorInBinarySearchTree()
@@ -159,7 +131,7 @@ namespace BinaryTree
             Console.WriteLine("Recursive Method");
             c1 = 4;
             Console.WriteLine($" LCA for '{c1}' and '{c2}' is : '{TreeUtility.FindLCA_Recursive_InBinarySearchTree(bt.root, c1, c2)}'");
-            
+
         }
 
         public static void FindMaxInBinaryTree()
@@ -182,7 +154,7 @@ namespace BinaryTree
             Console.WriteLine($" Searching element in Binary Tree is (Iterative Func) :\t {TreeUtility.SearchElementInBinaryTree_Iterative(bt.root, 10)}");
 
         }
-    
+
         public static void LevelOrderInReverse()
         {
             TreeUtility.Print("Problem - 8 Give an algorithm for printing the level order data in reverse order.(p. 245)");
@@ -191,9 +163,9 @@ namespace BinaryTree
 
             TreeUtility.BFS.LevelOrderTraversal(bt.root);
             TreeUtility.BFS.LevelOrderReverse(bt.root);
-            
+
         }
-    
+
         public static void CheckTwoBinaryTreesIdentical()
         {
             TreeUtility.Print("Problem - 17 Given two binary trees, return true if they are structurally identical.(p. 250)");
@@ -202,9 +174,9 @@ namespace BinaryTree
             BinarySearchTree bt2 = TreeUtility.GetBinarySearchTree();
             //bt2.AddElement(ref bt2.root,111);
             Console.WriteLine($" Given two binary trees are identicial or not returned :\t{TreeUtility.BinaryTreesIdentical(bt1.root, bt2.root) }");
-            
+
         }
-    
+
         public static void FindDiameterOfBinaryTree()
         {
             TreeUtility.Print("Problem - 18 Give an algorithm for finding the diameter of the binary tree.(p. 251)");
@@ -226,7 +198,7 @@ namespace BinaryTree
             Node[] arr = new Node[len];                 // creating array of size = height of tree
             TreeUtility.PrintRootToLeafPaths(bt.root, arr, -1);
         }
-    
+
         public static void ForGivenSUMCheckIfPathExists()
         {
             TreeUtility.Print("Problem - 21 Give an algorithm for checking the existence of path with given sum.That means, given a sum, check whether there exists a path from root to any of the nodes.(p. 255)");
@@ -235,7 +207,7 @@ namespace BinaryTree
 
             Console.WriteLine($" Path with given sum :\t{checkForPathWithSUM}, Exists : {TreeUtility.CheckIfPathwithGivenSumExists(bt.root, checkForPathWithSUM)}");
         }
-    
+
         public static void ConverTreeIntoMirror()
         {
             TreeUtility.Print("Problem - 24 Give an algorithm for converting a tree to its mirror.(p. 256)");
@@ -248,10 +220,10 @@ namespace BinaryTree
             TreeUtility.Print("Problem - 25 Given two trees, give an algorithm for checking whether they are mirrors of each other.(p. 257)");
             BinarySearchTree mirror = TreeUtility.GetBinarySearchTree();
             //mirror.AddElement(ref bt.root, 123);
-            Console.WriteLine($" Tree are mirror : {TreeUtility.CheckGivenTreesAreMirror(mirror.root,bt.root)}");
+            Console.WriteLine($" Tree are mirror : {TreeUtility.CheckGivenTreesAreMirror(mirror.root, bt.root)}");
 
         }
-    
+
         public static void FindLCAInBinaryTree()
         {
             TreeUtility.Print("Problem - 26 Give an algorithm for finding LCA (Least Common Ancestor) of two nodes in a Binary Tree.(p. 257)");
@@ -260,7 +232,7 @@ namespace BinaryTree
             var LCA = TreeUtility.FindLCA_Recursive_InBinaryTree(bt.root, n1, n2);
             Console.WriteLine($" LCA of {n1} {n2} is :\t{LCA.Data}");
         }
-    
+
         public static void ConstructBinaryTreeFromItsInOrderAndPreOrderTraversals()
         {
             TreeUtility.Print("Problem - 27 Give an algorithm for constructing binary tree from given Inorder and Preorder traversals.(p. 257)");
@@ -303,7 +275,7 @@ namespace BinaryTree
             Console.Write($"Printing Anscestor of a Node '7' in Binary Tree are :\t");
             TreeUtility.PrintAllAnscestorsInBinaryTree(bt.root, 7);
         }
-    
+
         public static void PrintBinaryTreeInZigZagOrder()
         {
             TreeUtility.Print("Problem - 30 Zigzag Tree Traversal: Give an algorithm to traverse a binary tree in Zigzag order.(p. 262)");
@@ -311,7 +283,7 @@ namespace BinaryTree
             TreeUtility.BFS.LevelOrderTraversal(bt.root);
             TreeUtility.BFS.ZigZagTraversal(bt.root);
         }
-    
+
         public static void CalculateVerticalSumInBinaryTree()
         {
             TreeUtility.Print("Problem - 31 Give an algorithm for finding the vertical sum of a binary tree.(p. 263)");
@@ -320,7 +292,7 @@ namespace BinaryTree
             TreeUtility.VerticalSumInBinaryTree(bt.root, 0, ref dt);
             TreeUtility.DFS.InOrderTraversal_Iterative(bt.root);
             Console.WriteLine("Vertical sum of a binary tree");
-            foreach(var col in dt)
+            foreach (var col in dt)
                 Console.Write($"|| Column {col.Key} Value {col.Value} ");
         }
 
@@ -333,15 +305,15 @@ namespace BinaryTree
             BinaryTree bt = new BinaryTree();
             int startFrom = 0;
 
-            ConvertFromPreOrder(ref bt.root,preOrder.ToCharArray(), ref startFrom);
+            ConvertFromPreOrder(ref bt.root, preOrder.ToCharArray(), ref startFrom);
 
             Console.Write(" Pre-Order of generated Tree :\t");
             PreOrderTraversal(bt.root);
             Console.WriteLine("\n");
             #region Local Func
-            void ConvertFromPreOrder(ref Node root, char[] arr,ref int index)
+            void ConvertFromPreOrder(ref Node root, char[] arr, ref int index)
             {
-                if (index>=arr.Length) return;
+                if (index >= arr.Length) return;
                 root = new Node(arr[index++]);
                 if (arr[index - 1] == 'L') return;
                 ConvertFromPreOrder(ref root.Left, arr, ref index);
@@ -387,6 +359,26 @@ namespace BinaryTree
                 PostFix(root.Right);
                 Console.Write($" {(char)root.Data}");
             }
+        }
+
+        public static void ConvertBinaryTreeToDoublyLinkedList_InPlace()
+        {
+            TreeUtility.Print("Problem - 54 Give an algorithm for converting BST to circular DLL with space complexity O(1)(p.313)");
+            BinarySearchTree bst = TreeUtility.GetBinarySearchTree();
+            TreeUtility.DFS.InOrderTraversal_Iterative(bst.root);
+
+            // Convert BST to DoublyLinkedList
+            var head = TreeUtility.ConvertBSTToCircularLinkedList(ref bst.root);
+            TreeUtility.PrintLinkedListFromHeadToLast(head);
+            TreeUtility.PrintLinkedListFromLastToHead(head.Left);
+
+            // GFG https://www.geeksforgeeks.org/convert-a-binary-tree-to-a-circular-doubly-link-list/
+            BinaryTree bt = TreeUtility.GetBinaryTree();
+            TreeUtility.DFS.InOrderTraversal_Iterative(bt.root);
+            
+            head = TreeUtility.ConvertBinaryTreeToCircularLinkedList(bt.root);
+            TreeUtility.PrintLinkedListFromHeadToLast(head);
+            TreeUtility.PrintLinkedListFromLastToHead(head.Left);
         }
     }
 }

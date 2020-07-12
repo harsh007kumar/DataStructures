@@ -957,7 +957,8 @@ namespace BinaryTree
         }
 
         /// <summary>
-        /// Converts BST to Doubly Circular Linked List and returns List Head
+        /// Converts BST to Doubly Circular Linked List (In-Place) and returns List Head
+        /// Time Complexity O(n) || Space Complexity O(n) for recursion stack
         /// </summary>
         /// <param name="root"></param>
         /// <returns></returns>
@@ -995,6 +996,70 @@ namespace BinaryTree
             }
 
             return leftSubtree != null ? leftSubtree : root;
+        }
+
+        /// <summary>
+        /// Converts Binary Tree to Doubly Linked List via simple algo || Time Complexity O(n) || Space Complexity O(n) for recursion stack
+        /// </summary>
+        /// <param name="root"></param>
+        /// <returns></returns>
+        public static Node ConvertBinaryTreeToCircularLinkedList(Node root)
+        {
+            if (root == null) return null;
+            var leftList = ConvertBinaryTreeToCircularLinkedList(root.Left);
+            var rtList = ConvertBinaryTreeToCircularLinkedList(root.Right);
+
+            // Make Single root Node circular
+            root.Left = root.Right = root;
+
+            root = ConcatenateTwoList(leftList, root);      // Concate Left and Root
+            root = ConcatenateTwoList(root, rtList);        // Concate above and Right
+
+            return root;
+        }
+
+        /// <summary>
+        /// Func which contatenates two Doubly Circular Linked List and returns head of merged list
+        /// </summary>
+        /// <param name="leftList"></param>
+        /// <param name="rightList"></param>
+        /// <returns></returns>
+        public static Node ConcatenateTwoList(Node leftList, Node rightList)
+        {
+            if (leftList == null) return rightList;
+            else if (rightList == null) return leftList;
+            else
+            {   // A....B              C....D
+                leftList.Left.Right = rightList;    // B->Next = C
+                rightList.Left.Right = leftList;    // D->Next = A
+                var leftListLastNode = leftList.Left;
+                leftList.Left = rightList.Left;     // A->Prv = D
+                rightList.Left = leftListLastNode;  // C->Prv = B
+            }
+            return leftList;
+        }
+
+        public static void PrintLinkedListFromHeadToLast(Node head)
+        {
+            Console.Write("Printing Linked List from head to Last Node :\t");
+            var temp = head;
+            while (temp.Right != head)             // temp.Next!=Head
+            {
+                Console.Write($" >> {temp.Data}");
+                temp = temp.Right;              // temp = temp.Next
+            }
+            Console.Write($" >> {temp.Data}\n");
+        }
+        public static void PrintLinkedListFromLastToHead(Node last)
+        {
+            Console.Write("Printing Linked List from last to head Node :\t");
+            var temp = last;
+            while (temp.Left != last)             // last.Previous != last
+            {
+                Console.Write($" >> {temp.Data}");
+                temp = temp.Left;              // temp = temp.Previous
+            }
+            Console.Write($" >> {temp.Data}\n");
         }
     }
 }
