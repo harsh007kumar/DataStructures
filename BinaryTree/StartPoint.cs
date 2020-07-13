@@ -40,6 +40,7 @@ namespace BinaryTree
             ConvertSortedDoublyLinkedListToBalancedBST_InPlace();
             ConvertingArrayToBST();
             ConvertSingleSortedLinkedListToBalanceBST_BottomUpApporach();
+            FindKthSmallestElementInBST();
             Console.ReadKey();
         }
 
@@ -425,6 +426,16 @@ namespace BinaryTree
             LinkedList.LinkedListUtility.PrintContent(sll.Head);
             var root = TreeUtility.ConvertSortedSinglyLinkedListToHeightBalancedBST(ref sll.Head, sll.Count);
             TreeUtility.DFS.PreOrderTraversal_Iterative(root);
+        }
+
+        public static void FindKthSmallestElementInBST()
+        {
+            TreeUtility.Print("Problem - 60 Give an algorithm for finding the kth smallest element in BST.(p. 317)");
+            BinarySearchTree bst = TreeUtility.GetBinarySearchTree();
+            TreeUtility.DFS.InOrderTraversal_Iterative(bst.root);
+            int k = 4, noOfElementRead = 0;
+            Node kNode = TreeUtility.KthSmallestElementInBST(bst.root, k, ref noOfElementRead);
+            if (kNode != null) Console.WriteLine($" K : {k}th smallest element in above BST is : {kNode.Data}");
         }
     }
 }

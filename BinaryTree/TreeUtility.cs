@@ -1132,5 +1132,29 @@ namespace BinaryTree
             root.Right = rtSubTree;
             return root;
         }
+
+        /// <summary>
+        /// Time O(n) || Space O(n) for recursion stack
+        /// </summary>
+        /// <param name="root"></param>
+        /// <param name="kth"></param>
+        /// <param name="noOfElementRead"></param>
+        /// <returns></returns>
+        public static Node KthSmallestElementInBST(Node root, int kth, ref int noOfElementRead)
+        {
+            if (root == null) return null;
+            var left = KthSmallestElementInBST(root.Left, kth, ref noOfElementRead);
+            
+            if (noOfElementRead == kth)
+                return left;
+            
+            if (++noOfElementRead == kth) return root;
+
+            var rt = KthSmallestElementInBST(root.Right, kth, ref noOfElementRead);
+            if (noOfElementRead == kth)
+                return rt;
+
+            return null;
+        }
     }
 }
