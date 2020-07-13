@@ -42,6 +42,7 @@ namespace BinaryTree
             ConvertSingleSortedLinkedListToBalanceBST_BottomUpApporach();
             FindKthSmallestElementInBST();
             FindCielAndFloorInBST();
+            FindIntersectionOfTwoBSTs();
             Console.ReadKey();
         }
 
@@ -451,6 +452,24 @@ namespace BinaryTree
             TreeUtility.CielAndFloorInBST(bst.root, data, ref ciel, ref floor);
 
             Console.WriteLine($" In abvove BST for : {data}\tCiel : {ciel}\tFloor : {floor}");
+        }
+
+        /// <summary>
+        /// GFG https://www.geeksforgeeks.org/print-common-nodes-in-two-binary-search-trees/
+        /// Problem - 62 Give an algorithm for finding the union and intersection of BSTs.(p. 319)
+        /// </summary>
+        public static void FindIntersectionOfTwoBSTs()
+        {
+            TreeUtility.Print("Print Common Nodes in Two Binary Search Trees");
+            BinarySearchTree bst1 = TreeUtility.GetBinarySearchTree();
+            BinarySearchTree bst2 = TreeUtility.GetBinarySearchTree();
+
+            var num = bst2.FindInOrderSuccessor(bst2.root.Right);
+            bst2.DeleteElement(ref bst2.root, num);
+
+            TreeUtility.DFS.InOrderTraversal_Iterative(bst1.root);
+            TreeUtility.DFS.InOrderTraversal_Iterative(bst2.root);
+            TreeUtility.CommonNodesInBSTs(bst1.root, bst2.root);
         }
     }
 }

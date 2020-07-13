@@ -1168,5 +1168,55 @@ namespace BinaryTree
 
             CielAndFloorInBST(root.Right, data, ref ciel, ref floor);
         }
+
+        /// <summary>
+        /// (Linear Time and limited Extra Space) We can find common elements in O(n) time
+        /// and O(h1 + h2) extra space, where h1 and h2 are heights of first and second BSTs respectively.
+        /// </summary>
+        /// <param name="root1"></param>
+        /// <param name="root2"></param>
+        public static void CommonNodesInBSTs(Node root1, Node root2)
+        {
+            Stack<Node> s1 = new Stack<Node>();
+            Stack<Node> s2 = new Stack<Node>();
+            Console.Write("\n Printing Common Nodes/Intersection of above two BST's :\t");
+            while ((root1 != null || s1.Count > 0) && (root2 != null || s2.Count > 0))
+            {
+                while (root1 != null)           // all left node from current root 1 are pushed to stack1
+                {
+                    s1.Push(root1);
+                    root1 = root1.Left;
+                }
+                while (root2 != null)           // all left node from current root 2 are pushed to stack2
+                {
+                    s2.Push(root2);
+                    root2 = root2.Left;
+                }
+
+                root1 = s1.Peek();
+                root2 = s2.Peek();
+
+                if (root1.Data == root2.Data)
+                {
+                    Console.Write($" {root1.Data}");
+                    s1.Pop();
+                    s2.Pop();
+                    root1 = root1.Right;        // now check for element to rt of current node
+                    root2 = root2.Right;
+                }
+                else if (root1.Data < root2.Data)
+                {
+                    s1.Pop();                   // popping smallest in current stack 1
+                    root1 = root1.Right;
+                    root2 = null;   // since we want to compare again with last top from 2nd BST
+                }
+                else
+                {
+                    s2.Pop();                   // popping smallest in current stack 2
+                    root2 = root2.Right;
+                    root1 = null;   // since we want to compare again with last top from 1st BST
+                }
+            }
+        }
     }
 }
