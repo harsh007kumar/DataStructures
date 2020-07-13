@@ -41,6 +41,7 @@ namespace BinaryTree
             ConvertingArrayToBST();
             ConvertSingleSortedLinkedListToBalanceBST_BottomUpApporach();
             FindKthSmallestElementInBST();
+            FindCielAndFloorInBST();
             Console.ReadKey();
         }
 
@@ -433,9 +434,23 @@ namespace BinaryTree
             TreeUtility.Print("Problem - 60 Give an algorithm for finding the kth smallest element in BST.(p. 317)");
             BinarySearchTree bst = TreeUtility.GetBinarySearchTree();
             TreeUtility.DFS.InOrderTraversal_Iterative(bst.root);
+
             int k = 4, noOfElementRead = 0;
             Node kNode = TreeUtility.KthSmallestElementInBST(bst.root, k, ref noOfElementRead);
+
             if (kNode != null) Console.WriteLine($" K : {k}th smallest element in above BST is : {kNode.Data}");
+        }
+
+        public static void FindCielAndFloorInBST()
+        {
+            TreeUtility.Print("Problem - 61 Floor and ceiling : in BST (p. 317)");
+            BinarySearchTree bst = TreeUtility.GetBinarySearchTree();
+            TreeUtility.DFS.InOrderTraversal_Iterative(bst.root);
+
+            int data = 16, ciel = -1, floor = -1;
+            TreeUtility.CielAndFloorInBST(bst.root, data, ref ciel, ref floor);
+
+            Console.WriteLine($" In abvove BST for : {data}\tCiel : {ciel}\tFloor : {floor}");
         }
     }
 }

@@ -1156,5 +1156,17 @@ namespace BinaryTree
 
             return null;
         }
+
+        public static void CielAndFloorInBST(Node root, int data, ref int ciel, ref int floor)
+        {
+            if (root == null) return;
+            CielAndFloorInBST(root.Left, data, ref ciel, ref floor);
+
+            if (root.Data >= data && ciel == -1) ciel = root.Data;
+            if (root.Data <= data) floor = root.Data;
+            if (ciel != -1 && floor != -1) return;
+
+            CielAndFloorInBST(root.Right, data, ref ciel, ref floor);
+        }
     }
 }
