@@ -45,6 +45,7 @@ namespace BinaryTree
             FindIntersectionOfTwoBSTs();
             PrintAllElementsInBSTInANRange();
             NoOfBSTPossilbe();
+            InsertionInAVL();
             Console.ReadKey();
         }
 
@@ -490,6 +491,13 @@ namespace BinaryTree
             TreeUtility.Print("Problem - 71 For the key values 1... n, how many structurally unique BSTs are possible that store those keys.(p. 322)");
             int nUniqueKeys = 3;
             Console.WriteLine($" No of Structurally possible BST with {nUniqueKeys} Keys :\t {TreeUtility.NoOfPossilbeBST(nUniqueKeys)}");
+        }
+
+        public static void InsertionInAVL()
+        {
+            TreeUtility.Print("Insertion into an AVL tree(p. 333)");
+            AVLTree avl = TreeUtility.GetAVLTree();
+            TreeUtility.BFS.BreadthFirstTraversal(avl.root);
         }
     }
 }

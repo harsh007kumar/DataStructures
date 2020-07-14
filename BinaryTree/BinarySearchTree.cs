@@ -150,8 +150,8 @@ namespace BinaryTree
                 else if (head.Right == null)
                     return head.Left;           // as right is null return left node which may have an value or node either way parents node gets deleted.
                 else
-                {   // replace the node data with its inorder successor and call DeleteElement() on node being copied.
-                    head.Data = FindInOrderSuccessor(head.Right);
+                {   // replace the node data with its inorder successor(i.e, InOrderPredecessor of Root->Right) and call DeleteElement() on node being copied.
+                    head.Data = FindInOrderPredeccessor(head.Right);
                     head.Right = DeleteElement(ref head.Right, head.Data);
                     return head;
                 }
@@ -173,14 +173,14 @@ namespace BinaryTree
         /// </summary>
         /// <param name="head"></param>
         /// <returns></returns>
-        public int FindInOrderSuccessor(Node head) => head.Left != null ? FindInOrderSuccessor(head.Left) : head.Data;
+        public int FindInOrderPredeccessor(Node head) => head.Left != null ? FindInOrderPredeccessor(head.Left) : head.Data;
 
         /// <summary>
         /// Element which comes right before, in InOrderTraversal (one on immediate left)
         /// </summary>
         /// <param name="head"></param>
         /// <returns></returns>
-        public int FindInOrderPredeccessor(Node head) => head.Right != null ? FindInOrderPredeccessor(head.Right) : head.Data;
+        public int FindInOrderSuccessor(Node head) => head.Right != null ? FindInOrderSuccessor(head.Right) : head.Data;
 
 
         /// <summary>
@@ -239,10 +239,10 @@ namespace BinaryTree
         public AVLTree() : base() { }
 
         /// <summary>
-        /// Left Left Rotation (LL Rotation)(p. 328) || Time Complexity: O(1). Space Complexity: O(1).
+        /// Left Left InBalance (Right Rotation)(p. 328) || Time Complexity: O(1). Space Complexity: O(1).
         /// </summary>
         /// <param name="X"></param>
-        public Node LL_Rotation(Node unBalancedNode)
+        public Node Right_Rotation(Node unBalancedNode)
         {
             Node middle = unBalancedNode.Left;
             unBalancedNode.Left = middle.Right;
@@ -253,11 +253,11 @@ namespace BinaryTree
         }
 
         /// <summary>
-        /// Right Right Rotation (RR Rotation)(p. 329) || Time Complexity: O(1). Space Complexity: O(1).
+        /// Right Right InBalance (Left Rotation)(p. 329) || Time Complexity: O(1). Space Complexity: O(1).
         /// </summary>
         /// <param name="unBalancedNode"></param>
         /// <returns></returns>
-        public Node RR_Rotation(Node unBalancedNode)
+        public Node Left_Rotation(Node unBalancedNode)
         {
             Node middle = unBalancedNode.Right;
             unBalancedNode.Right = middle.Left;
@@ -267,15 +267,92 @@ namespace BinaryTree
             return middle;
         }
 
-        public Node LR_Rotation(Node unBalancedNode)
+        /// <summary>
+        /// Left Right InBalance || Time Complexity: O(1). Space Complexity: O(1).
+        /// </summary>
+        /// <param name="unBalancedNode"></param>
+        /// <returns></returns>
+        public Node LeftRight_Rotation(Node unBalancedNode)
         {
-            unBalancedNode.Left = RR_Rotation(unBalancedNode.Left);
-            return LL_Rotation(unBalancedNode);
+            unBalancedNode.Left = Left_Rotation(unBalancedNode.Left);
+            return Right_Rotation(unBalancedNode);
         }
-        public Node RL_Rotation(Node unBalancedNode)
+
+        /// <summary>
+        /// Right Left InBalance || Time Complexity: O(1). Space Complexity: O(1).
+        /// </summary>
+        /// <param name="unBalancedNode"></param>
+        /// <returns></returns>
+        public Node RightLeft_Rotation(Node unBalancedNode)
         {
-            unBalancedNode.Right = LL_Rotation(unBalancedNode.Right);
-            return RR_Rotation(unBalancedNode);
+            unBalancedNode.Right = Right_Rotation(unBalancedNode.Right);
+            return Left_Rotation(unBalancedNode);
         }
+
+        protected int HeightOfTree(Node current) => (current == null) ? 0 : 1 + Math.Max(HeightOfTree(current.Left), HeightOfTree(current.Right));
+
+        /// <summary>
+        /// AVL tree is balanced if balance factor lies in { -1, 0, 1}
+        /// If balance > 1 left heavy || if balance < -1 right heavy
+        /// </summary>
+        /// <param name="current"></param>
+        /// <returns></returns>
+        protected int GetBalance(Node current) => HeightOfTree(current.Left) - HeightOfTree(current.Right);
+
+        public new Node AddElement(ref Node root, int data)
+        {
+            if (root == null)
+                root = new Node(data);
+            else if (data < root.Data)
+                AddElement(ref root.Left, data);
+            else if (data > root.Data)
+                AddElement(ref root.Right, data);
+
+            if (GetBalance(root) > 1)           // Left Heavy
+                // findout : Left-Left Inbalance or Left-Right Inbalance
+                // left child balance is also +ve its left-left inbalance
+                root = GetBalance(root.Left) > 0 ? Right_Rotation(root) : LeftRight_Rotation(root);
+                //(data < root.Left.Data)
+
+            else if (GetBalance(root) < -1)     // Right Heavy
+                // findout : Right-Right Inbalance or Right-Left Inbalance
+                // right child balance is also -ve its right-right inbalance
+                root = GetBalance(root.Right) < 0 ? Left_Rotation(root) : RightLeft_Rotation(root);
+
+            return root;
+        }
+
+        //public new Node DeleteElement(ref Node head, int data)
+        //{
+        //    if (head == null)
+        //    {
+        //        Console.WriteLine($"Element {data} doesnt exists");
+        //        return head;
+        //    }
+        //    else if (head.Data == data)
+        //    {
+        //        Console.WriteLine($"Node with data :\t{data} is Deleted/Moved");
+        //        if (head.Left == null)
+        //            return head.Right;          // as left node is null, return right which make be an node or null either way parent node is removed
+        //        else if (head.Right == null)
+        //            return head.Left;           // as right is null return left node which may have an value or node either way parents node gets deleted.
+        //        else
+        //        {   // replace the node data with its inorder successor and call DeleteElement() on node being copied.
+        //            head.Data = FindInOrderPredeccessor(head.Right);
+        //            head.Right = DeleteElement(ref head.Right, head.Data);
+        //            return head;
+        //        }
+        //    }
+        //    else if (data < head.Data)
+        //    {
+        //        head.Left = DeleteElement(ref head.Left, data);
+        //        return head;
+        //    }
+        //    else
+        //    {
+        //        head.Right = DeleteElement(ref head.Right, data);
+        //        return head;
+        //    }
+        //}
     }
 }

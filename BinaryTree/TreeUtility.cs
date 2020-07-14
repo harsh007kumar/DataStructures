@@ -1247,5 +1247,18 @@ namespace BinaryTree
             }
             return sum;
         }
+
+        public static AVLTree GetAVLTree()
+        {
+            AVLTree avl = new AVLTree();
+            avl.AddElement(ref avl.root, 4);
+            avl.AddElement(ref avl.root, 2);
+            avl.AddElement(ref avl.root, 7);
+            avl.AddElement(ref avl.root, 6);
+            avl.AddElement(ref avl.root, 8);
+            avl.AddElement(ref avl.root, 5);
+            avl.AddElement(ref avl.root, 1);
+            return avl;
+        }
     }
 }
