@@ -311,13 +311,11 @@ namespace BinaryTree
             if (GetBalance(root) > 1)           // Left Heavy
                 // findout : Left-Left Inbalance or Left-Right Inbalance
                 // left child balance is also +ve its left-left inbalance
-                root = GetBalance(root.Left) > 0 ? Right_Rotation(root) : LeftRight_Rotation(root);
-                //(data < root.Left.Data)
-
+                root = (data < root.Left.Data) ? Right_Rotation(root) : LeftRight_Rotation(root);
             else if (GetBalance(root) < -1)     // Right Heavy
                 // findout : Right-Right Inbalance or Right-Left Inbalance
                 // right child balance is also -ve its right-right inbalance
-                root = GetBalance(root.Right) < 0 ? Left_Rotation(root) : RightLeft_Rotation(root);
+                root = (data > root.Right.Data) ? Left_Rotation(root) : RightLeft_Rotation(root);
 
             return root;
         }
