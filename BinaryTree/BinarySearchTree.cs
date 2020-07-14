@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.Design.Serialization;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace BinaryTree
@@ -230,6 +231,51 @@ namespace BinaryTree
                     lastSibiling = lastSibiling.NextSibling;
                 lastSibiling.NextSibling = newChild;
             }
+        }
+    }
+
+    public class AVLTree : BinarySearchTree
+    {
+        public AVLTree() : base() { }
+
+        /// <summary>
+        /// Left Left Rotation (LL Rotation)(p. 328) || Time Complexity: O(1). Space Complexity: O(1).
+        /// </summary>
+        /// <param name="X"></param>
+        public Node LL_Rotation(Node unBalancedNode)
+        {
+            Node middle = unBalancedNode.Left;
+            unBalancedNode.Left = middle.Right;
+            middle.Right = unBalancedNode;
+            // recalculate height of unBalancedNode = 1 + Max( Height(unBalancedNode.left),Height(unBalancedNode.Right) )
+            // recalculate height of middle = 1 + Max( Height(middle.left),unBalancedNode.Height) 
+            return middle;
+        }
+
+        /// <summary>
+        /// Right Right Rotation (RR Rotation)(p. 329) || Time Complexity: O(1). Space Complexity: O(1).
+        /// </summary>
+        /// <param name="unBalancedNode"></param>
+        /// <returns></returns>
+        public Node RR_Rotation(Node unBalancedNode)
+        {
+            Node middle = unBalancedNode.Right;
+            unBalancedNode.Right = middle.Left;
+            middle.Left = unBalancedNode;
+            // recalculate height of unBalancedNode = 1 + Max( Height(unBalancedNode.left),Height(unBalancedNode.Right) )
+            // recalculate height of middle = 1 + Max( Height(middle.Right),unBalancedNode.Height) 
+            return middle;
+        }
+
+        public Node LR_Rotation(Node unBalancedNode)
+        {
+            unBalancedNode.Left = RR_Rotation(unBalancedNode.Left);
+            return LL_Rotation(unBalancedNode);
+        }
+        public Node RL_Rotation(Node unBalancedNode)
+        {
+            unBalancedNode.Right = LL_Rotation(unBalancedNode.Right);
+            return RR_Rotation(unBalancedNode);
         }
     }
 }
