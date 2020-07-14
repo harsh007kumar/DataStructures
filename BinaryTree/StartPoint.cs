@@ -43,6 +43,7 @@ namespace BinaryTree
             FindKthSmallestElementInBST();
             FindCielAndFloorInBST();
             FindIntersectionOfTwoBSTs();
+            PrintAllElementsInBSTInANRange();
             Console.ReadKey();
         }
 
@@ -470,6 +471,17 @@ namespace BinaryTree
             TreeUtility.DFS.InOrderTraversal_Iterative(bst1.root);
             TreeUtility.DFS.InOrderTraversal_Iterative(bst2.root);
             TreeUtility.CommonNodesInBSTs(bst1.root, bst2.root);
+        }
+
+        public static void PrintAllElementsInBSTInANRange()
+        {
+            TreeUtility.Print("Problem - 65 Given a BST and two numbers K1 and K2, give an algorithm for printing all the elements of BST in the range K1 and K2.(p. 320)");
+            BinarySearchTree bst = TreeUtility.GetBinarySearchTree();
+            TreeUtility.DFS.InOrderTraversal_Iterative(bst.root);
+            int k1 = 4, k2 = 11;
+            Console.Write($" Printing elements in above BST which are in the range [{k1}...{k2}]");
+            TreeUtility.RangePrinterInBST(bst.root, k1, k2);
+            Console.WriteLine();
         }
     }
 }

@@ -1218,5 +1218,19 @@ namespace BinaryTree
                 }
             }
         }
+
+        /// <summary>
+        /// Time O(n) || Space O(n) for recursion stack
+        /// </summary>
+        /// <param name="root"></param>
+        /// <param name="min"></param>
+        /// <param name="max"></param>
+        public static void RangePrinterInBST(Node root, int min, int max)
+        {
+            if (root == null) return;
+            if (root.Data >= min) RangePrinterInBST(root.Left, min, max);
+            if (root.Data >= min && root.Data <= max) Console.Write($" {root.Data}");
+            if (root.Data <= max) RangePrinterInBST(root.Right, min, max);
+        }
     }
 }
