@@ -1232,5 +1232,20 @@ namespace BinaryTree
             if (root.Data >= min && root.Data <= max) Console.Write($" {root.Data}");
             if (root.Data <= max) RangePrinterInBST(root.Right, min, max);
         }
+
+        public static int NoOfPossilbeBST(int n)
+        {
+            if (n <= 1) return 1;
+
+            int sum = 0;
+            int left, root, rt;
+            for (root = 1; root <= n; root++)
+            {
+                left = NoOfPossilbeBST(root - 1);
+                rt = NoOfPossilbeBST(n - root);
+                sum += left * rt;
+            }
+            return sum;
+        }
     }
 }

@@ -44,6 +44,7 @@ namespace BinaryTree
             FindCielAndFloorInBST();
             FindIntersectionOfTwoBSTs();
             PrintAllElementsInBSTInANRange();
+            NoOfBSTPossilbe();
             Console.ReadKey();
         }
 
@@ -482,6 +483,13 @@ namespace BinaryTree
             Console.Write($" Printing elements in above BST which are in the range [{k1}...{k2}]");
             TreeUtility.RangePrinterInBST(bst.root, k1, k2);
             Console.WriteLine();
+        }
+
+        public static void  NoOfBSTPossilbe()
+        {
+            TreeUtility.Print("Problem - 71 For the key values 1... n, how many structurally unique BSTs are possible that store those keys.(p. 322)");
+            int nUniqueKeys = 3;
+            Console.WriteLine($" No of Structurally possible BST with {nUniqueKeys} Keys :\t {TreeUtility.NoOfPossilbeBST(nUniqueKeys)}");
         }
     }
 }
