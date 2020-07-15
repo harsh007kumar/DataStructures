@@ -5,6 +5,7 @@ using System.ComponentModel.Design.Serialization;
 using System.Diagnostics;
 using System.Linq;
 using System.Runtime.InteropServices;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -330,16 +331,21 @@ namespace BinaryTree
 
         /// <summary>
         /// Function which return height of binary tree (i.e, max depth of an leaf node in tree)
-        /// Here, -1 indicats just Tree Empty
+        /// Here, we are folling convention Height of Tree = NoOfNodes from root to deepest Leaf
         /// </summary>
         /// <param name="head"></param>
         /// <returns></returns>
         public static int HeightOfTree(Node head) => (head == null) ? 0 : 1 + Math.Max(HeightOfTree(head.Left), HeightOfTree(head.Right));
 
+        /// <summary>
+        /// Here, we are folling convention Height of Tree = NoOfNodes from root to deepest Leaf
+        /// </summary>
+        /// <param name="root"></param>
+        /// <returns></returns>
         public static int HeightOfTree_Iterative(Node root)
         {
             if (root == null) return 0;
-            int level = 1;
+            int level = 0;
             Queue<Node> q = new Queue<Node>();
             q.Enqueue(root);
             q.Enqueue(null);
@@ -1309,6 +1315,8 @@ namespace BinaryTree
         /// <summary>
         /// using formula, NS(h) be the number of different shapes of a minimal AVL tree of height h.
         /// NS(3) = 2 * NS(2) * NS(1)
+        /// Here, we are folling convention Height of Tree = NoOfEdges from root to deepest Leaf
+        /// Height of Tree in terms of NoOfNodes from root to deepest Leaf = 1 + Height of Tree in terms of NoOf Edges from root to deepest Leaf
         /// </summary>
         /// <param name="height"></param>
         /// <returns></returns>
@@ -1320,13 +1328,50 @@ namespace BinaryTree
             return 2 * NoOfDiffMinAVLTree(height - 1) * NoOfDiffMinAVLTree(height - 2);
         }
 
-        public static bool isAVLTree(Node root)
-        {
-            if (root == null) return true;
-            var rootBalanceFactor = GetBalance(root);
-            return Math.Abs(rootBalanceFactor) < 2 && isAVLTree(root.Left) && isAVLTree(root.Right);
-        }
+        /// <summary>
+        /// Time O(n) as we are calculating height of left + right tree
+        /// </summary>
+        /// <param name="root"></param>
+        /// <returns></returns>
+        public static bool isAVLTree(Node root) => Math.Abs(GetBalance(root)) < 2;
 
         public static int GetBalance(Node current) => HeightOfTree(current.Left) - HeightOfTree(current.Right);
+
+        public static int isAVLTree_Alternate(Node root)
+        {
+            if (root == null) return 0;
+            var left = isAVLTree_Alternate(root.Left);
+            if (left == -1) return -1;
+
+            var rt = isAVLTree_Alternate(root.Right);
+            if (rt == -1) return -1;
+
+            if (Math.Abs(left - rt) > 1) return -1;
+
+            return Math.Max(left, rt) + 1;
+        }
+
+        /// <summary>
+        /// Time Complexity O(n) || Space Complexity O(logn)
+        /// </summary>
+        /// <param name="root"></param>
+        /// <param name="lowerBound"></param>
+        /// <param name="upperBound"></param>
+        /// <returns></returns>
+        public static int countNoOfNodesInRangeAToB(Node root, int lowerBound, int upperBound)
+        {
+            if (root == null) return 0;
+            int noOfNodes = 0;
+            if (root.Data > upperBound)             // range lies in left subtree
+                noOfNodes = countNoOfNodesInRangeAToB(root.Left, lowerBound, upperBound);
+            else if (root.Data < lowerBound)        // range lies in rt subtree
+                noOfNodes = countNoOfNodesInRangeAToB(root.Right, lowerBound, upperBound);
+            else if (lowerBound <= root.Data && root.Data <= upperBound)
+            {
+                noOfNodes = countNoOfNodesInRangeAToB(root.Left, lowerBound, upperBound) +
+                    countNoOfNodesInRangeAToB(root.Right, lowerBound, upperBound) + 1;
+            }
+            return noOfNodes;
+        }
     }
 }

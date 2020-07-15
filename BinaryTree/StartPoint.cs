@@ -528,7 +528,15 @@ namespace BinaryTree
             TreeUtility.Print("Problem - 77 Given a binary search tree, check whether it is an AVL tree or not? (p. 337)");
             TreeUtility.BFS.BreadthFirstTraversal(Node);
             Console.WriteLine($" Above BST is AVL Tree : {TreeUtility.isAVLTree(Node)}");
-            
+            Console.WriteLine($" Above BST is AVL Tree Alternate Approach : {TreeUtility.isAVLTree_Alternate(Node) != -1}");
+
+
+            TreeUtility.Print("Problem - 79 Count the number of nodes in the range[a, b].(p. 338)");
+            int a = 3, b = 9;
+            var avl = TreeUtility.GetAVLTree();
+            TreeUtility.DFS.InOrderTraversal_Iterative(avl.root);
+            count = TreeUtility.countNoOfNodesInRangeAToB(avl.root, a, b);
+            Console.WriteLine($" No of Nodes in the Range [{a}...{b}] in above tree are : {count}");
         }
     }
 }
