@@ -2,6 +2,7 @@
 using System.CodeDom.Compiler;
 using System.Collections.Generic;
 using System.ComponentModel.Design.Serialization;
+using System.Diagnostics;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
@@ -1259,6 +1260,15 @@ namespace BinaryTree
             avl.AddElement(ref avl.root, 5);
             avl.AddElement(ref avl.root, 1);
             return avl;
+        }
+
+        public static Node GenerateHightBalancedTree(int height, ref int count)
+        {
+            if (height == 0) return new Node(++count);
+            Node newNode = new Node(++count);
+            newNode.Left = GenerateHightBalancedTree(height - 1, ref count);
+            newNode.Right = GenerateHightBalancedTree(height - 1, ref count);
+            return newNode;
         }
     }
 }

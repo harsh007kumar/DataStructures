@@ -46,6 +46,7 @@ namespace BinaryTree
             PrintAllElementsInBSTInANRange();
             NoOfBSTPossilbe();
             InsertionInAVL();
+            AlgoToGenerateFullBinaryTree();
             Console.ReadKey();
         }
 
@@ -498,6 +499,15 @@ namespace BinaryTree
             TreeUtility.Print("Insertion into an AVL tree(p. 333)");
             AVLTree avl = TreeUtility.GetAVLTree();
             TreeUtility.BFS.BreadthFirstTraversal(avl.root);
+        }
+
+        public static void AlgoToGenerateFullBinaryTree()
+        {
+            TreeUtility.Print("Problem - 73 Given a height h, give an algorithm for generating the HB(0).(p. 334)");
+            int height = 2, count = 0;
+            var Node = TreeUtility.GenerateHightBalancedTree(height, ref count);
+            Console.WriteLine($" For given Height = {height} below fully binary tree is created which has {count} Nodes in total");
+            TreeUtility.DFS.InOrderTraversal_Iterative(Node);
         }
     }
 }

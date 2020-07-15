@@ -294,6 +294,7 @@ namespace BinaryTree
         /// <summary>
         /// AVL tree is balanced if balance factor lies in { -1, 0, 1}
         /// If balance > 1 left heavy || if balance < -1 right heavy
+        /// Time Complexity: O(logn) || Space Complexity: O(logn)
         /// </summary>
         /// <param name="current"></param>
         /// <returns></returns>
@@ -319,38 +320,5 @@ namespace BinaryTree
 
             return root;
         }
-
-        //public new Node DeleteElement(ref Node head, int data)
-        //{
-        //    if (head == null)
-        //    {
-        //        Console.WriteLine($"Element {data} doesnt exists");
-        //        return head;
-        //    }
-        //    else if (head.Data == data)
-        //    {
-        //        Console.WriteLine($"Node with data :\t{data} is Deleted/Moved");
-        //        if (head.Left == null)
-        //            return head.Right;          // as left node is null, return right which make be an node or null either way parent node is removed
-        //        else if (head.Right == null)
-        //            return head.Left;           // as right is null return left node which may have an value or node either way parents node gets deleted.
-        //        else
-        //        {   // replace the node data with its inorder successor and call DeleteElement() on node being copied.
-        //            head.Data = FindInOrderPredeccessor(head.Right);
-        //            head.Right = DeleteElement(ref head.Right, head.Data);
-        //            return head;
-        //        }
-        //    }
-        //    else if (data < head.Data)
-        //    {
-        //        head.Left = DeleteElement(ref head.Left, data);
-        //        return head;
-        //    }
-        //    else
-        //    {
-        //        head.Right = DeleteElement(ref head.Right, data);
-        //        return head;
-        //    }
-        //}
     }
 }
