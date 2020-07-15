@@ -1373,5 +1373,31 @@ namespace BinaryTree
             }
             return noOfNodes;
         }
+
+        public static void ClosetElementToKInBinaryTree(Node root, int k, ref int closetNode)
+        {
+            if (root == null || closetNode == k) return;
+
+            ClosetElementToKInBinaryTree(root.Left, k, ref closetNode);
+
+            if (Math.Abs(root.Data - k) < Math.Abs(closetNode - k))
+                closetNode = root.Data;
+
+            ClosetElementToKInBinaryTree(root.Right, k, ref closetNode);
+        }
+
+        public static int ClosetElementToKInBST(Node root, int k)
+        {
+            if (root == null) return -1;
+
+            int nextCloset = root.Data;
+
+            if (root.Data < k && root.Right != null)
+                nextCloset = ClosetElementToKInBST(root.Right, k);
+            else if(root.Data > k && root.Left!=null)
+                nextCloset = ClosetElementToKInBST(root.Left, k);
+
+            return Math.Abs(nextCloset - k) < Math.Abs(root.Data - k) ? nextCloset : root.Data;
+        }
     }
 }

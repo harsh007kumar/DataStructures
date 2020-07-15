@@ -47,6 +47,8 @@ namespace BinaryTree
             NoOfBSTPossilbe();
             InsertionInAVL();
             AlgoToGenerateFullBinaryTree();
+            ConstructMinimalAVLTreeOfHeightH_Plus_CheckIsAVLTree();
+            ClosetElementToGivenKeyInBST();
             Console.ReadKey();
         }
 
@@ -514,11 +516,13 @@ namespace BinaryTree
             Console.WriteLine($" For given range {start} .. {end} below Balance Tree is generated");
             Node = TreeUtility.GenerateHightBalancedTree_WhenRangeIsProvided(start, end);
             TreeUtility.DFS.InOrderTraversal_Iterative(Node);
+        }
 
+        public static void ConstructMinimalAVLTreeOfHeightH_Plus_CheckIsAVLTree()
+        { 
             TreeUtility.Print("Problem - 75 Construct minimal AVL trees of height 0,1,2,3,4, and 5.What is the number of nodes in a minimal AVL tree of height 6 ? (p. 335)");
-            height = 6;
-            count = 0;
-            Node = TreeUtility.GenerateMinimalAVLTreeWithHeight(height, ref count);
+            int height = 2, count = 0;
+            var Node = TreeUtility.GenerateMinimalAVLTreeWithHeight(height, ref count);
             Console.WriteLine($" For given Height = {height} below minimal AVL tree is created which has {count} Nodes in total");
             TreeUtility.DFS.InOrderTraversal_Iterative(Node);
 
@@ -537,6 +541,20 @@ namespace BinaryTree
             TreeUtility.DFS.InOrderTraversal_Iterative(avl.root);
             count = TreeUtility.countNoOfNodesInRangeAToB(avl.root, a, b);
             Console.WriteLine($" No of Nodes in the Range [{a}...{b}] in above tree are : {count}");
+        }
+
+        public static void ClosetElementToGivenKeyInBST()
+        {
+            TreeUtility.Print("Problem - 82 Given a BST and a key, find the element in the BST which is closest to the given key.(p. 342)");
+            BinarySearchTree bst = TreeUtility.GetBinarySearchTree();
+            TreeUtility.DFS.InOrderTraversal_Iterative(bst.root);
+            int k = 3, closetNode = int.MaxValue;
+
+            TreeUtility.ClosetElementToKInBinaryTree(bst.root, k, ref closetNode);
+            Console.WriteLine($" Closet Node to no '{k}' in above Binary tree is : {closetNode}");
+
+            TreeUtility.Print("Problem - 83 For Problem-82, can we solve it using the recursive approach? (p. 343)");
+            Console.WriteLine($" Closet Node to no '{k}' in above BST is : {TreeUtility.ClosetElementToKInBST(bst.root, k)}");
         }
     }
 }
