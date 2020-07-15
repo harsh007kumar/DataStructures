@@ -1262,6 +1262,13 @@ namespace BinaryTree
             return avl;
         }
 
+        /// <summary>
+        /// Generates a Full Binary Tree of desired height H
+        /// Time Complexity: O(n) || Space Complexity: O(logn), where logn indicates the maximum stack size which is equal to height of tree.
+        /// </summary>
+        /// <param name="height"></param>
+        /// <param name="count"></param>
+        /// <returns></returns>
         public static Node GenerateHightBalancedTree(int height, ref int count)
         {
             if (height == 0) return new Node(++count);
@@ -1269,6 +1276,57 @@ namespace BinaryTree
             newNode.Left = GenerateHightBalancedTree(height - 1, ref count);
             newNode.Right = GenerateHightBalancedTree(height - 1, ref count);
             return newNode;
+        }   
+
+        /// <summary>
+        /// Generates a Full Binary Tree containing data b/w desired range [start..end]
+        /// Time Complexity: O(n) || Space Complexity: O(logn), where logn indicates the maximum stack size which is equal to height of tree.
+        /// follows Mergesort logic
+        /// </summary>
+        /// <param name="height"></param>
+        /// <param name="count"></param>
+        /// <returns></returns>
+        public static Node GenerateHightBalancedTree_WhenRangeIsProvided(int start, int end)
+        {
+            var middle = (start + end) / 2;
+            if (start > end) return null;
+            Node newNode = new Node(middle);
+            newNode.Left = GenerateHightBalancedTree_WhenRangeIsProvided(start, middle - 1);
+            newNode.Right = GenerateHightBalancedTree_WhenRangeIsProvided(middle + 1, end);
+            return newNode;
         }
+
+        public static Node GenerateMinimalAVLTreeWithHeight(int height, ref int count)
+        {
+            if (height < 0) return null;
+            if (height == 0) return new Node(++count);
+            Node newNode = new Node(++count);
+            newNode.Left = GenerateMinimalAVLTreeWithHeight(height - 1, ref count);
+            newNode.Right = GenerateMinimalAVLTreeWithHeight(height - 2, ref count);
+            return newNode;
+        }
+
+        /// <summary>
+        /// using formula, NS(h) be the number of different shapes of a minimal AVL tree of height h.
+        /// NS(3) = 2 * NS(2) * NS(1)
+        /// </summary>
+        /// <param name="height"></param>
+        /// <returns></returns>
+        public static int NoOfDiffMinAVLTree(int height)
+        {
+            if (height < 0) return 0;
+            if (height == 0) return 1;
+            if (height == 1) return 2;
+            return 2 * NoOfDiffMinAVLTree(height - 1) * NoOfDiffMinAVLTree(height - 2);
+        }
+
+        public static bool isAVLTree(Node root)
+        {
+            if (root == null) return true;
+            var rootBalanceFactor = GetBalance(root);
+            return Math.Abs(rootBalanceFactor) < 2 && isAVLTree(root.Left) && isAVLTree(root.Right);
+        }
+
+        public static int GetBalance(Node current) => HeightOfTree(current.Left) - HeightOfTree(current.Right);
     }
 }

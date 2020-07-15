@@ -508,6 +508,27 @@ namespace BinaryTree
             var Node = TreeUtility.GenerateHightBalancedTree(height, ref count);
             Console.WriteLine($" For given Height = {height} below fully binary tree is created which has {count} Nodes in total");
             TreeUtility.DFS.InOrderTraversal_Iterative(Node);
+
+            TreeUtility.Print("Problem - 74 Is there any alternative way of create Balance Binary Tree(p. 335)");
+            int start = 1, end = 7;
+            Console.WriteLine($" For given range {start} .. {end} below Balance Tree is generated");
+            Node = TreeUtility.GenerateHightBalancedTree_WhenRangeIsProvided(start, end);
+            TreeUtility.DFS.InOrderTraversal_Iterative(Node);
+
+            TreeUtility.Print("Problem - 75 Construct minimal AVL trees of height 0,1,2,3,4, and 5.What is the number of nodes in a minimal AVL tree of height 6 ? (p. 335)");
+            height = 6;
+            count = 0;
+            Node = TreeUtility.GenerateMinimalAVLTreeWithHeight(height, ref count);
+            Console.WriteLine($" For given Height = {height} below minimal AVL tree is created which has {count} Nodes in total");
+            TreeUtility.DFS.InOrderTraversal_Iterative(Node);
+
+            TreeUtility.Print("Problem - 76 For Problem-73, how many different shapes can there be of a minimal AVL tree of height h? (p. 336)");
+            Console.WriteLine($" For given Height = {height}\tNo of different minimal AVL tree is that can exists are {TreeUtility.NoOfDiffMinAVLTree(height)}");
+
+            TreeUtility.Print("Problem - 77 Given a binary search tree, check whether it is an AVL tree or not? (p. 337)");
+            TreeUtility.BFS.BreadthFirstTraversal(Node);
+            Console.WriteLine($" Above BST is AVL Tree : {TreeUtility.isAVLTree(Node)}");
+            
         }
     }
 }
