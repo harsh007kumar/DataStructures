@@ -1269,7 +1269,7 @@ namespace BinaryTree
         }
 
         /// <summary>
-        /// Generates a Full Binary Tree of desired height H
+        /// Generates a Full Binary Tree of desired height H, following convetion in which height is 'no of nodes' from root to deepest Leaf Node
         /// Time Complexity: O(n) || Space Complexity: O(logn), where logn indicates the maximum stack size which is equal to height of tree.
         /// </summary>
         /// <param name="height"></param>
@@ -1277,7 +1277,8 @@ namespace BinaryTree
         /// <returns></returns>
         public static Node GenerateHightBalancedTree(int height, ref int count)
         {
-            if (height == 0) return new Node(++count);
+            if (height <= 0) return null;
+            if (height == 1) return new Node(++count);
             Node newNode = new Node(++count);
             newNode.Left = GenerateHightBalancedTree(height - 1, ref count);
             newNode.Right = GenerateHightBalancedTree(height - 1, ref count);
@@ -1304,8 +1305,8 @@ namespace BinaryTree
 
         public static Node GenerateMinimalAVLTreeWithHeight(int height, ref int count)
         {
-            if (height < 0) return null;
-            if (height == 0) return new Node(++count);
+            if (height < 1) return null;
+            if (height == 1) return new Node(++count);
             Node newNode = new Node(++count);
             newNode.Left = GenerateMinimalAVLTreeWithHeight(height - 1, ref count);
             newNode.Right = GenerateMinimalAVLTreeWithHeight(height - 2, ref count);
@@ -1374,9 +1375,15 @@ namespace BinaryTree
             return noOfNodes;
         }
 
+        /// <summary>
+        /// Time Complexity O(n) everytime as we are evalutaing closedNode with each nodes in tree
+        /// </summary>
+        /// <param name="root"></param>
+        /// <param name="k"></param>
+        /// <param name="closetNode"></param>
         public static void ClosetElementToKInBinaryTree(Node root, int k, ref int closetNode)
         {
-            if (root == null || closetNode == k) return;
+            if (root == null || closetNode == k) return;        // Keep traversing until Null or Closed Node data matches 'K'
 
             ClosetElementToKInBinaryTree(root.Left, k, ref closetNode);
 
@@ -1386,11 +1393,18 @@ namespace BinaryTree
             ClosetElementToKInBinaryTree(root.Right, k, ref closetNode);
         }
 
+        /// <summary>
+        /// Time Complexity O(n) in BST (worst case left/rt skewed tree) as we are traversing thru entire length || Space Complexity O(n)
+        /// Time Complexity O(Logn) in Balanced BST such as AVL/RedBlack Tree , here logn = height of tree || Space Complexity O(logn)
+        /// </summary>
+        /// <param name="root"></param>
+        /// <param name="k"></param>
+        /// <returns></returns>
         public static int ClosetElementToKInBST(Node root, int k)
         {
             if (root == null) return -1;
 
-            int nextCloset = root.Data;
+            int nextCloset = root.Data;         // Setting Root as closet in case it has no child
 
             if (root.Data < k && root.Right != null)
                 nextCloset = ClosetElementToKInBST(root.Right, k);

@@ -506,7 +506,7 @@ namespace BinaryTree
         public static void AlgoToGenerateFullBinaryTree()
         {
             TreeUtility.Print("Problem - 73 Given a height h, give an algorithm for generating the HB(0).(p. 334)");
-            int height = 2, count = 0;
+            int height = 3, count = 0;
             var Node = TreeUtility.GenerateHightBalancedTree(height, ref count);
             Console.WriteLine($" For given Height = {height} below fully binary tree is created which has {count} Nodes in total");
             TreeUtility.DFS.InOrderTraversal_Iterative(Node);
@@ -521,7 +521,7 @@ namespace BinaryTree
         public static void ConstructMinimalAVLTreeOfHeightH_Plus_CheckIsAVLTree()
         { 
             TreeUtility.Print("Problem - 75 Construct minimal AVL trees of height 0,1,2,3,4, and 5.What is the number of nodes in a minimal AVL tree of height 6 ? (p. 335)");
-            int height = 2, count = 0;
+            int height = 3, count = 0;
             var Node = TreeUtility.GenerateMinimalAVLTreeWithHeight(height, ref count);
             Console.WriteLine($" For given Height = {height} below minimal AVL tree is created which has {count} Nodes in total");
             TreeUtility.DFS.InOrderTraversal_Iterative(Node);

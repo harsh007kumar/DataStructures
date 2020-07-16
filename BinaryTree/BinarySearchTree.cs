@@ -13,11 +13,13 @@ namespace BinaryTree
         public int Data { get; set; }
         public Node Left;
         public Node Right;
+        public int Height { get; set; }     // Used only with AVL Tree
 
         public Node(int no)
         {
             Data = no;
             Left = Right = null;
+            Height = 0;
         }
     }
 
@@ -247,8 +249,9 @@ namespace BinaryTree
             Node middle = unBalancedNode.Left;
             unBalancedNode.Left = middle.Right;
             middle.Right = unBalancedNode;
-            // recalculate height of unBalancedNode = 1 + Max( Height(unBalancedNode.left),Height(unBalancedNode.Right) )
-            // recalculate height of middle = 1 + Max( Height(middle.left),unBalancedNode.Height) 
+
+            unBalancedNode.Height = 1 + Math.Max(Height(unBalancedNode.Left), Height(unBalancedNode.Right));
+            middle.Height = 1 + Math.Abs(Height(middle.Left) + unBalancedNode.Height);
             return middle;
         }
 
@@ -262,8 +265,9 @@ namespace BinaryTree
             Node middle = unBalancedNode.Right;
             unBalancedNode.Right = middle.Left;
             middle.Left = unBalancedNode;
-            // recalculate height of unBalancedNode = 1 + Max( Height(unBalancedNode.left),Height(unBalancedNode.Right) )
-            // recalculate height of middle = 1 + Max( Height(middle.Right),unBalancedNode.Height) 
+
+            unBalancedNode.Height = 1 + Math.Max(Height(unBalancedNode.Left), Height(unBalancedNode.Right));
+            middle.Height = 1 + Math.Max(Height(middle.Right), unBalancedNode.Height);
             return middle;
         }
 
@@ -289,7 +293,14 @@ namespace BinaryTree
             return Left_Rotation(unBalancedNode);
         }
 
+        /// <summary>
+        /// Time Complexity O(n)
+        /// </summary>
+        /// <param name="current"></param>
+        /// <returns></returns>
         protected int HeightOfTree(Node current) => (current == null) ? 0 : 1 + Math.Max(HeightOfTree(current.Left), HeightOfTree(current.Right));
+
+        protected int Height(Node current) => current == null ? 0 : current.Height;
 
         /// <summary>
         /// AVL tree is balanced if balance factor lies in { -1, 0, 1}
@@ -300,23 +311,30 @@ namespace BinaryTree
         /// <returns></returns>
         protected int GetBalance(Node current) => HeightOfTree(current.Left) - HeightOfTree(current.Right);
 
+        /// <summary>
+        /// Insertion in Balanced BST gurantees Time Complexity O(Logn) || Space Complexity O(H), where H = height of tree = Logn 
+        /// </summary>
+        /// <param name="root"></param>
+        /// <param name="data"></param>
+        /// <returns></returns>
         public new Node AddElement(ref Node root, int data)
         {
             if (root == null)
-                root = new Node(data);
+                root = new Node(data);                                                  // By default height is set a 0
             else if (data < root.Data)
                 AddElement(ref root.Left, data);
             else if (data > root.Data)
                 AddElement(ref root.Right, data);
-
-            if (GetBalance(root) > 1)           // Left Heavy
+            
+            var balanceFactor = Height(root.Left) - Height(root.Right);
+            if (balanceFactor > 1)              // left heavy
                 // findout : Left-Left Inbalance or Left-Right Inbalance
-                // left child balance is also +ve its left-left inbalance
                 root = (data < root.Left.Data) ? Right_Rotation(root) : LeftRight_Rotation(root);
-            else if (GetBalance(root) < -1)     // Right Heavy
+            else if (balanceFactor < -1)        // rt heavy
                 // findout : Right-Right Inbalance or Right-Left Inbalance
-                // right child balance is also -ve its right-right inbalance
                 root = (data > root.Right.Data) ? Left_Rotation(root) : RightLeft_Rotation(root);
+            
+            root.Height = 1 + Math.Max(Height(root.Left), Height(root.Right));          // update Height of root
 
             return root;
         }
