@@ -49,6 +49,7 @@ namespace BinaryTree
             AlgoToGenerateFullBinaryTree();
             ConstructMinimalAVLTreeOfHeightH_Plus_CheckIsAVLTree();
             ClosetElementToGivenKeyInBST();
+            RemoveHalf_RemoveLeafs_RemoveNodesNotInRange();
             Console.ReadKey();
         }
 
@@ -555,6 +556,34 @@ namespace BinaryTree
 
             TreeUtility.Print("Problem - 83 For Problem-82, can we solve it using the recursive approach? (p. 343)");
             Console.WriteLine($" Closet Node to no '{k}' in above BST is : {TreeUtility.ClosetElementToKInBST(bst.root, k)}");
+        }
+
+        public static void RemoveHalf_RemoveLeafs_RemoveNodesNotInRange()
+        {
+
+            TreeUtility.Print("Problem - 85 Given a binary tree, how do you remove all the half nodes(which have only one child) ? Note that we should not touch leaves.(p. 345)");
+            int count = 10;
+            var root = TreeUtility.GenerateMinimalAVLTreeWithHeight(4, ref count);
+            TreeUtility.BFS.BreadthFirstTraversal(root);
+            Console.WriteLine("\n Remove HalfNodes(with single child) InBinaryTree");
+            TreeUtility.RemoveHalfNodesInBinaryTree(root);
+            TreeUtility.BFS.BreadthFirstTraversal(root);
+
+            TreeUtility.Print("Problem - 86 Given a binary tree, how do you remove its leaves? (p. 346)");
+            count = 10;
+            root = TreeUtility.GenerateMinimalAVLTreeWithHeight(4, ref count);
+            TreeUtility.BFS.BreadthFirstTraversal(root);
+            Console.WriteLine("\n Removing Leaf Nodes");
+            TreeUtility.RemoveLeafNodes(root);
+            TreeUtility.BFS.BreadthFirstTraversal(root);
+
+            TreeUtility.Print("Problem - 87 Given a BST and two integers(minimum and maximum integers) as parameters, how do you remove(prune) elements that are not within that range?(p. 346)");
+            root = TreeUtility.GenerateHightBalancedTree_WhenRangeIsProvided(10, 20);
+            TreeUtility.DFS.InOrderTraversal_Iterative(root);
+            int a = 12, b = 17;
+            Console.WriteLine($"\n Removing Element Not b/w the Range [{a}...{b}]");
+            TreeUtility.RemoveElementNotInRangeAToBInBST(ref root, a, b);
+            TreeUtility.DFS.InOrderTraversal_Iterative(root);
         }
     }
 }

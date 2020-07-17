@@ -1413,5 +1413,58 @@ namespace BinaryTree
 
             return Math.Abs(nextCloset - k) < Math.Abs(root.Data - k) ? nextCloset : root.Data;
         }
+
+        /// <summary>
+        /// By using post-order traversal Problem - 85 (p. 345) || Time O(n)
+        /// </summary>
+        /// <param name="root"></param>
+        /// <returns></returns>
+        public static Node RemoveHalfNodesInBinaryTree(Node root)
+        {
+            if (root == null) return root;
+            root.Left = RemoveHalfNodesInBinaryTree(root.Left);
+            root.Right = RemoveHalfNodesInBinaryTree(root.Right);
+
+            if (root.Left == null && root.Right != null) return root.Right;
+            else if (root.Right == null && root.Left != null) return root.Left;
+            
+            return root;
+        }
+
+        /// <summary>
+        /// Time Complexity O(n). Problem - 86 (p. 346) Using PreOrder Traversal Approach
+        /// </summary>
+        /// <param name="root"></param>
+        /// <returns></returns>
+        public static Node RemoveLeafNodes(Node root)
+        {
+            if (root == null) return root;
+            if (root.Left == null && root.Right == null)
+                return null;
+            root.Left = RemoveLeafNodes(root.Left);
+            root.Right = RemoveLeafNodes(root.Right);
+            
+            return root;
+        }
+
+        /// <summary>
+        /// Using PostOrder Traversal to validate the left and rtsubtree and than process the Root Node || Time Complexity O(n)
+        /// </summary>
+        /// <param name="root"></param>
+        /// <param name="lowerBound"></param>
+        /// <param name="upperBound"></param>
+        public static void RemoveElementNotInRangeAToBInBST(ref Node root, int lowerBound, int upperBound)
+        {
+            if (root == null) return;
+            // Validate Left
+            RemoveElementNotInRangeAToBInBST(ref root.Left, lowerBound, upperBound);
+            // Validate Right
+            RemoveElementNotInRangeAToBInBST(ref root.Right, lowerBound, upperBound);
+            // Validate Root and replace it with is already validated left or rt subtree (which might be null)
+            if (root.Data < lowerBound)
+                root = root.Right;
+            else if (root.Data > upperBound)
+                root = root.Left;
+        }
     }
 }
