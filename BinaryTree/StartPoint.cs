@@ -50,6 +50,7 @@ namespace BinaryTree
             ConstructMinimalAVLTreeOfHeightH_Plus_CheckIsAVLTree();
             ClosetElementToGivenKeyInBST();
             RemoveHalf_RemoveLeafs_RemoveNodesNotInRange();
+            ConnectAdjacentNodesInBinaryTree();
             Console.ReadKey();
         }
 
@@ -584,6 +585,24 @@ namespace BinaryTree
             Console.WriteLine($"\n Removing Element Not b/w the Range [{a}...{b}]");
             TreeUtility.RemoveElementNotInRangeAToBInBST(ref root, a, b);
             TreeUtility.DFS.InOrderTraversal_Iterative(root);
+        }
+
+        public static void ConnectAdjacentNodesInBinaryTree()
+        {
+            TreeUtility.Print("Problem - 88 Given a binary tree, how do you connect all the adjacent nodes at the same level?" +
+                " Assume that given binary tree has next pointer along with left and right(p. 348)");
+            #region Create BinaryTree
+            var bt = new NodeWithNext(1);
+            bt.Left = new NodeWithNext(2);
+            bt.Right = new NodeWithNext(3);
+            bt.Left.Left = new NodeWithNext(4);
+            bt.Left.Right = new NodeWithNext(5);
+            bt.Right.Left = new NodeWithNext(6);
+            bt.Right.Right = new NodeWithNext(7);
+            #endregion
+            Console.WriteLine("\n Connecting Nodes At Same Level In BinaryTree");
+            TreeUtility.ConnectNodesAtSameLevelInBinaryTree(ref bt);
+            TreeUtility.DFS.InOrderTraversal_Iterative(bt);
         }
     }
 }

@@ -1466,5 +1466,43 @@ namespace BinaryTree
             else if (root.Data > upperBound)
                 root = root.Left;
         }
+
+        /// <summary>
+        /// Utilizing Level Order Traversal and update Next of all nodes at same level || Time O(n) || Space O(n)
+        /// </summary>
+        /// <param name="root"></param>
+        public static void ConnectNodesAtSameLevelInBinaryTree(ref NodeWithNext root)
+        {
+            if (root == null) return;
+            Queue<NodeWithNext> q = new Queue<NodeWithNext>();
+            q.Enqueue(root);
+            int countAtCurrentLevel = 1, 
+                countAtNextLevel = 0;
+            NodeWithNext prv = null;
+            while(q.Count>0)
+            {
+                NodeWithNext temp = q.Dequeue();
+                if (temp.Left != null)
+                {
+                    q.Enqueue((NodeWithNext)temp.Left);
+                    countAtNextLevel++;
+                }
+                if (temp.Right != null)
+                {
+                    q.Enqueue((NodeWithNext)temp.Right);
+                    countAtNextLevel++;
+                }
+                countAtCurrentLevel--;      // decrease current level count by 1
+                if (prv != null)
+                    prv.Next = temp;        // Update Prv Node->Next  with current temp
+                prv = temp;
+                if (countAtCurrentLevel <= 0)// Last Node of current level
+                {
+                    countAtCurrentLevel = countAtNextLevel;
+                    countAtNextLevel = 0;
+                    prv = null;
+                }
+            }
+        }
     }
 }

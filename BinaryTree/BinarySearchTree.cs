@@ -43,9 +43,15 @@ namespace BinaryTree
         public NodeThreaded(int data)
         {
             Data = data;
-            LTag = RTag = 0;
+            LTag = RTag = 0;        // 0 Signifies its leaf Node
             Left = Right = null;
         }
+    }
+
+    public class NodeWithNext : Node
+    {
+        public NodeWithNext Next;       // Point to next node at same level
+        public NodeWithNext(int data) : base(data) => Next = null;
     }
 
     public class BinaryTree
