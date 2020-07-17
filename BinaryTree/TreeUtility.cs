@@ -786,9 +786,9 @@ namespace BinaryTree
         {
             var bt = new BinaryTree();
             BinaryTree.AddRoot(ref bt.root, 1);
-            BinaryTree.AddToLeft(ref bt.root, 2);
+            BinaryTree.AddToLeft(ref bt.root, 200);
             BinaryTree.AddToRight(ref bt.root, 3);
-            BinaryTree.AddToLeft(ref bt.root.Left, 4);
+            BinaryTree.AddToLeft(ref bt.root.Left, 400);
             BinaryTree.AddToRight(ref bt.root.Left, 5);
             BinaryTree.AddToLeft(ref bt.root.Right, 6);
             BinaryTree.AddToRight(ref bt.root.Right, 7);
@@ -1503,6 +1503,19 @@ namespace BinaryTree
                     prv = null;
                 }
             }
+        }
+
+        public static int MaxPathSumInBinaryTree(Node root, ref int subTreeSum)
+        {
+            if (root == null) return 0;
+
+            int ltSubTreeSum = 0, rtSubTreeSum = 0;
+            var leftSum = MaxPathSumInBinaryTree(root.Left, ref ltSubTreeSum);
+            var rtSum = MaxPathSumInBinaryTree(root.Right, ref rtSubTreeSum);
+
+            var maxPathSum = leftSum + rtSum + root.Data;
+            subTreeSum = Math.Max(maxPathSum, Math.Max(ltSubTreeSum, rtSubTreeSum));
+            return Math.Max(leftSum, rtSum)+root.Data;
         }
     }
 }

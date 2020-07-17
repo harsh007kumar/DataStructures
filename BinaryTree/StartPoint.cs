@@ -51,6 +51,7 @@ namespace BinaryTree
             ClosetElementToGivenKeyInBST();
             RemoveHalf_RemoveLeafs_RemoveNodesNotInRange();
             ConnectAdjacentNodesInBinaryTree();
+            CalculateMaxPathSumInBinaryTree();
             Console.ReadKey();
         }
 
@@ -603,6 +604,15 @@ namespace BinaryTree
             Console.WriteLine("\n Connecting Nodes At Same Level In BinaryTree");
             TreeUtility.ConnectNodesAtSameLevelInBinaryTree(ref bt);
             TreeUtility.DFS.InOrderTraversal_Iterative(bt);
+        }
+        public static void CalculateMaxPathSumInBinaryTree()
+        {
+            TreeUtility.Print("Problem - 92 Given a binary tree, find the maximum path sum. The path may start and end at any node in the tree.(p. 351)");
+            BinaryTree bt = TreeUtility.GetBinaryTree();
+            int treeMax = 0;
+            var sum = TreeUtility.MaxPathSumInBinaryTree(bt.root, ref treeMax);
+            TreeUtility.DFS.InOrderTraversal_Iterative(bt.root);
+            Console.WriteLine($"Maximum sum of any path in above BinaryTree is :\t'{Math.Max(sum,treeMax)}'");
         }
     }
 }
