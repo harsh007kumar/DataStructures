@@ -609,7 +609,7 @@ namespace BinaryTree
         {
             TreeUtility.Print("Problem - 92 Given a binary tree, find the maximum path sum. The path may start and end at any node in the tree.(p. 351)");
             BinaryTree bt = TreeUtility.GetBinaryTree();
-            int treeMax = 0;
+            int treeMax = int.MinValue;
             var sum = TreeUtility.MaxPathSumInBinaryTree(bt.root, ref treeMax);
             TreeUtility.DFS.InOrderTraversal_Iterative(bt.root);
             Console.WriteLine($"Maximum sum of any path in above BinaryTree is :\t'{Math.Max(sum,treeMax)}'");

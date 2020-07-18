@@ -1505,17 +1505,23 @@ namespace BinaryTree
             }
         }
 
-        public static int MaxPathSumInBinaryTree(Node root, ref int subTreeSum)
+        /// <summary>
+        /// Time Complexity O(n) || Space Complexity O(depth of tree) worst case is n (Skewed tree)
+        /// </summary>
+        /// <param name="root"></param>
+        /// <param name="maxSubTree"></param>
+        /// <returns></returns>
+        public static int MaxPathSumInBinaryTree(Node root, ref int maxSubTree)
         {
             if (root == null) return 0;
 
             int ltSubTreeSum = 0, rtSubTreeSum = 0;
-            var leftSum = MaxPathSumInBinaryTree(root.Left, ref ltSubTreeSum);
-            var rtSum = MaxPathSumInBinaryTree(root.Right, ref rtSubTreeSum);
+            var leftSingleLongestPathSum = MaxPathSumInBinaryTree(root.Left, ref ltSubTreeSum);
+            var rtSingleLongestPathSum = MaxPathSumInBinaryTree(root.Right, ref rtSubTreeSum);
 
-            var maxPathSum = leftSum + rtSum + root.Data;
-            subTreeSum = Math.Max(maxPathSum, Math.Max(ltSubTreeSum, rtSubTreeSum));
-            return Math.Max(leftSum, rtSum)+root.Data;
+            var maxPathSum = leftSingleLongestPathSum + rtSingleLongestPathSum + root.Data;     // sum of max single path in left tree + max single path in rt tree path + root->Data
+            maxSubTree = Math.Max(maxPathSum, Math.Max(ltSubTreeSum, rtSubTreeSum));            // Max of either left subtree / rt subtree / maxPathSum which includes root->Data
+            return Math.Max(leftSingleLongestPathSum, rtSingleLongestPathSum)+root.Data;        // root->Data + bigger of left or rt child single max path
         }
     }
 }
