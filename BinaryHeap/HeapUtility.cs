@@ -62,7 +62,7 @@ namespace BinaryHeap
         /// </summary>
         /// <param name="minHeap"></param>
         /// <returns></returns>
-        public static int GetMaxFromMinHeap(MinHeap minHeap)
+        public static int MaxInMinHeap(MinHeap minHeap)
         {
             if (minHeap == null) return -1;
 
@@ -89,6 +89,23 @@ namespace BinaryHeap
             m._heapArr[index] = m._heapArr[m.Count - 1];        // replace current node with last element in array
             m.Count--;                  // decrease count
             m.MinHeapify(index);                                // call Heapify on current Node to maintain Integrety from current Node to all the way down
+        }
+
+        /// <summary>
+        /// Prints all Elements which have value less than K in "minHeap" || Time O(n) (worst case when all nodes have value less than K) || Space O(1)
+        /// </summary>
+        /// <param name="minH">underlying array of min Heap</param>
+        /// <param name="startIndex"></param>
+        /// <param name="endIndex"></param>
+        /// <param name="k"></param>
+        public static void NodeSmallerThanK(int[] minH, int startIndex, int endIndex, int k)
+        {
+            if (startIndex <= endIndex && minH[startIndex] < k)
+            {
+                Console.Write($" >> {minH[startIndex]}");                       // print root
+                NodeSmallerThanK(minH, LeftChild(startIndex), endIndex, k);     // call recursive func on left child
+                NodeSmallerThanK(minH, RightChild(startIndex), endIndex, k);    // call recursive func on right child
+            }
         }
     }
 }

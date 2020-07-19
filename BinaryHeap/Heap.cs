@@ -167,6 +167,7 @@ namespace BinaryHeap
 
         /// <summary>
         /// Deletes Key at passed index || Time Complexity O(logn) || Space O(logn)
+        /// Not Ideal method check HeapUtility.Delete_iThIndexFromMinHeap() for simpler approach
         /// </summary>
         /// <param name="index"></param>
         /// <returns></returns>
