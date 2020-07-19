@@ -67,7 +67,7 @@ namespace BinaryHeap
             if (minHeap == null) return -1;
 
             // Find the Parent of last Node
-            var pIndex = minHeap.Count / 2 - 1;           // since left child = index*2 + 1 and rt child = index*2 + 2
+            var pIndex = (minHeap.Count - 1) / 2;           // since left child = index*2 + 1 and rt child = index*2 + 2
 
             // Now we get Next Node to Parent as that would be the 1st Leaf Node
             var leaf = pIndex + 1;
@@ -106,6 +106,35 @@ namespace BinaryHeap
                 NodeSmallerThanK(minH, LeftChild(startIndex), endIndex, k);     // call recursive func on left child
                 NodeSmallerThanK(minH, RightChild(startIndex), endIndex, k);    // call recursive func on right child
             }
+        }
+
+        /// <summary>
+        /// Time Complexity O(k Logk) as we are storing max 'K' elements in Priority Queue at any given time || Space Complexity O(k)
+        /// </summary>
+        /// <param name="h"></param>
+        /// <param name="k"></param>
+        /// <returns></returns>
+        public static int KthSmallestInMinHeap(MinHeap h, int k)
+        {
+            if (h == null || h.Count < 1 || k < 1 || k > h.Count)
+                return -1;
+
+            // Auxillary Priority Queue of 'k' Size create to Store and process first 'k' nodes from MinHeap
+            PriorityQueue pQ = new PriorityQueue(k);
+
+            // Add Min Element from MinHeap and its index to Queue
+            pQ.Enqueue(h.GetMin(), 0);
+
+            for (int i = 1; i < k; i++)
+            {
+                var top = pQ.ExtractHighest();
+                var lt = LeftChild(top.Value);
+                var rt = RightChild(top.Value);
+                if (lt < h.Count) pQ.Enqueue(h._heapArr[lt], lt);       // With Each iteration Queue size increase by 1
+                if (rt < h.Count) pQ.Enqueue(h._heapArr[rt], rt);       // Storing minHeap left & rt child value as Priority and their index as value
+            }
+
+            return pQ.GetHighestPriority().Priorty;
         }
     }
 }

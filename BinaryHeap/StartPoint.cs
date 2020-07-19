@@ -1,8 +1,4 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace BinaryHeap
 {
@@ -15,6 +11,7 @@ namespace BinaryHeap
             GivenMinHeap_AlgoToFindMaximum_FindAndDeleteAnNode_DeleteFromGivenIndex();
             NodesSmallerThanK();
             MergeTwoHeaps();
+            FindKSmalledInMinHeap();
             Console.ReadKey();
         }
 
@@ -98,6 +95,15 @@ namespace BinaryHeap
                 mnHeap.InsertNode(nHeap._heapArr[value++]);
             Console.Write("Print Merged Heap :\t");
             mnHeap.PrintHeap();
+        }
+
+        public static void FindKSmalledInMinHeap()
+        {
+            HeapUtility.Print("Problem - 16 Give an algorithm for finding the kth smallest element in min - heap.(p. 385)");
+            var minH = HeapUtility.GetMinHeap();
+            minH.PrintHeap();
+            int k = 6;
+            Console.WriteLine($" {k}th smallest element in above Heap is :\t {HeapUtility.KthSmallestInMinHeap(minH, k)}");
         }
     }
 }
