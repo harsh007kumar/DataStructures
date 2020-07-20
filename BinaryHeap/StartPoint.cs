@@ -1,4 +1,5 @@
 using System;
+using System.Globalization;
 
 namespace BinaryHeap
 {
@@ -14,6 +15,7 @@ namespace BinaryHeap
             FindKSmalledInMinHeap();
             ImplementStackUsingPriorityQueue();
             ImplementQueueUsingHeap();
+            FindKMinFromUnSortedFileWithBillionNumbers();
             Console.ReadKey();
         }
 
@@ -133,6 +135,44 @@ namespace BinaryHeap
             Console.Write(" Performing DeQueue on are stack now :\t");
             for (int j = 0; j < 10; j++)
                 Console.Write($" {q.DeQueue()}");
+            Console.WriteLine();
+        }
+
+        /// <summary>
+        /// Time Complexity O(n) = N/M times * M Heapify Operation
+        /// N/1000 * 1000 Log 1000 ~ N Log 1000 ~ N, Since complexity of heap sorting M = 1000 elements will be constant thats why Linear Time
+        /// Space Complexity O(m) where m = size of Heap which is constant hence ~ O(1)
+        /// </summary>
+        public static void FindKMinFromUnSortedFileWithBillionNumbers()
+        {
+            HeapUtility.Print("Problem - 21 Given a big file containing billions of numbers, how can you find the 10 minmum numbers from that file? (p. 388)");
+            int k = 10;
+            
+            // Step 1 : Divide the Read Big file into some constants parts lets say 1000 elements
+            MinHeap heap1000Chunk = new MinHeap(1000);
+            for (int i = 1; i <= (int)Math.Pow(10, 5); i++)          // Consider Billion Numbers Input Stream coming out of this Loop
+            {
+                if (heap1000Chunk.Count < heap1000Chunk.TotalCapacity)
+                    heap1000Chunk.InsertNode(i, true);
+                else            // After Inserting last element of Heap Capacity follow below extra Steps
+                {
+                    // Pop and store top k = 10 minimum element from arr1000Chunk
+                    int[] kElemenet = new int[k];
+                    for (int j = 0; j < k; j++)
+                        kElemenet[j] = heap1000Chunk.ExtractMin(true);
+
+                    // Delete current Heap to make space for inserting next set of 1000 - k elements;
+                    heap1000Chunk.DeleteHeap(true);
+
+                    // Copy current top 10 to Heap before adding next set of 1000 - k ( i.e, 990 elements)
+                    for (int j = 0; j < k; j++)
+                        heap1000Chunk.InsertNode(kElemenet[j], true);
+                }
+            }
+            Console.Write($" Top {k} Minimum elements are :\t");
+            for (int i = 0; i < k; i++)
+                Console.Write($" {heap1000Chunk.ExtractMin(true)}");        // pass false to see last set of 1000 no's getting replaced in Extract Operation
+
             Console.WriteLine();
         }
     }

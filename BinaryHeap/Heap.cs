@@ -56,19 +56,28 @@ namespace BinaryHeap
         /// Deletes the minimum element from MinHeap i.e, Root Node and calls Heapify to re-balance the Heap
         /// Time Complexity O(logn) & Space Complexity O(logn) Because of Heapify func() call
         /// </summary>
-        public void ExtractMin()
+        public int ExtractMin(bool silent = false)
         {
             if (Count == 0)
+            {
                 Console.WriteLine("Cannot remove as Heap is empty");
+                return -1;
+            }
             else
             {
-                Console.WriteLine($" Replacing root key : '{_heapArr[0]}' with Key present at Last Index {Count - 1} : having value : '{_heapArr[Count - 1]}'");
+                if (!silent) Console.WriteLine($" Replacing root key : '{_heapArr[0]}' with Key present at Last Index {Count - 1} : having value : '{_heapArr[Count - 1]}'");
+                var top = _heapArr[0];
+
                 //assigning last variable in array to top node
                 _heapArr[0] = _heapArr[Count - 1];
+
                 //deleteing last variable by reducing the 6capacity
                 Count--;
+
                 // Mainting Heap integrity
                 MinHeapify();
+
+                return top;
             }
         }
 
@@ -118,6 +127,13 @@ namespace BinaryHeap
                 Console.WriteLine($" Current Heap Min is {_heapArr[0]}");
                 return _heapArr[0];
             }
+        }
+
+        public void DeleteHeap(bool silent = false)
+        {
+            if (!silent) Console.WriteLine("Deleting Heap");
+            _heapArr = new int[TotalCapacity];
+            Count = 0;
         }
 
         // Extra Operations
