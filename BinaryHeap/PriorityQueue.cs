@@ -55,7 +55,7 @@ namespace BinaryHeap
 
         public Node ExtractHighest()
         {
-            if (Count <= 0) return null;
+            if (Count < 1) return null;
 
             var Top = _arr[0];              // Fetch Highest Priority
             _arr[0] = _arr[Count - 1];      // Assign last Node to Top
@@ -74,7 +74,7 @@ namespace BinaryHeap
             while (index < Count)   // Instead of while we can call Heapify again at end of else statement on higherP to make Heapify Recursive from Iterative
             {
                 if (HeapUtility.LeftChild(index) >= Count || Count <= 1)
-                    return;
+                    break;
                 else if (HeapUtility.RightChild(index) < Count)
                 {
                     int higherP = index;
@@ -88,6 +88,7 @@ namespace BinaryHeap
                         Node.Swap(ref _arr[higherP], ref _arr[index]);
                         index = higherP;
                     }
+                    else break;
                 }
                 else
                 {

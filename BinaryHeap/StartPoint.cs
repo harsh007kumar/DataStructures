@@ -13,6 +13,7 @@ namespace BinaryHeap
             MergeTwoHeaps();
             FindKSmalledInMinHeap();
             ImplementStackUsingPriorityQueue();
+            ImplementQueueUsingHeap();
             Console.ReadKey();
         }
 
@@ -118,6 +119,21 @@ namespace BinaryHeap
             Console.Write(" Performing Pop on are stack now :\t");
             for (int j = 0; j < 10; j++)
                 Console.Write($" {st.Pop()}");
+            Console.WriteLine();
+        }
+
+        public static void ImplementQueueUsingHeap()
+        {
+            HeapUtility.Print("Problem - 19 How do we implement Queue using heap?(p. 387)");
+            QueueUsingHeap q = new QueueUsingHeap(10);
+            for (int i = 100; i < 110; i++)
+                q.EnQueue(i);
+
+            Console.WriteLine($" Front on Above Queue returned :\t {q.Front()}");
+            Console.Write(" Performing DeQueue on are stack now :\t");
+            for (int j = 0; j < 10; j++)
+                Console.Write($" {q.DeQueue()}");
+            Console.WriteLine();
         }
     }
 }
