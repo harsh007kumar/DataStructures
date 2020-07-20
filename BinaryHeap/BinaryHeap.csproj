@@ -45,6 +45,7 @@
     <Compile Include="Heap.cs" />
     <Compile Include="HeapUtility.cs" />
     <Compile Include="PriorityQueue.cs" />
+    <Compile Include="StackUsingHeap.cs" />
     <Compile Include="StartPoint.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

@@ -110,28 +110,29 @@ namespace BinaryHeap
 
         /// <summary>
         /// Time Complexity O(k Logk) as we are storing max 'K' elements in Priority Queue at any given time || Space Complexity O(k)
+        /// Use this apporach only when N >> >> K (K quite small than N), else simply use any Linear time Sorting techique Ex- Counting Sort which returns in O(n) time
         /// </summary>
-        /// <param name="h"></param>
+        /// <param name="heap"></param>
         /// <param name="k"></param>
         /// <returns></returns>
-        public static int KthSmallestInMinHeap(MinHeap h, int k)
+        public static int KthSmallestInMinHeap(MinHeap heap, int k)
         {
-            if (h == null || h.Count < 1 || k < 1 || k > h.Count)
+            if (heap == null || heap.Count < 1 || k < 1 || k > heap.Count)
                 return -1;
 
             // Auxillary Priority Queue of 'k' Size create to Store and process first 'k' nodes from MinHeap
             PriorityQueue pQ = new PriorityQueue(k);
 
             // Add Min Element from MinHeap and its index to Queue
-            pQ.Enqueue(h.GetMin(), 0);
+            pQ.Enqueue(heap.GetMin(), 0);
 
             for (int i = 1; i < k; i++)
             {
                 var top = pQ.ExtractHighest();
                 var lt = LeftChild(top.Value);
                 var rt = RightChild(top.Value);
-                if (lt < h.Count) pQ.Enqueue(h._heapArr[lt], lt);       // With Each iteration Queue size increase by 1
-                if (rt < h.Count) pQ.Enqueue(h._heapArr[rt], rt);       // Storing minHeap left & rt child value as Priority and their index as value
+                if (lt < heap.Count) pQ.Enqueue(heap._heapArr[lt], lt);       // With Each iteration Queue size increase by 1
+                if (rt < heap.Count) pQ.Enqueue(heap._heapArr[rt], rt);       // Storing minHeap left & rt child value as Priority and their index as value
             }
 
             return pQ.GetHighestPriority().Priorty;

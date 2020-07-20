@@ -12,6 +12,7 @@ namespace BinaryHeap
             NodesSmallerThanK();
             MergeTwoHeaps();
             FindKSmalledInMinHeap();
+            ImplementStackUsingPriorityQueue();
             Console.ReadKey();
         }
 
@@ -104,6 +105,19 @@ namespace BinaryHeap
             minH.PrintHeap();
             int k = 6;
             Console.WriteLine($" {k}th smallest element in above Heap is :\t {HeapUtility.KthSmallestInMinHeap(minH, k)}");
+        }
+
+        public static void ImplementStackUsingPriorityQueue()
+        {
+            HeapUtility.Print("Problem - 19 How do we implement stack using heap?(p. 387)");
+            StackUsingHeap st = new StackUsingHeap(10);
+            for (int i = 100; i < 110; i++)
+                st.Push(i);
+
+            Console.WriteLine($" Peek on Above Stack returned :\t\t {st.Peek()}");
+            Console.Write(" Performing Pop on are stack now :\t");
+            for (int j = 0; j < 10; j++)
+                Console.Write($" {st.Pop()}");
         }
     }
 }
