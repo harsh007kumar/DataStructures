@@ -71,31 +71,21 @@ namespace BinaryHeap
         /// <param name="index"></param>
         public void Heapify(int index = 0)
         {
-            while (index < Count)   // Instead of while we can call Heapify again at end of else statement on higherP to make Heapify Recursive from Iterative
+            while (index < Count)   // Instead of while we can call Heapify again after Swapping on higherP to make Heapify Recursive from Iterative
             {
-                if (HeapUtility.LeftChild(index) >= Count || Count <= 1)
-                    break;
-                else if (HeapUtility.RightChild(index) < Count)
-                {
-                    int higherP = index;
-                    if (_arr[HeapUtility.LeftChild(index)].Priorty < _arr[index].Priorty)
-                        higherP = HeapUtility.LeftChild(index);
-                    if (_arr[HeapUtility.RightChild(index)].Priorty < _arr[higherP].Priorty)
-                        higherP = HeapUtility.RightChild(index);
+                int left = HeapUtility.LeftChild(index), rt = HeapUtility.RightChild(index);
+                int maxPriority = index;
+                if (left < Count - 1 && _arr[left].Priorty < _arr[index].Priorty)
+                    maxPriority = left;
+                if (rt < Count - 1 && _arr[rt].Priorty < _arr[maxPriority].Priorty)
+                    maxPriority = rt;
 
-                    if (higherP != index)
-                    {
-                        Node.Swap(ref _arr[higherP], ref _arr[index]);
-                        index = higherP;
-                    }
-                    else break;
-                }
-                else
+                if (maxPriority != index)
                 {
-                    if (_arr[HeapUtility.LeftChild(index)].Priorty < _arr[index].Priorty)
-                        Node.Swap(ref _arr[HeapUtility.LeftChild(index)], ref _arr[index]);
-                    break;
+                    Node.Swap(ref _arr[maxPriority], ref _arr[index]);
+                    index = maxPriority;
                 }
+                else break;
             }
         }
     }

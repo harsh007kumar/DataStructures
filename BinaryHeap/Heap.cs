@@ -90,25 +90,24 @@ namespace BinaryHeap
         public void MinHeapify(int index = 0)
         {
             //For empty or Heap with single element we need not perform any operation
-            if (Count < 2 || HeapUtility.LeftChild(index) > Count - 1)
-                return;
-            else if (HeapUtility.RightChild(index) < Count)
+            if (Count < 2) return;
+
+            int smallest = index;
+            int left = HeapUtility.LeftChild(index), rt = HeapUtility.RightChild(index);
+
+            if (left < Count - 1 && _heapArr[left] < _heapArr[index])
+                smallest = left;
+            if (rt < Count - 1 && _heapArr[rt] < _heapArr[smallest])
+                smallest = rt;
+            if (smallest != index)
             {
-                int smallest = index;
-                if (_heapArr[HeapUtility.LeftChild(index)] < _heapArr[index])
-                    smallest = HeapUtility.LeftChild(index);
-                if (_heapArr[HeapUtility.RightChild(index)] < _heapArr[smallest])
-                    smallest = HeapUtility.RightChild(index);
-                if (smallest != index)
-                {
-                    // Swap root node with bigger child
-                    HeapUtility.Swap(ref _heapArr[smallest], ref _heapArr[index]);
-                    //Recurisvely call Heapify on child node to re-order subtree and maintain MinHeap integrity
-                    MinHeapify(smallest);
-                }
+                // Swap root node with smaller child
+                HeapUtility.Swap(ref _heapArr[smallest], ref _heapArr[index]);
+
+                //Recurisvely call Heapify on child node to re-order subtree and maintain MinHeap integrity
+                MinHeapify(smallest);
             }
-            else if (_heapArr[index] > _heapArr[HeapUtility.LeftChild(index)])
-                HeapUtility.Swap(ref _heapArr[index], ref _heapArr[HeapUtility.LeftChild(index)]);
+
         }
 
         /// <summary>
