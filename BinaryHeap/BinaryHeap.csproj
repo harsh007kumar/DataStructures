@@ -44,6 +44,7 @@
   <ItemGroup>
     <Compile Include="Heap.cs" />
     <Compile Include="HeapUtility.cs" />
+    <Compile Include="MinMaxHeap.cs" />
     <Compile Include="PriorityQueue.cs" />
     <Compile Include="QueueUsingHeap.cs" />
     <Compile Include="StackUsingHeap.cs" />

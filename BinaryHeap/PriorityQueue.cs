@@ -9,6 +9,8 @@ namespace BinaryHeap
     public class Node
     {
         public int Priorty { get; set; }
+        public int Key { get => Priorty; set { Priorty = value; } }     // added extra property with Key name as its more intutiate to fetch data by Key instead of Priority
+
         public int Value { get; set; }
         public Node(int priority, int value)
         {
@@ -39,7 +41,7 @@ namespace BinaryHeap
         /// </summary>
         /// <param name="priority"></param>
         /// <param name="value"></param>
-        public void Enqueue(int priority, int value)
+        public int Enqueue(int priority, int value)
         {
             int lastIndex = Count++;
             _arr[lastIndex] = new Node(priority, value);
@@ -49,6 +51,7 @@ namespace BinaryHeap
                 Node.Swap(ref _arr[lastIndex], ref _arr[HeapUtility.Parent(lastIndex)]);
                 lastIndex = HeapUtility.Parent(lastIndex);
             }
+            return lastIndex;
         }
 
         public Node GetHighestPriority() => Count == 0 ? null : _arr[0];
@@ -88,5 +91,53 @@ namespace BinaryHeap
                 else break;
             }
         }
+
+        public void Delete_iThIndex(int index)
+        {
+            if (index >= Count) return;
+            Console.WriteLine($" Deleting Node '{_arr[index]}' present at Index : {index}");
+            _arr[index] = _arr[Count - 1];          // replace current node with last element in array
+            Count--;                                // decrease count
+            Heapify(index);                         // call Heapify on current Node to maintain Integrety from current Node to all the way down
+        }
+    }
+
+    public class PriorityQueueMax : PriorityQueue
+    {
+        public PriorityQueueMax(int size) : base(size) { }
+
+        public new int Enqueue(int priority, int value)
+        {
+            int lastIndex = Count++;
+            _arr[lastIndex] = new Node(priority, value);
+            // 'Percolate-Up' Operation
+            while (lastIndex > 0 && _arr[lastIndex].Priorty > _arr[HeapUtility.Parent(lastIndex)].Priorty)
+            {
+                Node.Swap(ref _arr[lastIndex], ref _arr[HeapUtility.Parent(lastIndex)]);
+                lastIndex = HeapUtility.Parent(lastIndex);
+            }
+            return lastIndex;
+        }
+
+        public new void Heapify(int index = 0)
+        {
+            while (index < Count)   // Instead of while we can call Heapify again after Swapping on higherP to make Heapify Recursive from Iterative
+            {
+                int left = HeapUtility.LeftChild(index), rt = HeapUtility.RightChild(index);
+                int maxPriority = index;
+                if (left < Count && _arr[left].Priorty > _arr[index].Priorty)
+                    maxPriority = left;
+                if (rt < Count && _arr[rt].Priorty > _arr[maxPriority].Priorty)
+                    maxPriority = rt;
+
+                if (maxPriority != index)
+                {
+                    Node.Swap(ref _arr[maxPriority], ref _arr[index]);
+                    index = maxPriority;
+                }
+                else break;
+            }
+        }
+
     }
 }

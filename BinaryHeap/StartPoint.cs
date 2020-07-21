@@ -18,6 +18,7 @@ namespace BinaryHeap
             ImplementQueueUsingHeap();
             FindKMinFromUnSortedFileWithBillionNumbers();
             MergeKSortedLists();
+            MinMaxHeap();
             Console.ReadKey();
         }
 
@@ -217,6 +218,28 @@ namespace BinaryHeap
                 }
                 Console.WriteLine();
             }
+        }
+
+        public static void MinMaxHeap()
+        {
+            HeapUtility.Print("Problem - 26 Min - Max heap: (p. 391)");
+            // Expected Operation Complexity Init O(n), Insert O(logn), FindMin O(1), FindMax O(1), Delete Min O(logn), Delete Max O(logn)
+            int size = 5;
+            MinMaxHeap mnHeap = new MinMaxHeap(size);
+            for (int i = 1; i <= size; i++)
+                mnHeap.Insert(i * 100);
+            mnHeap.Print();
+
+            Console.WriteLine($" Get Max in O(1) time returns :\t{mnHeap.FindMax()}");
+            Console.WriteLine($" Get Min in O(1) time returns :\t{mnHeap.FindMin()}");
+
+            Console.Write("After deleting Min DataStructure Looks like");
+            mnHeap.DeleteMin();
+            mnHeap.Print();
+
+            Console.Write("After deleting Max DataStructure Looks like");
+            mnHeap.DeleteMax();
+            mnHeap.Print();
         }
     }
 }
