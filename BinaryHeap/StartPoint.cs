@@ -1,5 +1,6 @@
 using System;
 using System.Globalization;
+using System.Security.Cryptography.X509Certificates;
 
 namespace BinaryHeap
 {
@@ -16,6 +17,7 @@ namespace BinaryHeap
             ImplementStackUsingPriorityQueue();
             ImplementQueueUsingHeap();
             FindKMinFromUnSortedFileWithBillionNumbers();
+            MergeKSortedLists();
             Console.ReadKey();
         }
 
@@ -73,6 +75,7 @@ namespace BinaryHeap
             HeapUtility.NodeSmallerThanK(minH._heapArr, 0, minH.Count - 1, k);
             Console.WriteLine();
         }
+
         public static void MergeTwoHeaps()
         { 
             HeapUtility.Print("Problem - 12 Give an algorithm for merging two binary heaps." +
@@ -174,6 +177,46 @@ namespace BinaryHeap
                 Console.Write($" {heap1000Chunk.ExtractMin(true)}");        // pass false to see last set of 1000 no's getting replaced in Extract Operation
 
             Console.WriteLine();
+        }
+
+        public static void MergeKSortedLists()
+        {
+            HeapUtility.Print("Problem - 22 Merge k sorted lists of Size N each (p. 390)");
+            int k = 3;  // Number of linked lists 
+            int n = 4;  // Number of elements in each list 
+            LinkedList.Node[] arrOfKList = new LinkedList.Node[k];
+            arrOfKList[0] = new LinkedList.Node(1);
+            arrOfKList[0].next = new LinkedList.Node(3);
+            arrOfKList[0].next.next = new LinkedList.Node(5);
+            arrOfKList[0].next.next.next = new LinkedList.Node(7);
+
+            arrOfKList[1] = new LinkedList.Node(2);
+            arrOfKList[1].next = new LinkedList.Node(4);
+            arrOfKList[1].next.next = new LinkedList.Node(6);
+            arrOfKList[1].next.next.next = new LinkedList.Node(8);
+
+            arrOfKList[2] = new LinkedList.Node(0);
+            arrOfKList[2].next = new LinkedList.Node(9);
+            arrOfKList[2].next.next = new LinkedList.Node(10);
+            arrOfKList[2].next.next.next = new LinkedList.Node(11);
+
+            for (int i = 0; i < k; i++)
+                Print(arrOfKList[i]);
+
+            LinkedList.Node merged = HeapUtility.MergeKSortedList(arrOfKList);
+
+            Console.Write("Printing Merged List :\t");
+            Print(merged);
+            // Local Func
+            void Print(LinkedList.Node temp)
+            {
+                while (temp != null)
+                {
+                    Console.Write($" {temp.Data}");
+                    temp = temp.next;
+                }
+                Console.WriteLine();
+            }
         }
     }
 }

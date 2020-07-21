@@ -95,9 +95,9 @@ namespace BinaryHeap
             int smallest = index;
             int left = HeapUtility.LeftChild(index), rt = HeapUtility.RightChild(index);
 
-            if (left < Count - 1 && _heapArr[left] < _heapArr[index])
+            if (left < Count && _heapArr[left] < _heapArr[index])
                 smallest = left;
-            if (rt < Count - 1 && _heapArr[rt] < _heapArr[smallest])
+            if (rt < Count && _heapArr[rt] < _heapArr[smallest])
                 smallest = rt;
             if (smallest != index)
             {

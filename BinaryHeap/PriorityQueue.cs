@@ -75,9 +75,9 @@ namespace BinaryHeap
             {
                 int left = HeapUtility.LeftChild(index), rt = HeapUtility.RightChild(index);
                 int maxPriority = index;
-                if (left < Count - 1 && _arr[left].Priorty < _arr[index].Priorty)
+                if (left < Count && _arr[left].Priorty < _arr[index].Priorty)
                     maxPriority = left;
-                if (rt < Count - 1 && _arr[rt].Priorty < _arr[maxPriority].Priorty)
+                if (rt < Count && _arr[rt].Priorty < _arr[maxPriority].Priorty)
                     maxPriority = rt;
 
                 if (maxPriority != index)

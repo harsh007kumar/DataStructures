@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.NetworkInformation;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -136,6 +137,50 @@ namespace BinaryHeap
             }
 
             return pQ.GetHighestPriority().Priorty;
+        }
+
+        /// <summary>
+        /// Time Complexity O(N * K * LogK), where N * K = Total No Of Elements
+        /// Space O(k) for Priority Queue (Note : If instead of LinkedList we were merging Array add O(n) space for Merged Array)
+        /// </summary>
+        /// <param name="arr"></param>
+        /// <returns></returns>
+        public static LinkedList.Node MergeKSortedList(LinkedList.Node[] arr)
+        {
+            if (arr == null) return null;
+
+            LinkedList.Node head = null, temp = null;
+            int NoOfList = arr.Length;
+
+            // Create Priority Queue of Size K = NoOf Sorted List
+            PriorityQueue pq = new PriorityQueue(NoOfList);
+
+
+            for (int i = 0; i < NoOfList; i++)                          // K * Log K
+                pq.Enqueue(arr[i].Data, i);      // Insert the first element from each list as Key and List ID as value
+
+            while (pq.Count > 0)                                        // N * Log K
+            {
+                var top = pq.ExtractHighest();
+
+                if (head == null)
+                {
+                    head = new LinkedList.Node(top.Priorty);
+                    temp = head;
+                }
+                else
+                {
+                    temp.next = new LinkedList.Node(top.Priorty);
+                    temp = temp.next;
+                }
+
+                arr[top.Value] = arr[top.Value].next;   // increament index for List who's Root element was extracted from Priority Queue above
+
+                if (arr[top.Value] != null)             // Check we have reached the end of that particular Linked-list
+                    pq.Enqueue(arr[top.Value].Data, top.Value);
+
+            }
+            return head;
         }
     }
 }

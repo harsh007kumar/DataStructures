@@ -53,5 +53,11 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\LinkedList\LinkedList.csproj">
+      <Project>{7458dbf7-f88e-4cb0-86b4-52c29bbdf37c}</Project>
+      <Name>LinkedList</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
