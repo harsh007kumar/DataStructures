@@ -26,22 +26,27 @@ namespace BinaryHeap
         }
     }
 
-    /// <summary>
-    /// Highest Priority in this implementation is int.MinValue, so lesser the value Higher the priority
-    /// </summary>
-    public class PriorityQueue
+    public class QueueHeap
     {
         public Node[] _arr;
         public int Count = 0;
         public int TotalCapacity { get => _arr.Length; }
-        public PriorityQueue(int size) => _arr = new Node[size];
+        public QueueHeap(int size) => _arr = new Node[size];
+        public Node GetHighestPriority() => Count == 0 ? null : _arr[0];
+    }
+    /// <summary>
+    /// Highest Priority in this implementation is int.MinValue, so lesser the value Higher the priority
+    /// </summary>
+    public class PriorityQueue : QueueHeap
+    {
+        public PriorityQueue(int size) : base(size) { }
 
         /// <summary>
         /// Time Complexity O(Logn) as we travel from leaf to root node || Space Complexity O(1)
         /// </summary>
         /// <param name="priority"></param>
         /// <param name="value"></param>
-        public int Enqueue(int priority, int value)
+        public int Enqueue(int priority, int value = 1)
         {
             int lastIndex = Count++;
             _arr[lastIndex] = new Node(priority, value);
@@ -53,8 +58,6 @@ namespace BinaryHeap
             }
             return lastIndex;
         }
-
-        public Node GetHighestPriority() => Count == 0 ? null : _arr[0];
 
         public Node ExtractHighest()
         {
@@ -102,11 +105,14 @@ namespace BinaryHeap
         }
     }
 
-    public class PriorityQueueMax : PriorityQueue
+    /// <summary>
+    /// Highest Priority in this implementation is int.MaxValue, so Higher the value Higher the priority
+    /// </summary>
+    public class PriorityQueueMax : QueueHeap
     {
         public PriorityQueueMax(int size) : base(size) { }
 
-        public new int Enqueue(int priority, int value)
+        public int Enqueue(int priority, int value = 1)
         {
             int lastIndex = Count++;
             _arr[lastIndex] = new Node(priority, value);
@@ -119,7 +125,19 @@ namespace BinaryHeap
             return lastIndex;
         }
 
-        public new void Heapify(int index = 0)
+        public Node ExtractHighest()
+        {
+            if (Count < 1) return null;
+
+            var Top = _arr[0];              // Fetch Highest Priority
+            _arr[0] = _arr[Count - 1];      // Assign last Node to Top
+            Count--;                        // Decrease count
+            // Heapify : to Mainting Queue integrity
+            Heapify();
+            return Top;
+        }
+
+        public void Heapify(int index = 0)
         {
             while (index < Count)   // Instead of while we can call Heapify again after Swapping on higherP to make Heapify Recursive from Iterative
             {
@@ -137,6 +155,15 @@ namespace BinaryHeap
                 }
                 else break;
             }
+        }
+
+        public void Delete_iThIndex(int index)
+        {
+            if (index >= Count) return;
+            Console.WriteLine($" Deleting Node '{_arr[index]}' present at Index : {index}");
+            _arr[index] = _arr[Count - 1];          // replace current node with last element in array
+            Count--;                                // decrease count
+            Heapify(index);                         // call Heapify on current Node to maintain Integrety from current Node to all the way down
         }
 
     }

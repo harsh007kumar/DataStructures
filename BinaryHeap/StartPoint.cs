@@ -1,5 +1,6 @@
 using System;
 using System.Globalization;
+using System.Linq;
 using System.Security.Cryptography.X509Certificates;
 
 namespace BinaryHeap
@@ -18,7 +19,8 @@ namespace BinaryHeap
             ImplementQueueUsingHeap();
             FindKMinFromUnSortedFileWithBillionNumbers();
             MergeKSortedLists();
-            MinMaxHeap();
+            //MinMaxHeap();          IN PROGRESS
+            FindMedianInUnSortedArrayUsingHeaps();
             Console.ReadKey();
         }
 
@@ -26,7 +28,7 @@ namespace BinaryHeap
         {
             HeapUtility.Print("Create an MinHeap and Perform :\tInsert()\tDelete()\tExtractMin()\tOperations");
             MinHeap myHeap = new MinHeap(2);
-            myHeap.InsertNode(1,false);
+            myHeap.InsertNode(1, false);
             myHeap.InsertNode(2, false);
             myHeap.InsertNode(3, false);
             myHeap.DeleteKey(0);
@@ -78,13 +80,13 @@ namespace BinaryHeap
         }
 
         public static void MergeTwoHeaps()
-        { 
+        {
             HeapUtility.Print("Problem - 12 Give an algorithm for merging two binary heaps." +
                 "Let us assume that the size of the first heap is m + n (1st m filled n last n index empty) and the size of the second heap is n.(p. 384)");
             int m = 10, n = 3, value = 0;
             var mnHeap = new MinHeap(m + n);
             var nHeap = new MinHeap(n);
-            
+
             // Populate 1st Heap
             while (value < m)
                 mnHeap.InsertNode(value++);
@@ -151,7 +153,7 @@ namespace BinaryHeap
         {
             HeapUtility.Print("Problem - 21 Given a big file containing billions of numbers, how can you find the 10 minmum numbers from that file? (p. 388)");
             int k = 10;
-            
+
             // Step 1 : Divide the Read Big file into some constants parts lets say 1000 elements
             MinHeap heap1000Chunk = new MinHeap(1000);
             for (int i = 1; i <= (int)Math.Pow(10, 5); i++)          // Consider Billion Numbers Input Stream coming out of this Loop
@@ -240,6 +242,28 @@ namespace BinaryHeap
             Console.Write("After deleting Max DataStructure Looks like");
             mnHeap.DeleteMax();
             mnHeap.Print();
+        }
+
+        public static void FindMedianInUnSortedArrayUsingHeaps()
+        {
+            HeapUtility.Print("Problem - 27 Dynamic median finding.(p. 392)");
+            int[][] inputArr = { new int[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 }, new int[] { 10, 9, 8, 7, 6, 5, 4, 3, 2, 1 }, new int[] { 10, 5, 15, 2, 30, 100, 14, 32, 20, 1 } };
+            foreach (var input in inputArr)
+            {
+                // Print Input
+                Console.Write("\n Input Array is :\t\t");
+                for (int i = 0; i < input.Length; i++)
+                    Console.Write($" {input[i]}\t");
+
+                double[] mediam = HeapUtility.DynamicMedianFinding(input);
+
+                // Print Output
+                Console.Write("\n Median at each point in array :");
+                for (int i = 0; i < mediam.Length; i++)
+                    Console.Write($" {mediam[i]}\t");
+                
+                Console.WriteLine();
+            }
         }
     }
 }

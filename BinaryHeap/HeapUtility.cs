@@ -182,5 +182,82 @@ namespace BinaryHeap
             }
             return head;
         }
+
+        /// <summary>
+        /// Time Complexity O(N LogN), where N is no of elements in Input Array || Space Complexity O(3n) ~ O(n)
+        /// It is an 'Online algorithm'. Any algorithm that can guarantee output of i-elements after processing i-th element
+        /// GFG https://www.geeksforgeeks.org/median-of-stream-of-integers-running-integers/
+        /// HackerRank https://www.youtube.com/watch?v=VmogG01IjYc
+        /// </summary>
+        /// <param name="input"></param>
+        /// <returns></returns>
+        public static double[] DynamicMedianFinding(int[] input)
+        {
+            int len = input.Length;
+            // MinHeap to stores top half no's
+            PriorityQueue upperHalf = new PriorityQueue(len);
+
+            // MaxHeap to stores bottom half no's
+            PriorityQueueMax lowerHalf = new PriorityQueueMax(len);
+
+            // Create a double type array to store medium value
+            double[] median = new double[len];
+
+            // Traverse thru the input array and store medium in double array
+            for (int i = 0; i < len; i++)
+            {
+                // Add new no to appropriate Heap
+                AddNumber(input[i], upperHalf, lowerHalf);
+
+                // Rebalance our Heaps so that their size are always of same or max differ by 1
+                Rebalance(upperHalf, lowerHalf);
+
+                // Fetch the Median
+                median[i] = GetMedian(upperHalf, lowerHalf);
+            }
+
+            return median;
+        }
+
+        public static void AddNumber(int data, PriorityQueue upperHalf, PriorityQueueMax lowerHalf)
+        {
+            if (lowerHalf.Count == 0 || data < lowerHalf.GetHighestPriority().Key)
+                lowerHalf.Enqueue(data);
+            else
+                upperHalf.Enqueue(data);
+        }
+
+        /// <summary>
+        /// ReBalance Both heaps if absolute difference in Count is more than 1
+        /// </summary>
+        /// <param name="upperHalf"></param>
+        /// <param name="lowerHalf"></param>
+        public static void Rebalance(PriorityQueue upperHalf, PriorityQueueMax lowerHalf)
+        {
+            var leftHeavyOrRight = lowerHalf.Count - upperHalf.Count;
+            if (leftHeavyOrRight > 1)       // lower Half Contain 2 value more than upper
+                upperHalf.Enqueue(lowerHalf.ExtractHighest().Key);
+            else if (leftHeavyOrRight < -1) // upper Half Contain 2 value more than lower
+                lowerHalf.Enqueue(upperHalf.ExtractHighest().Key);
+        }
+
+        /// <summary>
+        /// For Odd count of numbers return root from one which has more elements, else avg of root of both heaps
+        /// </summary>
+        /// <param name="upperHalf"></param>
+        /// <param name="lowerHalf"></param>
+        /// <returns></returns>
+        public static double GetMedian(PriorityQueue upperHalf, PriorityQueueMax lowerHalf)
+        {
+            double median = -1;
+
+            if (lowerHalf.Count == upperHalf.Count)
+                median = (double)(lowerHalf.GetHighestPriority().Key + upperHalf.GetHighestPriority().Key) / 2;
+            else
+                median = lowerHalf.Count > upperHalf.Count ? lowerHalf.GetHighestPriority().Key : upperHalf.GetHighestPriority().Key;
+
+            return median;
+        }
+
     }
 }
