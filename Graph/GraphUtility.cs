@@ -39,7 +39,24 @@ namespace Graph
             return DG;
         }
 
-        //GFG https://www.geeksforgeeks.org/strongly-connected-components/
+        public static DiGraph GetDAG()
+        {
+            DiGraph DG = new DiGraph(6);
+
+            //Adding Edges to Di-Graph
+            DG.AddEdge(5, 0);
+            DG.AddEdge(5, 2);
+            DG.AddEdge(4, 0);
+            DG.AddEdge(4, 1);
+            DG.AddEdge(2, 3);
+            DG.AddEdge(3, 1);
+
+            return DG;
+        }
+
+
+
+
         /// <summary>
         /// Printing SCC in DiGraph (using Kosaraju’s algorithm)
         /// </summary>
@@ -99,6 +116,44 @@ namespace Graph
                 foreach (var node in graph._Graph[i])
                     reverseGraph._Graph[node].Add(i);
             return reverseGraph;
+        }
+
+        /// <summary>
+        /// Time Complexity: O(V+E) its simply DFS with an extra stack, complexity same as DFS || Auxiliary space: O(V) needed for the stack.
+        /// </summary>
+        /// <param name="DG"></param>
+        public static void TopologicalSortingOnDAG(DiGraph DG)
+        {
+            // Step1 create a stack to hold the Vertex in the reverse order of when they appear in call-stack
+            Stack<int> st = new Stack<int>();
+
+            // Reset InVisited Arr
+            DG.Reset_VisitedArr();
+
+            //Calling recursive TopologicalSort on graph for every node to cover disconnected graph (in which every is not reachble from single Node)
+            for (int startingNode = 0; startingNode < DG.Length; startingNode++)
+                if (DG._IsVisitedArr[startingNode] != 1)
+                    TopologicalSort_Recursive(DG, startingNode, ref st);
+
+            Console.Write("\nTopological Sort of above DAG is :\t");
+            foreach (var Vertex in st)
+                Console.Write($" {Vertex} ");
+
+            Console.WriteLine();
+        }
+
+        static void TopologicalSort_Recursive(DiGraph DG, int currentNodeIndex, ref Stack<int> stack)
+        {
+            if (DG?._Graph == null || DG._IsVisitedArr[currentNodeIndex] == 1) return;
+
+            // Mark current Node as Visited Now
+            DG._IsVisitedArr[currentNodeIndex] = 1;
+
+            foreach (var adjacentNode in DG._Graph[currentNodeIndex])
+                TopologicalSort_Recursive(DG, adjacentNode, ref stack);
+
+            // add current Node to stack after adding all its adjacent Node(adjacent Nodes) to stack i.e, Current Node is added to top of stack
+            stack.Push(currentNodeIndex);
         }
     }
 }

@@ -14,6 +14,7 @@ namespace Graph
             CreateAndPerform_DFS_BFS_On_UnDirectedGraph();
             CreateAndPerform_DFS_BFS_On_DiGraph();
             StronglyConnectedCompoenent_In_DiGraph();
+            TopologicalSorting_In_DAG();
             Console.ReadKey();
         }
 
@@ -42,6 +43,7 @@ namespace Graph
             DG.DepthFirstSearch();
         }
 
+        // GFG https://www.geeksforgeeks.org/strongly-connected-components/
         public static void StronglyConnectedCompoenent_In_DiGraph()
         {
             GraphUtility.Print("Printing SCC in DiGraph (using Kosaraju’s algorithm)");
@@ -52,6 +54,15 @@ namespace Graph
             DG1.AddEdge(0, 3);
             DG1.AddEdge(3, 4);
             GraphUtility.PrintSccInDiGraph(DG1);
+        }
+
+        // GFG https://www.geeksforgeeks.org/topological-sorting/
+        public static void TopologicalSorting_In_DAG()
+        {
+            GraphUtility.Print("Topological Sorting in Directed Acyclic Graph aka. DAG");
+            var DAG = GraphUtility.GetDAG();
+            DAG.DepthFirstSearch();
+            GraphUtility.TopologicalSortingOnDAG(DAG);
         }
 
     }

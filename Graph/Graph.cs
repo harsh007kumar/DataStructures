@@ -31,9 +31,11 @@ namespace Graph
 
         public void Reset_VisitedArr() => _IsVisitedArr = new int[Length];
 
+        public int NoOfVertex { get { return _Graph.Length; } }
+
         public void PrintGraph()                                                                        //O(v*v)
         {
-            Console.Write("Print all connections in graph per Node");
+            Console.Write("\nPrint all connections in graph per Node");
             for (int i = 0; i < _Graph.Length; i++)
             {
                 Console.Write($"\nNode:{i} ");                                  // Print Node
@@ -50,8 +52,8 @@ namespace Graph
         /// Space Complexity: O(V). Since, an extra visited array is needed of size V.
         /// </summary>
         /// <param name="graph"></param>
-        /// <param name="startingNode"></param>
-        public void BreadthFirstSearch(int startingNode)
+        /// <param name="currentNode"></param>
+        public void BreadthFirstSearch(int currentNode)
         {
             if (_Graph == null) return;
 
@@ -62,10 +64,10 @@ namespace Graph
             Queue<int> q = new Queue<int>();
 
             //Step3 : add starting node to Queue before starting BFS/LevelOrder traversal
-            q.Enqueue(startingNode);                                                                        // add that element to queue
-            _IsVisitedArr[startingNode] = 1;                                                                 // mark the element as visited
+            q.Enqueue(currentNode);                                                                        // add that element to queue
+            _IsVisitedArr[currentNode] = 1;                                                                 // mark the element as visited
 
-            Console.Write($"\nBreadth First Traversal/Level Order Traversal\nStarting with Node :\t");
+            Console.Write($"\nBreadth First Traversal/Level Order Traversal\tStarting with Node :\t");
             //Step4 : loop until Queue is not empty
             while (q.Count > 0)
             {
@@ -97,24 +99,24 @@ namespace Graph
             {
                 if (_IsVisitedArr[startingNode] != 1)
                 {
-                    Console.Write($"\nDepth First Traversal\nStarting with Node:\t");
+                    Console.Write($"\nDepth First Traversal\tStarting with Node:\t");
                     DepthFirstSearch_Recursive(startingNode);
                 }
             }
             Console.WriteLine();
         }
 
-        public void DepthFirstSearch_Recursive(int startingNode)
+        public void DepthFirstSearch_Recursive(int currentNode)
         {
-            if (_Graph == null || _IsVisitedArr[startingNode] == 1) return;
+            if (_Graph == null || _IsVisitedArr[currentNode] == 1) return;
 
             //Step1: Mark current node as visited and print the node
-            _IsVisitedArr[startingNode] = 1;
-            Console.Write($" {startingNode} ");
+            _IsVisitedArr[currentNode] = 1;
+            Console.Write($" {currentNode} ");
 
             //Step2 : Traverse all the adjacent and unmarked nodes
-            foreach (var node in _Graph[startingNode])
-                DepthFirstSearch_Recursive(node);
+            foreach (var adjacentNode in _Graph[currentNode])
+                DepthFirstSearch_Recursive(adjacentNode);
         }
     }
 
