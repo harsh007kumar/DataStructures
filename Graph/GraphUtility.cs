@@ -155,5 +155,68 @@ namespace Graph
             // add current Node to stack after adding all its adjacent Node(adjacent Nodes) to stack i.e, Current Node is added to top of stack
             stack.Push(currentNodeIndex);
         }
+
+        /// <summary>
+        /// Time Complexity O(V+E), V = No Of Vertex & E = No Of Edges (this is same Time Complexity as BFS)
+        /// Auxillary Space O(3V) ~ O(V) (for storing Queue, Path & Distance)
+        /// </summary>
+        /// <param name="UG"></param>
+        /// <param name="source"></param>
+        /// <param name="destination"></param>
+        public static void ShortestPathUnWeighted(UnDirectedGraph UG, int source, int destination)
+        {
+            if (UG == null) return;
+
+            // Create Queue to do BFS
+            Queue<int> q = new Queue<int>();
+
+            // array to store index of prv Vertex to current Vertex
+            int[] path = new int[UG.Length];
+            // array storing distance from Source Vertex
+            int[] distance = new int[UG.Length];
+
+            // Set -1 initial value for all Vertex
+            for (int i = 0; i < UG.Length; i++)
+                path[i] = distance[i] = -1;
+
+            distance[source] = 0;           // Set source distance from itself to Zero
+
+            // Reset IsVisited Array of Graph
+            UG.Reset_VisitedArr();
+            q.Enqueue(source);              // Add source to Queue
+            UG._IsVisitedArr[source] = 1;   // Mark source Visited
+            // do BFS
+            while(q.Count>0)
+            {
+                var prvNode = q.Dequeue();
+                foreach (var AdjacentNode in UG._Graph[prvNode])           // Iterate thru Adjacent Node of current Vertex
+                {
+                    if (UG._IsVisitedArr[AdjacentNode] != 1)
+                    {
+                        path[AdjacentNode] = prvNode;          // Update PrvNode for Current Node
+                        distance[AdjacentNode] = distance[prvNode] + 1;
+
+                        q.Enqueue(AdjacentNode);
+                        UG._IsVisitedArr[AdjacentNode] = 1;
+                    }
+                }
+            }
+            
+            // Fetching and printing distance and path b/w source and destination
+            Console.WriteLine($"The Min distance from Source : '{source}' to Destination '{destination}' is :\t{distance[destination]} ");
+            Console.Write($"The Path for above MinDistance is :\t");
+            var prvVertex = path[destination];
+            Stack<int> pathStoD = new Stack<int>();
+            pathStoD.Push(destination);
+            while (prvVertex != -1)         // While Previous Vertex is not Equal to -1 (i.e, prv Vertex for Source Vertex in Path Array
+            {
+                pathStoD.Push(prvVertex);   // Adding Vertex closest to destination in decreasing order
+                prvVertex = path[prvVertex];
+            }
+            foreach (var Vertex in pathStoD)
+                Console.Write($"--> {Vertex} ");
+
+            Console.WriteLine();
+        }
     }
 }
