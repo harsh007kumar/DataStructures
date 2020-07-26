@@ -103,6 +103,46 @@ namespace BinaryHeap
             Count--;                                // decrease count
             Heapify(index);                         // call Heapify on current Node to maintain Integrety from current Node to all the way down
         }
+
+        /// <summary>
+        /// Time O(n) || Space O(1)
+        /// </summary>
+        /// <param name="data"></param>
+        /// <param name="newPriority"></param>
+        public void UpdatePriority(int data, int newPriority = int.MinValue)
+        {
+            int Nodeindex = -1;
+            // Search and find the index of Node whose value matches the data
+            for (int index = 0; index < Count; index++)                         // O(n)
+                if (_arr[index].Value == data)
+                {
+                    Nodeindex = index;
+                    break;
+                }
+
+            // Decrease the priority of Node
+            if (Nodeindex != -1) DecreasePriority(Nodeindex, newPriority);      // O(LogN)
+        }
+
+        /// <summary>
+        /// Decreases Priority at passed index in Min PriorityQueue
+        /// Time Complexity O(logN) (worst case we start at the leaf and come up to the root) || Space O(1)
+        /// We need not worry about the Heap Integrity from that node downwards as value is decreasing even more and not increasing
+        /// </summary>
+        /// <param name="index"></param>
+        /// <param name="newValue">default value is int.MinValue</param>
+        public void DecreasePriority(int index, int priority = int.MinValue)
+        {
+            Console.WriteLine($" Decreasing Priority at index : {index} having value : '{_arr[index].Value}' PrvPriority : '{_arr[index].Priorty }' NewPriority : '{priority}'");
+            _arr[index].Priorty = priority;
+            // Current Node Priority value is smaller than its parent than Swap (as its a Min Priority DataStructure)
+            while (index != 0 && _arr[index].Priorty < _arr[HeapUtility.Parent(index)].Priorty)
+            {
+                Node.Swap(ref _arr[index], ref _arr[HeapUtility.Parent(index)]);
+                index = HeapUtility.Parent(index);
+            }
+        }
+
     }
 
     /// <summary>

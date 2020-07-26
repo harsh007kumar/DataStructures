@@ -33,7 +33,7 @@ namespace Graph
 
         public int NoOfVertex { get { return _Graph.Length; } }
 
-        public void PrintGraph()                                                                        //O(v*v)
+        public void PrintGraph()                                                                        //O(V+E)
         {
             Console.Write("\nPrint all connections in graph per Node");
             for (int i = 0; i < _Graph.Length; i++)
@@ -57,7 +57,7 @@ namespace Graph
         {
             if (_Graph == null) return;
 
-            //Step1 : Create Array which keeps track of each node in graph has been visited yet or not
+            //Step1 : Reset Array which keeps track of each node in graph has been visited yet or not
             _IsVisitedArr = new int[_Graph.Length];
 
             //Step2 : Create empty Queue

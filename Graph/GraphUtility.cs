@@ -54,7 +54,39 @@ namespace Graph
             return DG;
         }
 
+        public static UnDirectedWeightedGraph GetUnDirectedWeighted()
+        {
+            UnDirectedWeightedGraph unDi = new UnDirectedWeightedGraph(9);
+            unDi.AddEdge(0, 1, 4);
+            unDi.AddEdge(0, 7, 8);
+            unDi.AddEdge(1, 2, 8);
+            unDi.AddEdge(1, 7, 11);
+            unDi.AddEdge(2, 3, 7);
+            unDi.AddEdge(2, 8, 2);
+            unDi.AddEdge(2, 5, 4);
+            unDi.AddEdge(3, 4, 9);
+            unDi.AddEdge(3, 5, 14);
+            unDi.AddEdge(4, 5, 10);
+            unDi.AddEdge(5, 6, 2);
+            unDi.AddEdge(6, 7, 1);
+            unDi.AddEdge(6, 8, 6);
+            unDi.AddEdge(7, 8, 7);
 
+            return unDi;
+        }
+
+        public static DiGraphWeighted GetDiGraphWeighted()
+        {
+            DiGraphWeighted diG = new DiGraphWeighted(5);
+            diG.AddEdge(0, 1, 4);
+            diG.AddEdge(0, 2, 1);
+            diG.AddEdge(1, 4, 4);
+            diG.AddEdge(2, 1, 2);
+            diG.AddEdge(2, 3, 4);
+            diG.AddEdge(3, 4, 4);
+
+            return diG;
+        }
 
 
         /// <summary>
@@ -191,7 +223,7 @@ namespace Graph
                 var prvNode = q.Dequeue();
                 foreach (var AdjacentNode in UG._Graph[prvNode])           // Iterate thru Adjacent Node of current Vertex
                 {
-                    if (UG._IsVisitedArr[AdjacentNode] != 1)
+                    if (UG._IsVisitedArr[AdjacentNode] != 1)    // can use check: if(distance[AdjacentNode] == -1) and in that case we dont even need to update/check Visited Array thruout the code
                     {
                         path[AdjacentNode] = prvNode;          // Update PrvNode for Current Node
                         distance[AdjacentNode] = distance[prvNode] + 1;
