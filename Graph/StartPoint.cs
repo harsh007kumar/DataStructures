@@ -17,7 +17,8 @@ namespace Graph
             StronglyConnectedCompoenent_In_DiGraph();
             TopologicalSorting_In_DAG();
             ShortestPathInUnWeightedGraph();
-            Console.ReadKey();
+            DijkstraAlgorithm_ForAdjacencyListRepresentation_GreedyAlgo();
+         Console.ReadKey();
         }
 
         public static void CreateAndPerform_DFS_BFS_On_UnDirectedGraph()
@@ -88,8 +89,16 @@ namespace Graph
 
         }
 
-        
-
-
+        // GFG https://www.geeksforgeeks.org/dijkstras-algorithm-for-adjacency-list-representation-greedy-algo-8/?ref=lbp
+        // DataStructures & Algo Book : Dijkstra’s Algorithm (p. 451)
+        public static void DijkstraAlgorithm_ForAdjacencyListRepresentation_GreedyAlgo()
+        {
+            GraphUtility.Print("DijkstraAlgorithm_ForAdjacencyListRepresentation_GreedyAlgo");
+            UnDirectedWeightedGraph unDiW = GraphUtility.GetUnDirectedWeighted();
+            //DiGraphWeighted diW = GraphUtility.GetDiGraphWeighted(); // pass this to see working on -> Directed Weighted Acyclic Graph
+            unDiW.PrintGraph();
+            int sourceNode = 0, destination = 4;
+            GraphUtility.DijkstraAlgorithm(unDiW, sourceNode);      // if no destination is provided prints shortest path for all the nodes
+        }
     }
 }

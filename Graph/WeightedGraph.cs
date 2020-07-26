@@ -8,12 +8,12 @@ namespace Graph
 {
     public class GraphNode
     {
-        public int NodeData { get; set; }
+        public int Index { get; set; }
         public int Weight { get; set; }
 
-        public GraphNode(int data, int weight = 1)
+        public GraphNode(int index, int weight = 1)
         {
-            NodeData = data;
+            Index = index;
             Weight = weight;
         }
     }
@@ -47,7 +47,7 @@ namespace Graph
             {
                 Console.Write($"\nNode:{i} ");                                  // Print Node
                 foreach (var node in _Graph[i])
-                    Console.Write($"-->{node.NodeData}");                                // Print all the nodes its connected with
+                    Console.Write($"-->{node.Index}");                                // Print all the nodes its connected with
             }
             Console.WriteLine();
         }
@@ -73,10 +73,10 @@ namespace Graph
                 var temp = q.Dequeue();
                 Console.Write($" {temp} "); // Print starting node data
                 foreach (var node in _Graph[temp])
-                    if (_IsVisitedArr[node.NodeData] != 1)
+                    if (_IsVisitedArr[node.Index] != 1)
                     {
-                        q.Enqueue(node.NodeData);               // Add Adjacent Vertex to Queue
-                        _IsVisitedArr[node.NodeData] = 1;       // Mark Vertex as visited
+                        q.Enqueue(node.Index);               // Add Adjacent Vertex to Queue
+                        _IsVisitedArr[node.Index] = 1;       // Mark Vertex as visited
                     }
             }
             Console.WriteLine();

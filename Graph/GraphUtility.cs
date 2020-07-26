@@ -1,4 +1,5 @@
-﻿using System;
+﻿using BinaryHeap;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -236,18 +237,89 @@ namespace Graph
             
             // Fetching and printing distance and path b/w source and destination
             Console.WriteLine($"The Min distance from Source : '{source}' to Destination '{destination}' is :\t{distance[destination]} ");
-            Console.Write($"The Path for above MinDistance is :\t");
-            var prvVertex = path[destination];
+            PrintShortestPath(path, destination);
+        }
+
+        /// <summary>
+        /// Time Complexity O(ELogV), V = No Of Vertex & E = No Of Edges (as we are performing E times update/insert operation in Priority Queue)
+        /// Auxillary Space O(3V) ~ O(V) (for storing Priority Queue, Path & Distance)
+        /// Supports Only Graphs with Non-Negative Edges
+        /// </summary>
+        /// <param name="UGW"></param>
+        /// <param name="source"></param>
+        /// <param name="destination"></param>
+        public static void DijkstraAlgorithm(WeightedGraph UGW, int source, int destination = -1)
+        {
+            if (UGW?._Graph == null) return;
+            // To Get Vertex with Min/least distance from source Vertex
+            PriorityQueue pq = new PriorityQueue(UGW.Length);
+
+            // Create Distance Array to store min distance for each Vertex from source Vertex
+            int[] dist = new int[UGW.Length];
+
+            // Array which stores previous Node in path to current Node
+            int[] path = new int[UGW.Length];
+
+            for (int i = 0; i < UGW.Length; i++)
+                dist[i] = path[i] = -1;
+
+            dist[source] = 0;
+
+            // add distance from source as key and index as value to priority queue
+            pq.Enqueue(dist[source], source);
+
+            // traverse thru the Graph
+            while (pq.Count > 0)
+            {
+                var prvNode = pq.ExtractHighest();
+                foreach (var adjacentVertex in UGW._Graph[prvNode.Value])
+                {
+                    var distanceFromSource = dist[prvNode.Value] + adjacentVertex.Weight;
+                    // check if this Vertex is being processed for first time than add it to priority queue by Key = its distance from source
+                    if (dist[adjacentVertex.Index] == -1)
+                    {
+                        dist[adjacentVertex.Index] = distanceFromSource;
+                        pq.Enqueue(distanceFromSource, adjacentVertex.Index);
+                        path[adjacentVertex.Index] = prvNode.Value;
+                    }
+                    else if (distanceFromSource < dist[adjacentVertex.Index])
+                    {
+                        dist[adjacentVertex.Index] = distanceFromSource;
+                        pq.UpdatePriority(adjacentVertex.Index, distanceFromSource);            // O(n) Liner Search + Update O(LogN)
+                        path[adjacentVertex.Index] = prvNode.Value;
+                    }
+                }
+            }
+            
+            #region Print Shortest Path b/w source and destination
+            if (destination == -1)   // If No destination provided print shortest path for each Vertex from source
+            {
+                // Print Path for each Vertex in Graph
+                for(int i =0;i<UGW.Length;i++)
+                {
+                    Console.WriteLine($"The Min distance from Source : '{source}' to Destination '{i}' is :\t{dist[i]} ");
+                    PrintShortestPath(path, i);
+                }
+            }
+            else
+            {
+                Console.WriteLine($"The Min distance from Source : '{source}' to Destination '{destination}' is :\t{dist[destination]} ");
+                PrintShortestPath(path, destination);
+            }
+            #endregion
+        }
+
+        public static void PrintShortestPath(int[] pathArray, int prvVertex)
+        {
+            Console.Write($"The Path for above MinDistance is : ");
             Stack<int> pathStoD = new Stack<int>();
-            pathStoD.Push(destination);
             while (prvVertex != -1)         // While Previous Vertex is not Equal to -1 (i.e, prv Vertex for Source Vertex in Path Array
             {
                 pathStoD.Push(prvVertex);   // Adding Vertex closest to destination in decreasing order
-                prvVertex = path[prvVertex];
+                prvVertex = pathArray[prvVertex];
             }
             foreach (var Vertex in pathStoD)
                 Console.Write($"--> {Vertex} ");
-
             Console.WriteLine();
         }
     }

@@ -9,9 +9,14 @@ namespace BinaryHeap
     public class Node
     {
         public int Priorty { get; set; }
-        public int Key { get => Priorty; set { Priorty = value; } }     // added extra property with Key name as its more intutiate to fetch data by Key instead of Priority
+
+        /// <summary>
+        /// Added extra property with Key name as its more intutiate to fetch data by Key instead of Priority
+        /// </summary>
+        public int Key { get => Priorty; set { Priorty = value; } }
 
         public int Value { get; set; }
+
         public Node(int priority, int value)
         {
             Priorty = priority;
@@ -131,9 +136,9 @@ namespace BinaryHeap
         /// </summary>
         /// <param name="index"></param>
         /// <param name="newValue">default value is int.MinValue</param>
-        public void DecreasePriority(int index, int priority = int.MinValue)
+        public void DecreasePriority(int index, int priority = int.MinValue, bool silent = true)
         {
-            Console.WriteLine($" Decreasing Priority at index : {index} having value : '{_arr[index].Value}' PrvPriority : '{_arr[index].Priorty }' NewPriority : '{priority}'");
+            if (!silent) Console.WriteLine($" Decreasing Priority at index : {index} having value : '{_arr[index].Value}' PrvPriority : '{_arr[index].Priorty }' NewPriority : '{priority}'");
             _arr[index].Priorty = priority;
             // Current Node Priority value is smaller than its parent than Swap (as its a Min Priority DataStructure)
             while (index != 0 && _arr[index].Priorty < _arr[HeapUtility.Parent(index)].Priorty)
