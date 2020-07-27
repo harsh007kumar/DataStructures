@@ -1,5 +1,6 @@
 ﻿using BinaryHeap;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -236,35 +237,35 @@ namespace Graph
             }
             
             // Fetching and printing distance and path b/w source and destination
-            Console.WriteLine($"The Min distance from Source : '{source}' to Destination '{destination}' is :\t{distance[destination]} ");
+            Console.Write($"Min distance Source : '{source}' to Destination '{destination}' is : {distance[destination]}");
             PrintShortestPath(path, destination);
         }
 
         /// <summary>
         /// Time Complexity O(ELogV), V = No Of Vertex & E = No Of Edges (as we are performing E times update/insert operation in Priority Queue)
         /// Auxillary Space O(3V) ~ O(V) (for storing Priority Queue, Path & Distance)
-        /// Supports Only Graphs with Non-Negative Edges
+        /// Supports Only Graphs with Non-Negative Edges || Single Source Shortest Path
         /// </summary>
-        /// <param name="UGW"></param>
+        /// <param name="graph_adjacency_list"></param>
         /// <param name="source"></param>
         /// <param name="destination"></param>
-        public static void DijkstraAlgorithm(WeightedGraph UGW, int source, int destination = -1)
+        public static void DijkstraAlgorithm(WeightedGraph graph_adjacency_list, int source, int destination = -1)
         {
-            if (UGW?._Graph == null) return;
+            if (graph_adjacency_list?._Graph == null) return;
             // To Get Vertex with Min/least distance from source Vertex
-            PriorityQueue pq = new PriorityQueue(UGW.Length);
+            PriorityQueue pq = new PriorityQueue(graph_adjacency_list.Length);
 
             // Create Distance Array to store min distance for each Vertex from source Vertex
-            int[] dist = new int[UGW.Length];
+            int[] dist = new int[graph_adjacency_list.Length];
 
             // Array which stores previous Node in path to current Node
-            int[] path = new int[UGW.Length];
+            int[] path = new int[graph_adjacency_list.Length];
 
-            for (int i = 0; i < UGW.Length; i++)
+            for (int i = 0; i < graph_adjacency_list.Length; i++)
                 dist[i] = path[i] = -1;
 
             dist[source] = 0;
-
+            
             // add distance from source as key and index as value to priority queue
             pq.Enqueue(dist[source], source);
 
@@ -272,7 +273,7 @@ namespace Graph
             while (pq.Count > 0)
             {
                 var prvNode = pq.ExtractHighest();
-                foreach (var adjacentVertex in UGW._Graph[prvNode.Value])
+                foreach (var adjacentVertex in graph_adjacency_list._Graph[prvNode.Value])
                 {
                     var distanceFromSource = dist[prvNode.Value] + adjacentVertex.Weight;
                     // check if this Vertex is being processed for first time than add it to priority queue by Key = its distance from source
@@ -284,8 +285,8 @@ namespace Graph
                     }
                     else if (distanceFromSource < dist[adjacentVertex.Index])
                     {
+                        pq.UpdatePriority(dist[adjacentVertex.Index], distanceFromSource);  // Update O(LogN), as Position Dictonary used which holds index for all Nodes
                         dist[adjacentVertex.Index] = distanceFromSource;
-                        pq.UpdatePriority(adjacentVertex.Index, distanceFromSource);            // O(n) Liner Search + Update O(LogN)
                         path[adjacentVertex.Index] = prvNode.Value;
                     }
                 }
@@ -295,15 +296,15 @@ namespace Graph
             if (destination == -1)   // If No destination provided print shortest path for each Vertex from source
             {
                 // Print Path for each Vertex in Graph
-                for(int i =0;i<UGW.Length;i++)
+                for(int i =0;i<graph_adjacency_list.Length;i++)
                 {
-                    Console.WriteLine($"The Min distance from Source : '{source}' to Destination '{i}' is :\t{dist[i]} ");
+                    Console.Write($"Min distance Source : '{source}' to Destination '{i}' is : {dist[i]}");
                     PrintShortestPath(path, i);
                 }
             }
             else
             {
-                Console.WriteLine($"The Min distance from Source : '{source}' to Destination '{destination}' is :\t{dist[destination]} ");
+                Console.Write($"Min distance Source : '{source}' to Destination '{destination}' is : {dist[destination]}");
                 PrintShortestPath(path, destination);
             }
             #endregion
@@ -311,7 +312,7 @@ namespace Graph
 
         public static void PrintShortestPath(int[] pathArray, int prvVertex)
         {
-            Console.Write($"The Path for above MinDistance is : ");
+            Console.Write($"\t||\tPath : ");
             Stack<int> pathStoD = new Stack<int>();
             while (prvVertex != -1)         // While Previous Vertex is not Equal to -1 (i.e, prv Vertex for Source Vertex in Path Array
             {

@@ -34,10 +34,34 @@ namespace BinaryHeap
     public class QueueHeap
     {
         public Node[] _arr;
+        public Dictionary<int,int> _positionDict;                  // position Dictonary which keep tracks of index of where each Key is present in Queue
         public int Count = 0;
         public int TotalCapacity { get => _arr.Length; }
-        public QueueHeap(int size) => _arr = new Node[size];
+
+        public QueueHeap(int size)
+        {
+            _arr = new Node[size];
+            _positionDict = new Dictionary<int, int>();
+        }
+
         public Node GetHighestPriority() => Count == 0 ? null : _arr[0];
+
+        /// <summary>
+        /// Swap values of index of Data in Dictonary
+        /// </summary>
+        /// <param name="index1"></param>
+        /// <param name="index2"></param>
+        protected void UpdatePosition(int index1, int index2)
+        {
+            _positionDict[_arr[index1].Key] = index2;
+            _positionDict[_arr[index2].Key] = index1;
+        }
+
+        protected void UpdatePositionPriority(int oldPriority, int newPriority)
+        {
+            _positionDict.Add(newPriority, _positionDict[oldPriority]);
+            _positionDict.Remove(oldPriority);
+        }
     }
     /// <summary>
     /// Highest Priority in this implementation is int.MinValue, so lesser the value Higher the priority
@@ -53,21 +77,25 @@ namespace BinaryHeap
         /// <param name="value"></param>
         public int Enqueue(int priority, int value = 1)
         {
-            int lastIndex = Count++;
-            _arr[lastIndex] = new Node(priority, value);
+            int index = Count++;
+            _arr[index] = new Node(priority, value);
+            _positionDict.Add(priority, index);                             // index of newly added Node is saved in Dictonary, would be used later to search/Update/Delete in O(1)
             // 'Percolate-Up' Operation
-            while (lastIndex > 0 && _arr[lastIndex].Priorty < _arr[HeapUtility.Parent(lastIndex)].Priorty)
+            while (index > 0 && _arr[index].Priorty < _arr[HeapUtility.Parent(index)].Priorty)
             {
-                Node.Swap(ref _arr[lastIndex], ref _arr[HeapUtility.Parent(lastIndex)]);
-                lastIndex = HeapUtility.Parent(lastIndex);
+                UpdatePosition(index, HeapUtility.Parent(index));
+                Node.Swap(ref _arr[index], ref _arr[HeapUtility.Parent(index)]);
+                index = HeapUtility.Parent(index);
             }
-            return lastIndex;
+            return index;
         }
 
         public Node ExtractHighest()
         {
             if (Count < 1) return null;
 
+            UpdatePosition(0, Count - 1);                                   // Updating index of Delete node and last Node in Dictonary, would be used later to search/Update/Delete in O(1)
+            _positionDict.Remove(_arr[0].Key);                              // Delete Data which was stored earlier at _arr[0] as its going to be Extracted from PQ
             var Top = _arr[0];              // Fetch Highest Priority
             _arr[0] = _arr[Count - 1];      // Assign last Node to Top
             Count--;                        // Decrease count
@@ -93,6 +121,7 @@ namespace BinaryHeap
 
                 if (maxPriority != index)
                 {
+                    UpdatePosition(maxPriority, index);     // index of two Node is updated/swapped in Dictonary, would be used later to search/Update/Delete in O(1)
                     Node.Swap(ref _arr[maxPriority], ref _arr[index]);
                     index = maxPriority;
                 }
@@ -110,23 +139,25 @@ namespace BinaryHeap
         }
 
         /// <summary>
-        /// Time O(n) || Space O(1)
+        /// Time O(Logn) || Space O(1)
         /// </summary>
         /// <param name="data"></param>
         /// <param name="newPriority"></param>
-        public void UpdatePriority(int data, int newPriority = int.MinValue)
+        public void UpdatePriority(int oldPriority, int newPriority = int.MinValue)
         {
-            int Nodeindex = -1;
-            // Search and find the index of Node whose value matches the data
-            for (int index = 0; index < Count; index++)                         // O(n)
-                if (_arr[index].Value == data)
-                {
-                    Nodeindex = index;
-                    break;
-                }
-
+            // Search not required now as _positionDict is tracking index of all the Data in the PriorityQueue
+            //// Search and find the index of Node whose value matches the data
+            //int Nodeindex = -1;
+            //for (int index = 0; index < Count; index++)                         // O(n)
+            //    if (_arr[index].Value == data)
+            //    {
+            //        Nodeindex = index;
+            //        break;
+            //    }
+            var nodeIndex = _positionDict[oldPriority];
+            UpdatePositionPriority(oldPriority, newPriority);       // update _positionDict here
             // Decrease the priority of Node
-            if (Nodeindex != -1) DecreasePriority(Nodeindex, newPriority);      // O(LogN)
+            if (_positionDict.ContainsKey(oldPriority)) DecreasePriority(nodeIndex, newPriority);      // O(LogN)
         }
 
         /// <summary>
@@ -143,6 +174,7 @@ namespace BinaryHeap
             // Current Node Priority value is smaller than its parent than Swap (as its a Min Priority DataStructure)
             while (index != 0 && _arr[index].Priorty < _arr[HeapUtility.Parent(index)].Priorty)
             {
+                UpdatePosition(index, HeapUtility.Parent(index));           // index of newly added Node is saved in Dictonary, would be used later to search/Update/Delete in O(1)
                 Node.Swap(ref _arr[index], ref _arr[HeapUtility.Parent(index)]);
                 index = HeapUtility.Parent(index);
             }
@@ -210,6 +242,5 @@ namespace BinaryHeap
             Count--;                                // decrease count
             Heapify(index);                         // call Heapify on current Node to maintain Integrety from current Node to all the way down
         }
-
     }
 }
