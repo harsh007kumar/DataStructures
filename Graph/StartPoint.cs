@@ -19,6 +19,7 @@ namespace Graph
             ShortestPathInUnWeightedGraph();
             DijkstraAlgorithm_ForAdjacencyListRepresentation_GreedyAlgo();
             FindRelationsInAnimal();
+            SingleSourceShortestPathInWeightedGraph_WithNegativeWt();
             Console.ReadKey();
         }
 
@@ -95,11 +96,11 @@ namespace Graph
         public static void DijkstraAlgorithm_ForAdjacencyListRepresentation_GreedyAlgo()
         {
             GraphUtility.Print("DijkstraAlgorithm_ForAdjacencyListRepresentation_GreedyAlgo");
-            UnDirectedWeightedGraph unDiW = GraphUtility.GetUnDirectedWeighted();
-            //DiGraphWeighted diW = GraphUtility.GetDiGraphWeighted(); // pass this to see working on -> Directed Weighted Acyclic Graph
-            unDiW.PrintGraph();
+            //UnDirectedWeightedGraph graph = GraphUtility.GetUnDirectedWeighted();
+            DiGraphWeighted graph = GraphUtility.GetDiGraphWeighted(); // pass this to see working on -> Directed Weighted Acyclic Graph
+            graph.PrintGraph();
             int sourceNode = 0, destination = 4;
-            GraphUtility.DijkstraAlgorithm(unDiW, sourceNode);      // if no destination is provided prints shortest path for all the nodes
+            GraphUtility.DijkstraAlgorithm(graph, sourceNode);      // if no destination is provided prints shortest path for all the nodes
         }
 
         // Google Phone Interview https://youtu.be/V0xjK_6ZoEY
@@ -113,6 +114,15 @@ namespace Graph
             // Objective is to write static func printTree() which print Relations : pair of parent->child relationships
             GraphUtility.FindAnimalKingdomTree(input);
 
+        }
+
+        public static void SingleSourceShortestPathInWeightedGraph_WithNegativeWt()
+        {
+            GraphUtility.Print("Bellman-Ford Algorithm (p. 456)");
+            DiGraphWeighted diGWN = GraphUtility.GetDiGraphWeightedWithNegativeEdges();
+            diGWN.PrintGraph();
+            int source = 0;
+            GraphUtility.BellManFordAlgo(diGWN, source);
         }
     }
 }

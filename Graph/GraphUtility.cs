@@ -43,53 +43,60 @@ namespace Graph
 
         public static DiGraph GetDAG()
         {
-            DiGraph DG = new DiGraph(6);
+            DiGraph DAG = new DiGraph(6);
 
             //Adding Edges to Di-Graph
-            DG.AddEdge(5, 0);
-            DG.AddEdge(5, 2);
-            DG.AddEdge(4, 0);
-            DG.AddEdge(4, 1);
-            DG.AddEdge(2, 3);
-            DG.AddEdge(3, 1);
+            DAG.AddEdge(5, 0);
+            DAG.AddEdge(5, 2);
+            DAG.AddEdge(4, 0);
+            DAG.AddEdge(4, 1);
+            DAG.AddEdge(2, 3);
+            DAG.AddEdge(3, 1);
 
-            return DG;
+            return DAG;
         }
 
         public static UnDirectedWeightedGraph GetUnDirectedWeighted()
         {
-            UnDirectedWeightedGraph unDi = new UnDirectedWeightedGraph(9);
-            unDi.AddEdge(0, 1, 4);
-            unDi.AddEdge(0, 7, 8);
-            unDi.AddEdge(1, 2, 8);
-            unDi.AddEdge(1, 7, 11);
-            unDi.AddEdge(2, 3, 7);
-            unDi.AddEdge(2, 8, 2);
-            unDi.AddEdge(2, 5, 4);
-            unDi.AddEdge(3, 4, 9);
-            unDi.AddEdge(3, 5, 14);
-            unDi.AddEdge(4, 5, 10);
-            unDi.AddEdge(5, 6, 2);
-            unDi.AddEdge(6, 7, 1);
-            unDi.AddEdge(6, 8, 6);
-            unDi.AddEdge(7, 8, 7);
+            UnDirectedWeightedGraph unDiW = new UnDirectedWeightedGraph(9);
+            unDiW.AddEdge(0, 1, 4);
+            unDiW.AddEdge(0, 7, 8);
+            unDiW.AddEdge(1, 2, 8);
+            unDiW.AddEdge(1, 7, 11);
+            unDiW.AddEdge(2, 3, 7);
+            unDiW.AddEdge(2, 8, 2);
+            unDiW.AddEdge(2, 5, 4);
+            unDiW.AddEdge(3, 4, 9);
+            unDiW.AddEdge(3, 5, 14);
+            unDiW.AddEdge(4, 5, 10);
+            unDiW.AddEdge(5, 6, 2);
+            unDiW.AddEdge(6, 7, 1);
+            unDiW.AddEdge(6, 8, 6);
+            unDiW.AddEdge(7, 8, 7);
 
-            return unDi;
+            return unDiW;
         }
 
         public static DiGraphWeighted GetDiGraphWeighted()
         {
-            DiGraphWeighted diG = new DiGraphWeighted(5);
-            diG.AddEdge(0, 1, 4);
-            diG.AddEdge(0, 2, 1);
-            diG.AddEdge(1, 4, 4);
-            diG.AddEdge(2, 1, 2);
-            diG.AddEdge(2, 3, 4);
-            diG.AddEdge(3, 4, 4);
+            DiGraphWeighted diGW = new DiGraphWeighted(5);
+            diGW.AddEdge(0, 1, 4);
+            diGW.AddEdge(0, 2, 1);
+            diGW.AddEdge(1, 4, 4);
+            diGW.AddEdge(2, 1, 2);
+            diGW.AddEdge(2, 3, 4);
+            diGW.AddEdge(3, 4, 4);
 
-            return diG;
+            return diGW;
         }
 
+        public static DiGraphWeighted GetDiGraphWeightedWithNegativeEdges()
+        {
+            var diGWN = GetDiGraphWeighted();
+            diGWN.RemoveEdge(0, 1, 4);
+            diGWN.AddEdge(0, 1, -4);
+            return diGWN;
+        }
 
         /// <summary>
         /// Printing SCC in DiGraph (using Kosaraju’s algorithm)
@@ -242,7 +249,7 @@ namespace Graph
         }
 
         /// <summary>
-        /// Time Complexity O(ELogV), V = No Of Vertex & E = No Of Edges (as we are performing E times update/insert operation in Priority Queue)
+        /// Time Complexity O((V+E)LogV) ~ O(ELogV), V = No Of Vertex & E = No Of Edges (as we are performing E times update/insert operation in Priority Queue)
         /// Auxillary Space O(3V) ~ O(V) (for storing Priority Queue, Path & Distance)
         /// Supports Only Graphs with Non-Negative Edges || Single Source Shortest Path
         /// </summary>
@@ -380,6 +387,84 @@ namespace Graph
         {
             while (times-- > 0)
                 Console.Write("\t");
+        }
+
+        /// <summary>
+        /// BellManFordAlgo_ForAdjacencyListRepresentation || Time Complexity O(V*E) || Auxillary Space O(n)
+        /// </summary>
+        /// <param name="graph_adjacency_list"></param>
+        /// <param name="source"></param>
+        /// <param name="destination"></param>
+        public static void BellManFordAlgo(WeightedGraph graph_adjacency_list, int source, int destination = -1)
+        {
+            if (graph_adjacency_list?._Graph == null) return;
+            
+            // Fetch No Of Vertexs in Graph
+            var V = graph_adjacency_list.Length;
+
+            // Step1 create Queue to hold index of Vertex which have to be processed next
+            Queue<int> q = new Queue<int>();
+
+            // Step2 create Distance array to keep record of min distance for each Vertex from Source
+            int[] dist = new int[V];
+
+            // Step3 create a path array to keep track of previous Vertex for each Vertex in Shortest Path from Source
+            int[] path = new int[V];
+
+            // Step4 create an additinal array which track of if an Vertex is present in Queue or not
+            bool[] present = new bool[V];
+
+            // Step5 Initialize distance for each vertex from source to Int.max as we campare against this val & new distancec in are algo below
+            for (int i = 0; i < V; i++)
+            {
+                dist[i] = int.MaxValue;
+                path[i] = -1;
+            }
+
+            // set source Vertex Min distance to 0 and Mark Source present in queue
+            dist[source] = 0;
+            present[source] = true;
+
+            // Enqueue sorce to queue
+            q.Enqueue(source);
+
+            while (q.Count > 0)
+            {
+                var parent = q.Dequeue();
+                foreach (var AdjacentVertex in graph_adjacency_list._Graph[parent])
+                {
+                    var newDistance = dist[parent] + AdjacentVertex.Weight;
+                    if (newDistance < dist[AdjacentVertex.Index])
+                    {
+                        dist[AdjacentVertex.Index] = newDistance;   // update new min distance in dist array
+                        path[AdjacentVertex.Index] = parent;        // update prvVertex in path array
+                        if (!present[AdjacentVertex.Index])
+                            q.Enqueue(AdjacentVertex.Index);        // if Adjacent Vertex not already present in Queue than add
+                        
+                        present[AdjacentVertex.Index] = true;       // mark Adjacent Vertex as present in queue
+                    }
+                }
+                present[parent] = false;                            // mark parent as not present in Queue Now
+
+            }
+
+            #region Print Shortest Path b/w source and destination
+            if (destination == -1)   // If No destination provided print shortest path for each Vertex from source
+            {
+                // Print Path for each Vertex in Graph
+                for (int i = 0; i < graph_adjacency_list.Length; i++)
+                {
+                    Console.Write($"Min distance Source : '{source}' to Destination '{i}' is : {dist[i]}");
+                    PrintShortestPath(path, i);
+                }
+            }
+            else
+            {
+                Console.Write($"Min distance Source : '{source}' to Destination '{destination}' is : {dist[destination]}");
+                PrintShortestPath(path, destination);
+            }
+            #endregion
+
         }
     }
 }
