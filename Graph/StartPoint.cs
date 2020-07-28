@@ -123,6 +123,14 @@ namespace Graph
             diGWN.PrintGraph();
             int source = 0;
             GraphUtility.BellManFordAlgo(diGWN, source);
+
+            // GFG https://www.geeksforgeeks.org/bellman-ford-algorithm-dp-23/
+            // YouTube(Jenny) https://youtu.be/KudAWAMiQog
+            GraphUtility.Print("Bellman-Ford Algo when graph given as pair of Edges(having src,Dest,Wt)");
+            GraphAsPairOfEdges graph = GraphAsPairOfEdges.GetGraph();
+            //GraphAsPairOfEdges graph = GraphAsPairOfEdges.GetGraphWithNegativeWtCycle(); Uncomment this & comment above to check if modified BellMan detects -ve wt cycle
+            graph.PrintGraph();
+            GraphUtility.BellManFort_GraphAsPairOfEdges(graph, source);
         }
     }
 }

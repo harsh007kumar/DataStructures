@@ -390,7 +390,8 @@ namespace Graph
         }
 
         /// <summary>
-        /// BellManFordAlgo_ForAdjacencyListRepresentation || Time Complexity O(V*E) || Auxillary Space O(n)
+        /// BellManFordAlgo_ForAdjacencyListRepresentation || Time Complexity O(V*E) || Auxillary Space O(V)
+        /// Doesn't work in case of -ve weight cycle, i.e, Total of wt of all edges in cycle is -ve
         /// </summary>
         /// <param name="graph_adjacency_list"></param>
         /// <param name="source"></param>
@@ -465,6 +466,67 @@ namespace Graph
             }
             #endregion
 
+        }
+
+        /// <summary>
+        /// BellManFordAlgo_ForAdjacencyListRepresentation || Time Complexity O(V*E) || Auxillary Space O(V)
+        /// Doesn't work in case of -ve weight cycle, i.e, Total of wt of all edges in cycle is -ve
+        /// </summary>
+        /// <param name="graph"></param>
+        /// <param name="source"></param>
+        public static void BellManFort_GraphAsPairOfEdges(GraphAsPairOfEdges graph, int source)
+        {
+            if (graph.V <= 0 || graph.E <= 0) return;
+
+            // Step1 create a distance array to hold min distance for each Vertex
+            int[] dist = new int[graph.V];
+
+            // Step2 creat a path array to hold prvVertex to current Vertex indedx
+            int[] path = new int[graph.V];
+
+            for (int i = 0; i < graph.V; i++)
+            {
+                dist[i] = int.MaxValue;
+                path[i] = -1;
+            }
+
+            dist[source] = 0;
+
+            // Step3 relaxing all the E edges in graph V vertex times, to find min distance possible b/w each Edge
+            for (int V = 1; V < graph.V; V++)
+            {
+                for (int E = 0; E < graph.E; E++)
+                {
+                    var src = graph.edge[E].src;
+                    var dest = graph.edge[E].dest;
+                    var wt = graph.edge[E].weight;
+                    if (dist[src] + wt < dist[dest])
+                    {
+                        dist[dest] = dist[src] + wt;
+                        path[dest] = src;
+                    }
+                }
+            }
+
+            // Step4 run below loop E edge time to check if graph edge cannot be relax further if they can means -ve wt cycle exists in graph
+            for (int E = 0; E < graph.E; E++)
+            {
+                var src = graph.edge[E].src;
+                var dest = graph.edge[E].dest;
+                var wt = graph.edge[E].weight;
+                if (dist[src] + wt < dist[dest])
+                {
+                    Console.WriteLine("Graph contains -ve weight cycle");
+                    return;
+                }
+            }
+
+            // Print Path for each Vertex in Graph
+            for (int V = 0; V < graph.V; V++)
+            {
+                Console.Write($"Min distance Source : '{source}' to Destination '{V}' is : {dist[V]}");
+                PrintShortestPath(path, V);
+            }
         }
     }
 }
