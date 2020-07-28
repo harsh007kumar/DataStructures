@@ -18,6 +18,7 @@ namespace Graph
             TopologicalSorting_In_DAG();
             ShortestPathInUnWeightedGraph();
             DijkstraAlgorithm_ForAdjacencyListRepresentation_GreedyAlgo();
+            FindRelationsInAnimal();
             Console.ReadKey();
         }
 
@@ -99,6 +100,19 @@ namespace Graph
             unDiW.PrintGraph();
             int sourceNode = 0, destination = 4;
             GraphUtility.DijkstraAlgorithm(unDiW, sourceNode);      // if no destination is provided prints shortest path for all the nodes
+        }
+
+        // Google Phone Interview https://youtu.be/V0xjK_6ZoEY
+        public static void FindRelationsInAnimal()
+        {
+            GraphUtility.Print("Google Telephone Interview Ques : Find Relations In Animal and Print the Herariechy");
+
+            // input list containing pairs of animal
+            List<Relation> input = Relation.GetRelations();
+
+            // Objective is to write static func printTree() which print Relations : pair of parent->child relationships
+            GraphUtility.FindAnimalKingdomTree(input);
+
         }
     }
 }

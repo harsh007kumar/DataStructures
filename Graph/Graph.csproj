@@ -57,6 +57,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AnimalKingdom.cs" />
     <Compile Include="Graph.cs" />
     <Compile Include="GraphUtility.cs" />
     <Compile Include="StartPoint.cs" />

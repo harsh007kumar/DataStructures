@@ -323,5 +323,63 @@ namespace Graph
                 Console.Write($"--> {Vertex} ");
             Console.WriteLine();
         }
+
+        /// <summary>
+        /// Google Telephone Interview https://youtu.be/V0xjK_6ZoEY || Time Complexity O(n) n now of pairs/rows in input || Auxillary Space O(n)
+        /// </summary>
+        /// <param name="input"></param>
+        public static void FindAnimalKingdomTree(List<Relation> input)
+        {
+            if (input == null) return;
+
+            // Step1 create a Dictonary which hold each 'animal name as Key' and 'memory address of that Animal Node' as its value
+            Dictionary<string, AnimalKingdom> animDict = new Dictionary<string, AnimalKingdom>();
+
+            // Step2 create a HashSet which stores all the childs, this will be used later to identify the GrandParent(s) in Dictonary
+            HashSet<string> childs = new HashSet<string>();
+
+            // Step3 traverse thru input list
+            foreach(var relation in input)                                      // Time O(n)
+            {
+                var parent = relation.parent;
+                var child = relation.child;
+
+                if(!animDict.ContainsKey(parent))       // new parent found
+                    animDict.Add(parent, new AnimalKingdom(parent));
+                if(!animDict.ContainsKey(child))        // new child found
+                    animDict.Add(child, new AnimalKingdom(child));
+                
+                // add child to in the parent's Child list
+                animDict[parent].AddChild(animDict[child]);
+
+                // add child to the Set of Childs
+                childs.Add(child);
+            }
+
+            // Step4 remove all child nodes from Parent Dictonary
+            foreach (var child in childs)
+                animDict.Remove(child);
+
+            // Step5 print Parent(s) left in Dictonary (can be multiple in case be have disconnected forest/graph)
+            foreach(var grandParent in animDict)
+                PrintAnimalKingdomTree(grandParent.Value);
+        }
+
+        public static void PrintAnimalKingdomTree(AnimalKingdom grandParent, int NoOftab = 0)
+        {
+            if (grandParent == null) return;
+            
+            Console.WriteLine();                            // Start From New line
+            PrintTab(NoOftab);                              // Give Tab for Parent
+            Console.Write(grandParent.ParentName);          // Print Parent
+            foreach (var child in grandParent.Childrens)
+                PrintAnimalKingdomTree(child, NoOftab + 1); // Print Child with 1 extra tab
+        }
+
+        public static void PrintTab(int times)
+        {
+            while (times-- > 0)
+                Console.Write("\t");
+        }
     }
 }
