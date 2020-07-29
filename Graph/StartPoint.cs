@@ -20,6 +20,7 @@ namespace Graph
             DijkstraAlgorithm_ForAdjacencyListRepresentation_GreedyAlgo();
             FindRelationsInAnimal();
             SingleSourceShortestPathInWeightedGraph_WithNegativeWt();
+            MinimalSpanningTree_PrimsAlgo();
             Console.ReadKey();
         }
 
@@ -130,7 +131,30 @@ namespace Graph
             GraphAsPairOfEdges graph = GraphAsPairOfEdges.GetGraph();
             //GraphAsPairOfEdges graph = GraphAsPairOfEdges.GetGraphWithNegativeWtCycle(); Uncomment this & comment above to check if modified BellMan detects -ve wt cycle
             graph.PrintGraph();
-            GraphUtility.BellManFort_GraphAsPairOfEdges(graph, source);
+            GraphUtility.BellManFord_GraphAsPairOfEdges(graph, source);
+        }
+
+        // GFG https://www.geeksforgeeks.org/prims-minimum-spanning-tree-mst-greedy-algo-5/ Matrix
+        // Youtube GFG https://www.youtube.com/watch?v=eB61LXLZVqs
+        // Youtube Jenny https://www.youtube.com/watch?v=ZtZaR7EcI5Y
+        // GFG https://www.geeksforgeeks.org/prims-mst-for-adjacency-list-representation-greedy-algo-6/ Adjacancy List
+        public static void MinimalSpanningTree_PrimsAlgo()
+        {
+            GraphUtility.Print("Prim’s Algorithm - Adjacancy Matrix representation");
+            // Create 2-D array to represent Adjacancy Matrix (Graph)
+            int[,] graph = new int[,] { { 0, 2, 0, 6, 0 },
+                                      { 2, 0, 3, 8, 5 },
+                                      { 0, 3, 0, 0, 7 },
+                                      { 6, 8, 0, 0, 9 },
+                                      { 0, 5, 7, 9, 0 } };
+            GraphUtility.PrintMatrix(graph);
+            GraphUtility.PrimAlgo_AdjacencyMatrix(graph);
+
+            // Prim Algo for Adjacancy List representation of the graph
+            GraphUtility.Print("Prim’s Algorithm - Adjacancy List representation");
+            var unDiGraph = GraphUtility.GetUnDirectedWeighted();
+            unDiGraph.PrintGraph();
+            GraphUtility.PrimAlgo_AdjacencyList(unDiGraph);
         }
     }
 }

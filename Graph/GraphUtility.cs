@@ -183,6 +183,21 @@ namespace Graph
             Console.WriteLine();
         }
 
+        public static void PrintMatrix(int[,] graph)
+        {
+            var Len = graph.GetLength(0);
+
+            Console.WriteLine("\nPrinting all connections in graph per Vertex");
+            for (int row = 0; row < Len; row++)
+            {
+                Console.Write($"Node:{row}");
+                for (int col = 0; col < Len; col++)
+                    if (graph[row, col] > 0)
+                        Console.Write($"\t--> {col} cost({graph[row, col]})");
+                Console.WriteLine();
+            }
+        }
+
         static void TopologicalSort_Recursive(DiGraph DG, int currentNodeIndex, ref Stack<int> stack)
         {
             if (DG?._Graph == null || DG._IsVisitedArr[currentNodeIndex] == 1) return;
@@ -474,7 +489,7 @@ namespace Graph
         /// </summary>
         /// <param name="graph"></param>
         /// <param name="source"></param>
-        public static void BellManFort_GraphAsPairOfEdges(GraphAsPairOfEdges graph, int source)
+        public static void BellManFord_GraphAsPairOfEdges(GraphAsPairOfEdges graph, int source)
         {
             if (graph.V <= 0 || graph.E <= 0) return;
 
@@ -492,7 +507,7 @@ namespace Graph
 
             dist[source] = 0;
 
-            // Step3 relaxing all the E edges in graph V vertex times, to find min distance possible b/w each Edge
+            // Step3 relaxing all the E edges in graph V-1 vertex times, to find min distance possible b/w each Edge
             for (int V = 1; V < graph.V; V++)
             {
                 for (int E = 0; E < graph.E; E++)
@@ -526,6 +541,137 @@ namespace Graph
             {
                 Console.Write($"Min distance Source : '{source}' to Destination '{V}' is : {dist[V]}");
                 PrintShortestPath(path, V);
+            }
+        }
+
+        /// <summary>
+        /// Time Complexity O(V^2) || Space O(V), where V is no of rows/col in Graph Matrix (No Of Vertex)
+        /// </summary>
+        /// <param name="graphMatrix"></param>
+        public  static void PrimAlgo_AdjacencyMatrix(int[,] graphMatrix)
+        {
+            if (graphMatrix == null) return;
+            var Vertex = graphMatrix.GetLength(0);
+
+            // create mstSet to keep track of Vertices included in MST
+            bool[] mstSet = new bool[Vertex];
+
+            // array to store key of each Vertex
+            int[] key = new int[Vertex];
+
+            // to store parent nodes in MST
+            int[] path = new int[Vertex];
+
+            // Initialize all key values as INFINITE
+            for (int V = 0; V < Vertex; V++)
+            {
+                key[V] = int.MaxValue;
+                path[V] = -1;
+            }
+
+            // set keyvalue to 0 for source so its picked first
+            var source = 0;
+            key[source] = 0;
+
+            // while no of vertices in MST is less than Graph
+            for (int V = 0; V < Vertex; V++)                                    // Time O(V) as we are adding Vertex to mst one at a time
+            {
+                // vertex u which is not there in mstSet and has minimum key value
+                var vertexU = FindMinVertex(key, mstSet);                       // Time O(V) to find Vertex with minKeyValue
+                // Include u to mstSet
+                mstSet[vertexU] = true;
+
+                // Update key value of all adjacent vertices of u
+                for (int vertexV = 0; vertexV < Vertex; vertexV++)              // Time O(V) to traverse thru all the Vertices
+                    // isAdjacent Vertex && AdjacnetVertexNotInMST && (wt of AdjacentVertex < keyvalue[AdjacentVertex])
+                    if (graphMatrix[vertexU, vertexV] > 0 && !mstSet[vertexV] && graphMatrix[vertexU, vertexV] < key[vertexV])
+                    {
+                        key[vertexV] = graphMatrix[vertexU, vertexV];           // update wt of edge in keyvalue
+                        path[vertexV] = vertexU;
+                    }
+            }
+
+            // Print Path for each Vertex in MST
+            int WtOfMST = 0;
+            for (int V = 0; V < Vertex; V++)
+            {
+                Console.Write($"Min distance Source : '{source}' to Destination '{V}' is : {key[V]}");
+                PrintShortestPath(path, V);
+                WtOfMST += key[V];
+            }
+            Console.WriteLine($" Weight of Above Minimal Spanning Tree is :\t'{WtOfMST}'");
+
+        }
+
+        public static int FindMinVertex(int[] keyValue, bool[] mstSet)
+        {
+            var minValue = int.MaxValue;
+            var minIndex = -1;
+            for (int i = 0; i < keyValue.Length; i++)               // Time O(V)
+                if (!mstSet[i] && keyValue[i] < minValue)
+                {
+                    minValue = keyValue[i];
+                    minIndex = i;
+                }
+            return minIndex;
+        }
+
+        public static void PrimAlgo_AdjacencyList(UnDirectedWeightedGraph graph)
+        {
+            if (graph?._Graph == null) return;
+            var Vertex = graph.NoOfVertex;
+
+            // to hold min distance for each Vertex
+            int[] dist = new int[Vertex];
+
+            // to store prv Vertex for each vertex
+            int[] path = new int[Vertex];
+
+            for (int i = 0; i < Vertex; i++)
+                dist[i] = path[i] = -1;
+
+            var source = 0;
+            dist[source] = 0;
+
+            // HastSet to store Vertex which are already processed and part of MST
+            bool[] mstSet = new bool[Vertex];
+
+            PriorityQueue pq = new PriorityQueue(graph.NoOfVertex);
+            pq.Enqueue(dist[source], source);
+
+            mstSet[source] = true;                  // add source to MST
+
+            for (int V = 0; V < Vertex; V++)        // when we have same no of Vertex in MST as in graph
+            {
+                var parent = pq.ExtractHighest();
+                mstSet[parent.Value] = true;
+                foreach (var adjacentVertex in graph._Graph[parent.Value])
+                {
+
+                    if (mstSet[adjacentVertex.Index]) continue;
+                    var newDistance = adjacentVertex.Weight;
+                    if (dist[adjacentVertex.Index] == -1)       // processing this Vertex for 1st time
+                    {
+                        dist[adjacentVertex.Index] = adjacentVertex.Weight;
+                        path[adjacentVertex.Index] = parent.Value;
+                        pq.Enqueue(newDistance, adjacentVertex.Index);
+                    }
+                    else if (newDistance < dist[adjacentVertex.Index])
+                    {
+                        pq.UpdatePriority(dist[adjacentVertex.Index], newDistance);
+                        dist[adjacentVertex.Index] = adjacentVertex.Weight;
+                        path[adjacentVertex.Index] = parent.Value;
+                    }
+                }
+            }
+
+            // Print Tree
+
+            // Print Path for each Vertex in Graph
+            for (int i = 0; i < graph.Length; i++)
+            {
+                Console.Write($"Min distance Source : '{source}' to Destination '{i}' is : {dist[i]}");
+                PrintShortestPath(path, i);
             }
         }
     }
