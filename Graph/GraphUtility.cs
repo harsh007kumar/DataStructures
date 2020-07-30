@@ -411,7 +411,7 @@ namespace Graph
         /// <param name="graph_adjacency_list"></param>
         /// <param name="source"></param>
         /// <param name="destination"></param>
-        public static void BellManFordAlgo(WeightedGraph graph_adjacency_list, int source, int destination = -1)
+        public static void BellManFord_AdjacencyList(WeightedGraph graph_adjacency_list, int source, int destination = -1)
         {
             if (graph_adjacency_list?._Graph == null) return;
             
@@ -545,6 +545,7 @@ namespace Graph
         }
 
         /// <summary>
+        /// Returns MST i.e, Minimal Spanning Tree of the weighted Connected Graph 
         /// Time Complexity O(V^2) || Space O(V), where V is no of rows/col in Graph Matrix (No Of Vertex)
         /// </summary>
         /// <param name="graphMatrix"></param>
@@ -591,11 +592,11 @@ namespace Graph
                     }
             }
 
-            // Print Path for each Vertex in MST
+            // Print MST of the Graph and calculate weight of MST
             int WtOfMST = 0;
             for (int V = 0; V < Vertex; V++)
             {
-                Console.Write($"Min distance Source : '{source}' to Destination '{V}' is : {key[V]}");
+                Console.Write($" Vertex : '{source}' connected to Vertex '{V}' by Edge with Cost : {key[V]}");
                 PrintShortestPath(path, V);
                 WtOfMST += key[V];
             }
@@ -603,25 +604,35 @@ namespace Graph
 
         }
 
-        public static int FindMinVertex(int[] keyValue, bool[] mstSet)
+        /// <summary>
+        /// Finds and returns index of Vertex with min associated value, such that Vertex is not present in mstSet(.i.e, Vertex is false) || Time O(V) || Space O(1)
+        /// </summary>
+        /// <param name="keyArr"></param>
+        /// <param name="mstSet"></param>
+        /// <returns></returns>
+        public static int FindMinVertex(int[] keyArr, bool[] mstSet)
         {
             var minValue = int.MaxValue;
             var minIndex = -1;
-            for (int i = 0; i < keyValue.Length; i++)               // Time O(V)
-                if (!mstSet[i] && keyValue[i] < minValue)
+            for (int i = 0; i < keyArr.Length; i++)               // Time O(V)
+                if (!mstSet[i] && keyArr[i] < minValue)
                 {
-                    minValue = keyValue[i];
+                    minValue = keyArr[i];
                     minIndex = i;
                 }
             return minIndex;
         }
 
+        /// <summary>
+        /// Prim’s Algorithm to find MST of a Graph represented using AdjacencyList || Time Complexity O(V+E)LogV) || Space O(V)
+        /// </summary>
+        /// <param name="graph"></param>
         public static void PrimAlgo_AdjacencyList(UnDirectedWeightedGraph graph)
         {
             if (graph?._Graph == null) return;
             var Vertex = graph.NoOfVertex;
 
-            // to hold min distance for each Vertex
+            // to hold min edge value which connects each Vertex to tree
             int[] dist = new int[Vertex];
 
             // to store prv Vertex for each vertex
@@ -633,46 +644,41 @@ namespace Graph
             var source = 0;
             dist[source] = 0;
 
-            // HastSet to store Vertex which are already processed and part of MST
-            bool[] mstSet = new bool[Vertex];
+            PriorityQueue pq = new PriorityQueue(Vertex);
+            pq.Enqueue(dist[source],source);
 
-            PriorityQueue pq = new PriorityQueue(graph.NoOfVertex);
-            pq.Enqueue(dist[source], source);
-
-            mstSet[source] = true;                  // add source to MST
-
-            for (int V = 0; V < Vertex; V++)        // when we have same no of Vertex in MST as in graph
+            while (pq.Count > 0)                                                    // Time O(V)
             {
-                var parent = pq.ExtractHighest();
-                mstSet[parent.Value] = true;
-                foreach (var adjacentVertex in graph._Graph[parent.Value])
+                var parent = pq.ExtractHighest();                                   // O(LogV)
+                // Extract Vertex which has min key associated with it
+                foreach (var adjacentVertex in graph._Graph[parent.Value])          // Time O(E)
                 {
-
-                    if (mstSet[adjacentVertex.Index]) continue;
                     var newDistance = adjacentVertex.Weight;
-                    if (dist[adjacentVertex.Index] == -1)       // processing this Vertex for 1st time
+                    // processing this Vertex for 1st time
+                    if (dist[adjacentVertex.Index] == -1)
                     {
                         dist[adjacentVertex.Index] = adjacentVertex.Weight;
                         path[adjacentVertex.Index] = parent.Value;
-                        pq.Enqueue(newDistance, adjacentVertex.Index);
+                        pq.Enqueue(adjacentVertex.Weight, adjacentVertex.Index);    // O(LogV)
                     }
                     else if (newDistance < dist[adjacentVertex.Index])
                     {
-                        pq.UpdatePriority(dist[adjacentVertex.Index], newDistance);
+                        pq.UpdatePriority(dist[adjacentVertex.Index], newDistance); // O(LogV)
                         dist[adjacentVertex.Index] = adjacentVertex.Weight;
                         path[adjacentVertex.Index] = parent.Value;
                     }
                 }
             }
 
-            // Print Tree
-
-            // Print Path for each Vertex in Graph
-            for (int i = 0; i < graph.Length; i++)
+            // Print MST of the Graph and calculate weight of MST
+            int WtOfMST = 0;
+            for (int V = 0; V < graph.Length; V++)
             {
-                Console.Write($"Min distance Source : '{source}' to Destination '{i}' is : {dist[i]}");
-                PrintShortestPath(path, i);
+                Console.Write($" Vertex : '{source}' connected to Vertex '{V}' by Edge with Cost : {dist[V]}");
+                PrintShortestPath(path, V);
+                WtOfMST += dist[V];
             }
+            Console.WriteLine($" Weight of Above Minimal Spanning Tree is :\t'{WtOfMST}'");
         }
     }
 }

@@ -96,7 +96,7 @@ namespace Graph
         // DataStructures & Algo Book : Dijkstra’s Algorithm (p. 451)
         public static void DijkstraAlgorithm_ForAdjacencyListRepresentation_GreedyAlgo()
         {
-            GraphUtility.Print("DijkstraAlgorithm_ForAdjacencyListRepresentation_GreedyAlgo");
+            GraphUtility.Print("DijkstraAlgorithm_ForAdjacencyListRepresentation_GreedyAlgo [Single Source Shortest Path, May/MayNot return Shortest Path if -ve Edges present]");
             //UnDirectedWeightedGraph graph = GraphUtility.GetUnDirectedWeighted();
             DiGraphWeighted graph = GraphUtility.GetDiGraphWeighted(); // pass this to see working on -> Directed Weighted Acyclic Graph
             graph.PrintGraph();
@@ -119,15 +119,15 @@ namespace Graph
 
         public static void SingleSourceShortestPathInWeightedGraph_WithNegativeWt()
         {
-            GraphUtility.Print("Bellman-Ford Algorithm (p. 456)");
+            GraphUtility.Print("Bellman-Ford Algorithm (p. 456) [Single Source Shortest Path in Weighted Graph with Negative Wt (NO -ve Cycle]");
             DiGraphWeighted diGWN = GraphUtility.GetDiGraphWeightedWithNegativeEdges();
             diGWN.PrintGraph();
             int source = 0;
-            GraphUtility.BellManFordAlgo(diGWN, source);
+            GraphUtility.BellManFord_AdjacencyList(diGWN, source);
 
             // GFG https://www.geeksforgeeks.org/bellman-ford-algorithm-dp-23/
             // YouTube(Jenny) https://youtu.be/KudAWAMiQog
-            GraphUtility.Print("Bellman-Ford Algo when graph given as pair of Edges(having src,Dest,Wt)");
+            GraphUtility.Print("Bellman-Ford Algo when graph given as pair of Edges(having src,Dest,Wt) [Single Source Shortest Path in Weighted Graph with Negative Wt (NO -ve Cycle]");
             GraphAsPairOfEdges graph = GraphAsPairOfEdges.GetGraph();
             //GraphAsPairOfEdges graph = GraphAsPairOfEdges.GetGraphWithNegativeWtCycle(); Uncomment this & comment above to check if modified BellMan detects -ve wt cycle
             graph.PrintGraph();
@@ -135,12 +135,12 @@ namespace Graph
         }
 
         // GFG https://www.geeksforgeeks.org/prims-minimum-spanning-tree-mst-greedy-algo-5/ Matrix
-        // Youtube GFG https://www.youtube.com/watch?v=eB61LXLZVqs
+        // Youtube GFG https://www.youtube.com/watch?v=eB61LXLZVqs [Adjacancy Matrix]
         // Youtube Jenny https://www.youtube.com/watch?v=ZtZaR7EcI5Y
         // GFG https://www.geeksforgeeks.org/prims-mst-for-adjacency-list-representation-greedy-algo-6/ Adjacancy List
         public static void MinimalSpanningTree_PrimsAlgo()
         {
-            GraphUtility.Print("Prim’s Algorithm - Adjacancy Matrix representation");
+            GraphUtility.Print("Prim’s Algorithm [to find MST of a Graph] - Adjacancy Matrix representation");
             // Create 2-D array to represent Adjacancy Matrix (Graph)
             int[,] graph = new int[,] { { 0, 2, 0, 6, 0 },
                                       { 2, 0, 3, 8, 5 },
@@ -150,11 +150,17 @@ namespace Graph
             GraphUtility.PrintMatrix(graph);
             GraphUtility.PrimAlgo_AdjacencyMatrix(graph);
 
+            // GFG https://youtu.be/PzznKcMyu0Y [Adjacancy List]
             // Prim Algo for Adjacancy List representation of the graph
-            GraphUtility.Print("Prim’s Algorithm - Adjacancy List representation");
-            var unDiGraph = GraphUtility.GetUnDirectedWeighted();
-            unDiGraph.PrintGraph();
-            GraphUtility.PrimAlgo_AdjacencyList(unDiGraph);
+            GraphUtility.Print("Prim’s Algorithm [to find MST of a Graph] - Adjacancy List representation");
+            UnDirectedWeightedGraph unDiW = new UnDirectedWeightedGraph(4);
+            unDiW.AddEdge(0, 1, 10);
+            unDiW.AddEdge(0, 2, 30);
+            unDiW.AddEdge(0, 3, 15);
+            unDiW.AddEdge(1, 2, 40);
+            unDiW.AddEdge(2, 3, 50);
+            unDiW.PrintGraph();
+            GraphUtility.PrimAlgo_AdjacencyList(unDiW);
         }
     }
 }
