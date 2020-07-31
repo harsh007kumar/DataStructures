@@ -21,6 +21,8 @@ namespace Graph
             FindRelationsInAnimal();
             SingleSourceShortestPathInWeightedGraph_WithNegativeWt();
             MinimalSpanningTree_PrimsAlgo();
+            MinimalSpanningTree_KruskalAlgo();
+            ArticulationPointsORCutVerticesInAGraph();
             Console.ReadKey();
         }
 
@@ -161,6 +163,27 @@ namespace Graph
             unDiW.AddEdge(2, 3, 50);
             unDiW.PrintGraph();
             GraphUtility.PrimAlgo_AdjacencyList(unDiW);
+        }
+
+        // https://youtu.be/wU6udHRIkcc?list=LLAMgEHd1K0kIEc0zSY6EO8g&t=919
+        public static void MinimalSpanningTree_KruskalAlgo()
+        {
+            GraphUtility.Print("Kruskal’s Algorithm(p. 459)");
+            // Sets representation is easier
+        }
+
+        // GFG https://www.geeksforgeeks.org/articulation-points-or-cut-vertices-in-a-graph/ [TarjanAlgorithm]
+        public static void ArticulationPointsORCutVerticesInAGraph()
+        {
+            GraphUtility.Print("Problem - 14 DFS Application: Cut Vertex or Articulation Points(p. 471)");
+            UnDirectedGraph UG = new UnDirectedGraph(5);
+            UG.AddEdge(1, 0);
+            UG.AddEdge(0, 2);
+            UG.AddEdge(2, 1);
+            UG.AddEdge(0, 3);
+            UG.AddEdge(3, 4);
+            UG.PrintGraph();
+            GraphUtility.FindArticulartionPoint_TarjanAlgorithm(UG);
         }
     }
 }

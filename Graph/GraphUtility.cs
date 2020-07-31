@@ -680,5 +680,83 @@ namespace Graph
             }
             Console.WriteLine($" Weight of Above Minimal Spanning Tree is :\t'{WtOfMST}'");
         }
+
+        /// <summary>
+        /// Finds ArticulartionPoint in Graph removing those Vertex(s) can divide the Graph in 2 or more connected components
+        /// Time Complexity O(V+E) || Auxillary Space O(V)
+        /// </summary>
+        /// <param name="graph"></param>
+        public static void FindArticulartionPoint_TarjanAlgorithm(UnDirectedGraph graph)
+        {
+            if (graph?._Graph == null) return;
+            
+            var V = graph.NoOfVertex;
+
+            // array to store the parent
+            int[] parent = new int[V];
+
+            // array to store depth during DFS
+            int[] depth = new int[V];
+
+            // array to store the lowest point a Vertex can reach from adjacent Vertex
+            int[] low = new int[V];
+
+            // bool array to store articulation points of the graph (used for printing later)
+            bool[] aps = new bool[V];
+
+            // reset isVisitedArray so each Vertex is visited only once
+            graph.Reset_VisitedArr();
+
+            // set the default parent and depth for each Vertex
+            for (int i = 0; i < V; i++)
+                parent[i] = depth[i] = low[i] = -1;
+
+            int time = 0;
+
+            // call recursive func on Each Vertex in Graph if its not Visited
+            for (int i = 0; i < V; i++)
+                if (graph._IsVisitedArr[i] != 1)
+                    ArticulartionPoint_Recursive(i,graph,parent,depth,low,aps, ref time);
+
+            for (int i = 0; i < V; i++)
+                if (aps[i] == true)
+                    Console.WriteLine($" Vertex {i} is ArticulationPoint/CutVertex whose failure can divide from into 2 or more parts");
+        }
+
+        public static void ArticulartionPoint_Recursive(int u, UnDirectedGraph graph, int[] parent, int[] depth, int[] low, bool[] aps, ref int time)
+        {
+            graph._IsVisitedArr[u] = 1;                                 // Mark the Vertex Visited
+            depth[u] = low[u] = ++time;                                 // set depth and lowest Vertex
+
+            // Count of children in DFS Tree 
+            int children = 0;
+
+            // traverse thru each connected Vertex and perform DFS
+            foreach (var adjacentVertex in graph._Graph[u])
+            {
+                var v = adjacentVertex;
+                if (graph._IsVisitedArr[v] != 1)        // Not Visited
+                {
+                    children++;
+                    parent[v] = u;
+                    ArticulartionPoint_Recursive(v, graph, parent, depth, low, aps, ref time);
+                    // set parent low as Min of its low or its connected Vertex Low (possible when subtree has connection to one of the ancestors of u)
+                    low[u] = Math.Min(low[u], low[v]);
+
+
+                    // Parent Node 'u' is an articulation point if :
+
+                    // >> (1) u is root of DFS tree and has two or more chilren. 
+                    if (parent[u] == -1 && children >= 2)
+                        aps[u] = true;
+
+                    // >> (2) If u is not root and low value of one of its child is more than/equal tp discovery value of u
+                    if (parent[u] != -1 && low[v] >= depth[u])
+                        aps[u] = true;
+                }
+                else if (v != parent[u])                // Already Visited
+                    low[u] = Math.Min(low[u], depth[v]);                // back track edge
+            }
+        }
     }
 }
