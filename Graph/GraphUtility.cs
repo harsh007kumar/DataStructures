@@ -102,7 +102,7 @@ namespace Graph
         {
             if (graphObj?._Graph == null) return;
 
-            int Len = graphObj.Length;
+            int Len = graphObj.NoOfVertex;
 
             //Step1: Create a stack to hold the nodes after each iteration of DFS
             Stack<int> s = new Stack<int>(Len);
@@ -148,11 +148,11 @@ namespace Graph
 
         public static DiGraph GetTranspose(DiGraph graph)
         {
-            var Len = graph.Length;
+            var Len = graph.NoOfVertex;
             DiGraph reverseGraph = new DiGraph(Len);
-            for (int i = 0; i < Len; i++)
-                foreach (var node in graph._Graph[i])
-                    reverseGraph._Graph[node].Add(i);
+            for (int vertex = 0; vertex < Len; vertex++)
+                foreach (var AdjNode in graph._Graph[vertex])
+                    reverseGraph._Graph[AdjNode].Add(vertex);
             return reverseGraph;
         }
 
@@ -169,7 +169,7 @@ namespace Graph
             DG.Reset_VisitedArr();
 
             //Calling recursive TopologicalSort on graph for every node to cover disconnected graph (in which every is not reachble from single Node)
-            for (int startingNode = 0; startingNode < DG.Length; startingNode++)
+            for (int startingNode = 0; startingNode < DG.NoOfVertex; startingNode++)
                 if (DG._IsVisitedVertex[startingNode] != 1)
                     TopologicalSort_Recursive(DG, startingNode, ref st);
 
@@ -220,16 +220,17 @@ namespace Graph
         {
             if (UG == null) return;
 
+            var len = UG.NoOfVertex;
             // Create Queue to do BFS
             Queue<int> q = new Queue<int>();
 
             // array to store index of prv Vertex to current Vertex
-            int[] path = new int[UG.Length];
+            int[] path = new int[len];
             // array storing distance from Source Vertex
-            int[] distance = new int[UG.Length];
+            int[] distance = new int[len];
 
             // Set -1 initial value for all Vertex
-            for (int i = 0; i < UG.Length; i++)
+            for (int i = 0; i < len; i++)
                 path[i] = distance[i] = -1;
 
             distance[source] = 0;           // Set source distance from itself to Zero
@@ -821,6 +822,84 @@ namespace Graph
                 }
             }
             eulersCircuit.Push(u);                                  // adding visited Vertex when exiting system stack trace
+        }
+
+        /// <summary>
+        /// Time Complexity O(V+E) when last vertex of the last edge makes the cycle in Graph || Space O(V)
+        /// _IsVisitedVertex flags meaning { -1 : not visited || 0 : visited and in stack || 1 : visited but not in stack }
+        /// </summary>
+        /// <param name="DG"></param>
+        /// <param name="parent"></param>
+        /// <param name="currentVertex"></param>
+        public static bool DetectCycleInDiGraph(DiGraph DG, ref int[] parent, int currentVertex = 0)
+        {
+            if (DG?._Graph == null) return false;
+            if (DG._IsVisitedVertex[currentVertex] == 0) return true;
+            else
+            {
+                DG._IsVisitedVertex[currentVertex] = 0;             // Mark current Vertes as Visited and in Stack
+                Console.WriteLine($" Vertex : {currentVertex} visited");
+
+                foreach (var AdjacentVertex in DG._Graph[currentVertex])
+                {
+                    parent[AdjacentVertex] = currentVertex;         // Mark the parent of Adjacent Vertex
+                    if (DetectCycleInDiGraph(DG, ref parent, AdjacentVertex))   // if True is returned cycle detected
+                    {
+                        // Print the cycle
+                        Console.WriteLine("Cycle Exists in DirectedGraph as below");
+                        Console.Write($" {AdjacentVertex}<--");
+                        var temp = currentVertex;
+                        while (temp != AdjacentVertex)
+                        {
+                            Console.Write($" {temp}<--");
+                            temp = parent[temp];
+                        }
+                        Console.WriteLine($" {AdjacentVertex}<--");
+                    }
+                }
+                DG._IsVisitedVertex[currentVertex] = 1;             // Mark current Vertes as Visited and Not-in Stack
+            }
+            return false;
+        }
+
+        /// <summary>
+        /// Time Complexity O(V+E) when last vertex of the last edge makes the cycle in Graph || Space O(V)
+        /// _IsVisitedVertex flags meaning { -1 : not visited || 0 : visited and in stack || 1 : visited but not in stack }
+        /// </summary>
+        /// <param name="UG"></param>
+        /// <returns></returns>
+        public static void DetectCycleInUnDirectedGraph(UnDirectedGraph UG)
+        {
+            if (UG?._Graph == null) return;
+
+            Queue<int> q = new Queue<int>(UG.NoOfVertex);
+            int source = 0;
+            UG._IsVisitedVertex = new int[UG.NoOfVertex];
+            for (int i = 0; i < UG.NoOfVertex; i++)
+                UG._IsVisitedVertex[i] = -1;                // Mark all Vertex as Not-Visited
+
+            q.Enqueue(source);
+            UG._IsVisitedVertex[source] = 0;                // Mark Visited and in Queue
+
+            while (q.Count>0)
+            {
+                var parent = q.Dequeue();
+                Console.Write($"{parent} ");
+                UG._IsVisitedVertex[parent] = 1;            // Mark Visited and Not-in Queue
+                foreach (var AdjacentVertex in UG._Graph[parent])
+                    if (UG._IsVisitedVertex[AdjacentVertex] == -1)
+                    {
+                        q.Enqueue(AdjacentVertex);
+                        UG._IsVisitedVertex[AdjacentVertex] = 0;
+                    }
+                    else if (UG._IsVisitedVertex[AdjacentVertex] == 0)
+                    {
+                        Console.WriteLine($"\nCycle Detected in UnDiGraph using BFS at Vertex : {parent}");
+                        foreach (var V in q)
+                            Console.Write($" {V}<--");
+                        Console.WriteLine($" {parent}<--");
+                    }
+            }
         }
     }
 }

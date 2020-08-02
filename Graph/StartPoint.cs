@@ -20,6 +20,8 @@ namespace Graph
             MinimalSpanningTree_KruskalAlgo();
             ArticulationPointsORCutVerticesInAGraph();
             FindEulerianCircuit();
+            DetectCycleInUnDirectedGraph_UsingBFS();
+            DetectCycleInDirectedGraph_UsingDFS();
             Console.ReadKey();
         }
 
@@ -201,6 +203,43 @@ namespace Graph
             DG.PrintGraph();
             int source = 0;     // valid source for above graph can be either '0' or '5'
             GraphUtility.EulersCircuit(DG, source);
+        }
+
+        // Jenny https://youtu.be/AK7BuT5MgU0
+        public static void DetectCycleInDirectedGraph_UsingDFS()
+        {
+            GraphUtility.Print("Problem - 24 Detecting a cycle in DAG(p. 485)");
+            //var DG = GraphUtility.GetDiGraph();
+            DiGraph DG = new DiGraph(5);
+            DG.AddEdge(0, 1);
+            DG.AddEdge(0, 2);
+            DG.AddEdge(1, 2);
+            DG.AddEdge(1, 3);
+            DG.AddEdge(3, 4);
+            DG.AddEdge(4, 1);
+            DG.PrintGraph();
+            /* flag
+            -1 : not visited
+            0 : visited and in stack
+            1 : visited but not in stack
+            */
+            // initialize visited Flag as -1 for all Vertices
+            int[] parent = new int[DG.NoOfVertex];
+            DG.Reset_VisitedArr();
+            for (int i = 0; i < DG.NoOfVertex; i++)
+                DG._IsVisitedVertex[i] = parent[i] = -1;
+
+            GraphUtility.DetectCycleInDiGraph(DG, ref parent);
+            
+        }
+
+        // Jenny https://youtu.be/vXrv3kruvwE
+        public static void DetectCycleInUnDirectedGraph_UsingBFS()
+        {
+            GraphUtility.Print("Problem - 23 Detecting a cycle in an undirected graph(p. 485)");
+            UnDirectedGraph UG = GraphUtility.GetUnDirectedGraph();
+            UG.PrintGraph();
+            GraphUtility.DetectCycleInUnDirectedGraph(UG);
         }
     }
 }
