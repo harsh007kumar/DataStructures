@@ -205,7 +205,17 @@ namespace Graph
             GraphUtility.EulersCircuit(DG, source);
         }
 
+        // Jenny https://youtu.be/vXrv3kruvwE
+        public static void DetectCycleInUnDirectedGraph_UsingBFS()
+        {
+            GraphUtility.Print("Problem - 23 Detecting a cycle in an undirected graph(p. 485)");
+            UnDirectedGraph UG = GraphUtility.GetUnDirectedGraph();
+            UG.PrintGraph();
+            GraphUtility.DetectCycleInUnDirectedGraph(UG);
+        }
+
         // Jenny https://youtu.be/AK7BuT5MgU0
+        // GFG https://www.geeksforgeeks.org/detect-cycle-in-a-graph/
         public static void DetectCycleInDirectedGraph_UsingDFS()
         {
             GraphUtility.Print("Problem - 24 Detecting a cycle in DAG(p. 485)");
@@ -229,17 +239,10 @@ namespace Graph
             for (int i = 0; i < DG.NoOfVertex; i++)
                 DG._IsVisitedVertex[i] = parent[i] = -1;
 
-            GraphUtility.DetectCycleInDiGraph(DG, ref parent);
-            
-        }
+            for (int i = 0; i < DG.NoOfVertex; i++)
+                if (DG._IsVisitedVertex[i] == -1)
+                    GraphUtility.DetectCycleInDiGraph(DG, ref parent);
 
-        // Jenny https://youtu.be/vXrv3kruvwE
-        public static void DetectCycleInUnDirectedGraph_UsingBFS()
-        {
-            GraphUtility.Print("Problem - 23 Detecting a cycle in an undirected graph(p. 485)");
-            UnDirectedGraph UG = GraphUtility.GetUnDirectedGraph();
-            UG.PrintGraph();
-            GraphUtility.DetectCycleInUnDirectedGraph(UG);
         }
     }
 }

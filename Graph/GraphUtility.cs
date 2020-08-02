@@ -826,6 +826,7 @@ namespace Graph
 
         /// <summary>
         /// Time Complexity O(V+E) when last vertex of the last edge makes the cycle in Graph || Space O(V)
+        /// Modified DFS
         /// _IsVisitedVertex flags meaning { -1 : not visited || 0 : visited and in stack || 1 : visited but not in stack }
         /// </summary>
         /// <param name="DG"></param>
@@ -834,36 +835,35 @@ namespace Graph
         public static bool DetectCycleInDiGraph(DiGraph DG, ref int[] parent, int currentVertex = 0)
         {
             if (DG?._Graph == null) return false;
-            if (DG._IsVisitedVertex[currentVertex] == 0) return true;
-            else
-            {
-                DG._IsVisitedVertex[currentVertex] = 0;             // Mark current Vertes as Visited and in Stack
-                Console.WriteLine($" Vertex : {currentVertex} visited");
 
-                foreach (var AdjacentVertex in DG._Graph[currentVertex])
+            DG._IsVisitedVertex[currentVertex] = 0;             // Mark current Vertes as Visited and in Stack
+            Console.WriteLine($" Vertex : {currentVertex} visited");
+
+            foreach (var AdjacentVertex in DG._Graph[currentVertex])
+            {
+                parent[AdjacentVertex] = currentVertex;         // update parent of Adjacent Vertex
+                if (DG._IsVisitedVertex[AdjacentVertex] == -1 && DetectCycleInDiGraph(DG, ref parent, AdjacentVertex))      // if Vertex not visited make recursive call
+                    return true;
+                else if (DG._IsVisitedVertex[AdjacentVertex] == 0)  // Visited and present in stack
                 {
-                    parent[AdjacentVertex] = currentVertex;         // Mark the parent of Adjacent Vertex
-                    if (DetectCycleInDiGraph(DG, ref parent, AdjacentVertex))   // if True is returned cycle detected
+                    Console.Write($"Cycle Found using DFS in DirectedGraph as follows : {AdjacentVertex}<--");
+                    while (currentVertex != AdjacentVertex && currentVertex != -1)
                     {
-                        // Print the cycle
-                        Console.WriteLine("Cycle Exists in DirectedGraph as below");
-                        Console.Write($" {AdjacentVertex}<--");
-                        var temp = currentVertex;
-                        while (temp != AdjacentVertex)
-                        {
-                            Console.Write($" {temp}<--");
-                            temp = parent[temp];
-                        }
-                        Console.WriteLine($" {AdjacentVertex}<--");
+                        Console.Write($" {currentVertex}<--");
+                        currentVertex = parent[currentVertex];
                     }
+                    Console.WriteLine($" {AdjacentVertex}<--");
+                    return true;
                 }
-                DG._IsVisitedVertex[currentVertex] = 1;             // Mark current Vertes as Visited and Not-in Stack
             }
+            DG._IsVisitedVertex[currentVertex] = 1;             // Mark current Vertes as Visited and Not-in Stack
+
             return false;
         }
 
         /// <summary>
         /// Time Complexity O(V+E) when last vertex of the last edge makes the cycle in Graph || Space O(V)
+        /// Modified BFS
         /// _IsVisitedVertex flags meaning { -1 : not visited || 0 : visited and in stack || 1 : visited but not in stack }
         /// </summary>
         /// <param name="UG"></param>
@@ -894,7 +894,7 @@ namespace Graph
                     }
                     else if (UG._IsVisitedVertex[AdjacentVertex] == 0)
                     {
-                        Console.WriteLine($"\nCycle Detected in UnDiGraph using BFS at Vertex : {parent}");
+                        Console.WriteLine($"\nCycle Found using BFS in UnDiGraph using BFS at Vertex : {parent}");
                         foreach (var V in q)
                             Console.Write($" {V}<--");
                         Console.WriteLine($" {parent}<--");
