@@ -6,15 +6,21 @@ using System.Threading.Tasks;
 
 namespace Graph
 {
+    // A class to represent a weighted edge in graph 
+    public class Edge
+    {
+        public int src, dest, weight;
+        public Edge() => src = dest = weight = 0;       // Constructor
+        public Edge(int src, int dest, int wt = 1)      // Parametrized Constructor
+        {
+            this.src = src;
+            this.dest = dest;
+            weight = wt;
+        }
+    };
+
     public class GraphAsPairOfEdges
     {
-        // A class to represent a weighted edge in graph 
-        public class Edge
-        {
-            public int src, dest, weight;
-            public Edge() => src = dest = weight = 0;       // Constructor
-        };
-
         public int V, E;
         public Edge[] edge;                                 // array of edges
 

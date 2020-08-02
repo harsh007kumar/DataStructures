@@ -2,9 +2,6 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Graph
 {
@@ -115,7 +112,7 @@ namespace Graph
 
             Console.Write("\nDFS of current Graph : ");
             for (int index = 0; index < Len; index++)
-                if (graphObj._IsVisitedArr[index] != 1)
+                if (graphObj._IsVisitedVertex[index] != 1)
                     FillStackUsingRecursiveDFS(graphObj, index, ref s);                    // Time complexity O(V+E) 
 
             //Step3: Reverse all directed Edges in Di-Graph || so that 'Source' becomes 'sink' and the 'Sink' becomes 'source'.
@@ -125,7 +122,7 @@ namespace Graph
             reverse.Reset_VisitedArr();                                             // Reset Visited vertices Array 
             Console.Write("\n\nPrinting All Strongly Connected Components in Di-Graph (using Kosaraju’s algorithm) below :");
             foreach (var node in s)
-                if (reverse._IsVisitedArr[node] != 1)
+                if (reverse._IsVisitedVertex[node] != 1)
                 {
                     Console.Write("\nSCC : ");
                     reverse.DepthFirstSearch_Recursive(node); //Base class method   // Time complexity O(V+E)
@@ -135,10 +132,10 @@ namespace Graph
 
         public static void FillStackUsingRecursiveDFS(DiGraph graph, int startingNode, ref Stack<int> stack)
         {
-            if (graph == null || graph._IsVisitedArr[startingNode] == 1) return;
+            if (graph == null || graph._IsVisitedVertex[startingNode] == 1) return;
 
             //Step1: Mark current node as visited and print the node
-            graph._IsVisitedArr[startingNode] = 1;
+            graph._IsVisitedVertex[startingNode] = 1;
             Console.Write($" {startingNode} ");
 
             //Step2 : Traverse all the adjacent and unmarked nodes
@@ -173,7 +170,7 @@ namespace Graph
 
             //Calling recursive TopologicalSort on graph for every node to cover disconnected graph (in which every is not reachble from single Node)
             for (int startingNode = 0; startingNode < DG.Length; startingNode++)
-                if (DG._IsVisitedArr[startingNode] != 1)
+                if (DG._IsVisitedVertex[startingNode] != 1)
                     TopologicalSort_Recursive(DG, startingNode, ref st);
 
             Console.Write("\nTopological Sort of above DAG is :\t");
@@ -200,10 +197,10 @@ namespace Graph
 
         static void TopologicalSort_Recursive(DiGraph DG, int currentNodeIndex, ref Stack<int> stack)
         {
-            if (DG?._Graph == null || DG._IsVisitedArr[currentNodeIndex] == 1) return;
+            if (DG?._Graph == null || DG._IsVisitedVertex[currentNodeIndex] == 1) return;
 
             // Mark current Node as Visited Now
-            DG._IsVisitedArr[currentNodeIndex] = 1;
+            DG._IsVisitedVertex[currentNodeIndex] = 1;
 
             foreach (var adjacentNode in DG._Graph[currentNodeIndex])
                 TopologicalSort_Recursive(DG, adjacentNode, ref stack);
@@ -240,20 +237,20 @@ namespace Graph
             // Reset IsVisited Array of Graph
             UG.Reset_VisitedArr();
             q.Enqueue(source);              // Add source to Queue
-            UG._IsVisitedArr[source] = 1;   // Mark source Visited
+            UG._IsVisitedVertex[source] = 1;   // Mark source Visited
             // do BFS
             while(q.Count>0)
             {
                 var prvNode = q.Dequeue();
                 foreach (var AdjacentNode in UG._Graph[prvNode])           // Iterate thru Adjacent Node of current Vertex
                 {
-                    if (UG._IsVisitedArr[AdjacentNode] != 1)    // can use check: if(distance[AdjacentNode] == -1) and in that case we dont even need to update/check Visited Array thruout the code
+                    if (UG._IsVisitedVertex[AdjacentNode] != 1)    // can use check: if(distance[AdjacentNode] == -1) and in that case we dont even need to update/check Visited Array thruout the code
                     {
                         path[AdjacentNode] = prvNode;          // Update PrvNode for Current Node
                         distance[AdjacentNode] = distance[prvNode] + 1;
 
                         q.Enqueue(AdjacentNode);
-                        UG._IsVisitedArr[AdjacentNode] = 1;
+                        UG._IsVisitedVertex[AdjacentNode] = 1;
                     }
                 }
             }
@@ -715,7 +712,7 @@ namespace Graph
 
             // call recursive func on Each Vertex in Graph if its not Visited
             for (int i = 0; i < V; i++)
-                if (graph._IsVisitedArr[i] != 1)
+                if (graph._IsVisitedVertex[i] != 1)
                     ArticulartionPoint_Recursive(i,graph,parent,depth,low,aps, ref time);
 
             for (int i = 0; i < V; i++)
@@ -725,7 +722,7 @@ namespace Graph
 
         public static void ArticulartionPoint_Recursive(int u, UnDirectedGraph graph, int[] parent, int[] depth, int[] low, bool[] aps, ref int time)
         {
-            graph._IsVisitedArr[u] = 1;                                 // Mark the Vertex Visited
+            graph._IsVisitedVertex[u] = 1;                                 // Mark the Vertex Visited
             depth[u] = low[u] = ++time;                                 // set depth and lowest Vertex
 
             // Count of children in DFS Tree 
@@ -735,7 +732,7 @@ namespace Graph
             foreach (var adjacentVertex in graph._Graph[u])
             {
                 var v = adjacentVertex;
-                if (graph._IsVisitedArr[v] != 1)        // Not Visited
+                if (graph._IsVisitedVertex[v] != 1)        // Not Visited
                 {
                     children++;
                     parent[v] = u;
@@ -757,6 +754,73 @@ namespace Graph
                 else if (v != parent[u])                // Already Visited
                     low[u] = Math.Min(low[u], depth[v]);                // back track edge
             }
+        }
+
+        /// <summary>
+        /// Only works and applied on Strongly Connected Graphs (Ex- Find optiomal Path for PostMan so that he begins and end at Postoffice after delivering mails)
+        /// Time Complexity O(V+E) as worst case would be visiting all the Vertex after traversing thru all present edges || Auxillary Space O(V+1)
+        /// •A connected undirected graph is Eulerian if and only if every graph vertex has an even degree, or exactly two vertices with an odd degree. 
+        /// •​A directed graph is Eulerian if it is strongly connected and every vertex has an equal in and out degree.
+        /// a.k.a 'Hamiltonian Cycle'
+        /// </summary>
+        /// <param name="graph"></param>
+        public static void EulersCircuit(DiGraph graph, int sourceVertex)
+        {
+            if (graph?._Graph == null) return;
+
+            // a array of HashSet which hold visited edge list for each Vertex
+            HashSet<int>[] visitedEdgeList = new HashSet<int>[graph.NoOfVertex];
+            // initialize adove array
+            for (int i = 0; i < graph.NoOfVertex; i++)
+                visitedEdgeList[i] = new HashSet<int>();
+
+            // data structure to hold Euler's Path
+            Stack<int> EulersCircuit = new Stack<int>();                            // Space O(V+1) holds each vertex once and source vertex twice(begin + end)
+
+            // reset visited Vertex List also to be used later to know if all Vertex are visited
+            graph.Reset_VisitedArr();
+
+            int endVertex = sourceVertex;
+            EulersCircuitUtil(ref EulersCircuit, ref visitedEdgeList, graph, sourceVertex, endVertex);
+
+            // print the Euler tour/Path/Circuit
+            foreach(var Vertex in EulersCircuit)
+                Console.Write($"-->{Vertex}");
+        }
+
+        /// <summary>
+        /// Here Edge (u,v) is such that u = parent & v = Adjacent Vertex
+        /// Time Complexity O(V+E)
+        /// </summary>
+        /// <param name="eulersCircuit"></param>
+        /// <param name="visitedEdgeList"></param>
+        /// <param name="graph"></param>
+        /// <param name="u"></param>
+        /// <param name="finalStop"></param>
+        public static void EulersCircuitUtil(ref Stack<int> eulersCircuit, ref HashSet<int>[] visitedEdgeList, DiGraph graph, int u, int finalStop)
+        {
+            foreach (var adjacentVertex in graph._Graph[u])
+            {
+                var v = adjacentVertex;
+                if (!visitedEdgeList[u].Contains(v))                // if Edge not already in euler path
+                {
+                    // Mark parent Vertex as 'visited'
+                    graph._IsVisitedVertex[v] = 1;
+                    // Mark edge as 'visited'
+                    visitedEdgeList[u].Add(v);
+
+                    // continue onto next Vertex once starting Node is reached, PostMan's last Vertex(PostOffice) found
+                    if (v == finalStop)
+                    {
+                        eulersCircuit.Push(finalStop);
+                        continue;
+                    }
+
+                    // recursively call similar to DFS on Vertex 'v'
+                    EulersCircuitUtil(ref eulersCircuit, ref visitedEdgeList, graph, v, finalStop);
+                }
+            }
+            eulersCircuit.Push(u);                                  // adding visited Vertex when exiting system stack trace
         }
     }
 }

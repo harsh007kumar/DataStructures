@@ -1,9 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using BinaryHeap;
 
 namespace Graph
 {
@@ -23,6 +19,7 @@ namespace Graph
             MinimalSpanningTree_PrimsAlgo();
             MinimalSpanningTree_KruskalAlgo();
             ArticulationPointsORCutVerticesInAGraph();
+            FindEulerianCircuit();
             Console.ReadKey();
         }
 
@@ -184,6 +181,26 @@ namespace Graph
             UG.AddEdge(3, 4);
             UG.PrintGraph();
             GraphUtility.FindArticulartionPoint_TarjanAlgorithm(UG);
+        }
+
+        // Euler's Circuit/Tour a.k.a Hamiltonian Cycle
+        public static void FindEulerianCircuit()
+        {
+            GraphUtility.Print("Eulerian circuit(p. 476)");
+            DiGraph DG = new DiGraph(6);
+            DG.AddEdge(0, 1);
+            DG.AddEdge(1, 2);
+            DG.AddEdge(1, 3);
+            DG.AddEdge(2, 0);
+            DG.AddEdge(2, 3);
+            DG.AddEdge(3, 4);
+            DG.AddEdge(3, 5);
+            DG.AddEdge(4, 1);
+            DG.AddEdge(4, 2);
+            DG.AddEdge(5, 4);
+            DG.PrintGraph();
+            int source = 0;     // valid source for above graph can be either '0' or '5'
+            GraphUtility.EulersCircuit(DG, source);
         }
     }
 }

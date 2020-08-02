@@ -15,7 +15,7 @@ namespace Graph
     {
         //Array of generic lists which is used as graph data structure
         public List<int>[] _Graph;
-        public int[] _IsVisitedArr;
+        public int[] _IsVisitedVertex;
 
         public Graph(int size)
         {
@@ -29,7 +29,7 @@ namespace Graph
 
         public int Length { get { return _Graph.Length; } }
 
-        public void Reset_VisitedArr() => _IsVisitedArr = new int[Length];
+        public void Reset_VisitedArr() => _IsVisitedVertex = new int[Length];
 
         public int NoOfVertex { get { return _Graph.Length; } }
 
@@ -58,14 +58,14 @@ namespace Graph
             if (_Graph == null) return;
 
             //Step1 : Reset Array which keeps track of each node in graph has been visited yet or not
-            _IsVisitedArr = new int[_Graph.Length];
+            _IsVisitedVertex = new int[_Graph.Length];
 
             //Step2 : Create empty Queue
             Queue<int> q = new Queue<int>();
 
             //Step3 : add starting node to Queue before starting BFS/LevelOrder traversal
             q.Enqueue(currentNode);                                                                        // add that element to queue
-            _IsVisitedArr[currentNode] = 1;                                                                 // mark the element as visited
+            _IsVisitedVertex[currentNode] = 1;                                                                 // mark the element as visited
 
             Console.Write($"\nBreadth First Traversal/Level Order Traversal\tStarting with Node :\t");
             //Step4 : loop until Queue is not empty
@@ -74,10 +74,10 @@ namespace Graph
                 var temp = q.Dequeue();
                 Console.Write($" {temp} "); // Print starting node data
                 foreach (int node in _Graph[temp])
-                    if (_IsVisitedArr[node] != 1)
+                    if (_IsVisitedVertex[node] != 1)
                     {
                         q.Enqueue(node); //Add linked node to Queue
-                        _IsVisitedArr[node] = 1; // Mark node as visited
+                        _IsVisitedVertex[node] = 1; // Mark node as visited
                     }
             }
             Console.WriteLine();
@@ -92,12 +92,12 @@ namespace Graph
         public void DepthFirstSearch()
         {
             //Create Array which keeps track of each node in graph has been visited yet or not
-            _IsVisitedArr = new int[_Graph.Length];
+            _IsVisitedVertex = new int[_Graph.Length];
 
             //Calling recursive DFS on graph on every node to cover disconnected graph (in which every node is reachble for just one Node)
             for (int startingNode = 0; startingNode < _Graph.Length; startingNode++)
             {
-                if (_IsVisitedArr[startingNode] != 1)
+                if (_IsVisitedVertex[startingNode] != 1)
                 {
                     Console.Write($"\nDepth First Traversal\tStarting with Node:\t");
                     DepthFirstSearch_Recursive(startingNode);
@@ -108,10 +108,10 @@ namespace Graph
 
         public void DepthFirstSearch_Recursive(int currentNode)
         {
-            if (_Graph == null || _IsVisitedArr[currentNode] == 1) return;
+            if (_Graph == null || _IsVisitedVertex[currentNode] == 1) return;
 
             //Step1: Mark current node as visited and print the node
-            _IsVisitedArr[currentNode] = 1;
+            _IsVisitedVertex[currentNode] = 1;
             Console.Write($" {currentNode} ");
 
             //Step2 : Traverse all the adjacent and unmarked nodes
