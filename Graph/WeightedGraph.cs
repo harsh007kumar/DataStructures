@@ -47,7 +47,7 @@ namespace Graph
             {
                 Console.Write($"\nNode:{i} ");                                  // Print Node
                 foreach (var node in _Graph[i])
-                    Console.Write($"-->{node.Index}");                                // Print all the nodes its connected with
+                    Console.Write($"-->Node:{node.Index} (Cost{node.Weight}) || ");       // Print all the nodes its connected with
             }
             Console.WriteLine();
         }

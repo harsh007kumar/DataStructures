@@ -108,7 +108,7 @@ namespace Graph
             Stack<int> s = new Stack<int>(Len);
 
             //Step2: run DFS & store vertices according to their finish times in stack.
-            graphObj.Reset_VisitedArr();                                                   // Reset Visited vertices Array 
+            graphObj.Reset_VisitedVertexArr();                                                   // Reset Visited vertices Array 
 
             Console.Write("\nDFS of current Graph : ");
             for (int index = 0; index < Len; index++)
@@ -119,7 +119,7 @@ namespace Graph
             DiGraph reverse = GetTranspose(graphObj);                                      // Time complexity O(V+E)
 
             //Step4: Run DFS of the reversed graph using sequence of vertices in stack (process Vertices from Sink to Source)
-            reverse.Reset_VisitedArr();                                             // Reset Visited vertices Array 
+            reverse.Reset_VisitedVertexArr();                                             // Reset Visited vertices Array 
             Console.Write("\n\nPrinting All Strongly Connected Components in Di-Graph (using Kosaraju’s algorithm) below :");
             foreach (var node in s)
                 if (reverse._IsVisitedVertex[node] != 1)
@@ -166,7 +166,7 @@ namespace Graph
             Stack<int> st = new Stack<int>();
 
             // Reset InVisited Arr
-            DG.Reset_VisitedArr();
+            DG.Reset_VisitedVertexArr();
 
             //Calling recursive TopologicalSort on graph for every node to cover disconnected graph (in which every is not reachble from single Node)
             for (int startingNode = 0; startingNode < DG.NoOfVertex; startingNode++)
@@ -236,7 +236,7 @@ namespace Graph
             distance[source] = 0;           // Set source distance from itself to Zero
 
             // Reset IsVisited Array of Graph
-            UG.Reset_VisitedArr();
+            UG.Reset_VisitedVertexArr();
             q.Enqueue(source);              // Add source to Queue
             UG._IsVisitedVertex[source] = 1;   // Mark source Visited
             // do BFS
@@ -703,7 +703,7 @@ namespace Graph
             bool[] aps = new bool[V];
 
             // reset isVisitedArray so each Vertex is visited only once
-            graph.Reset_VisitedArr();
+            graph.Reset_VisitedVertexArr();
 
             // set the default parent and depth for each Vertex
             for (int i = 0; i < V; i++)
@@ -776,17 +776,17 @@ namespace Graph
                 visitedEdgeList[i] = new HashSet<int>();
 
             // data structure to hold Euler's Path
-            Stack<int> EulersCircuit = new Stack<int>();                            // Space O(V+1) holds each vertex once and source vertex twice(begin + end)
+            Stack<int> EulersCircuit = new Stack<int>();                            // Space O(E) holds each Edge once
 
             // reset visited Vertex List also to be used later to know if all Vertex are visited
-            graph.Reset_VisitedArr();
+            graph.Reset_VisitedVertexArr();
 
             int endVertex = sourceVertex;
             EulersCircuitUtil(ref EulersCircuit, ref visitedEdgeList, graph, sourceVertex, endVertex);
 
             // print the Euler tour/Path/Circuit
-            foreach(var Vertex in EulersCircuit)
-                Console.Write($"-->{Vertex}");
+            foreach(var path in EulersCircuit)
+                Console.Write($"-->{path}");
         }
 
         /// <summary>
@@ -805,15 +805,13 @@ namespace Graph
                 var v = adjacentVertex;
                 if (!visitedEdgeList[u].Contains(v))                // if Edge not already in euler path
                 {
-                    // Mark parent Vertex as 'visited'
-                    graph._IsVisitedVertex[v] = 1;
                     // Mark edge as 'visited'
                     visitedEdgeList[u].Add(v);
 
                     // continue onto next Vertex once starting Node is reached, PostMan's last Vertex(PostOffice) found
                     if (v == finalStop)
                     {
-                        eulersCircuit.Push(finalStop);
+                        eulersCircuit.Push(finalStop);              // first Vertex to be pushed onto the Circuit stack
                         continue;
                     }
 
@@ -901,5 +899,108 @@ namespace Graph
                     }
             }
         }
+
+        /// <summary>
+        /// Returns Longest path in an Un-Weighted DAG
+        /// Time O(V+E) || Space O(V)
+        /// </summary>
+        /// <param name="dG"></param>
+        public static void LongestPathInUnWightedDAG(DiGraph dG)
+        {
+            if (dG?._Graph == null) return;
+
+            // Reset/Create Visited array which indicates if Vertex has been visited or not
+            dG.Reset_VisitedVertexArr();
+
+            // data structure to hold depth/max no of edges reachable from each Vertex
+            int[] dp = new int[dG.NoOfVertex];
+
+            for (int i = 0; i < dG.NoOfVertex; i++)                 // Time O(V+E) for performing DFS
+                if (dG._IsVisitedVertex[i] != 1)                    // if Not Visited
+                    LongestPathInUnWightedDAG_Util(dG, ref dp, i);  // DFS based apporach
+
+            // Find and print the longest path from dp array
+            var max = 0;
+            for (int i = 0; i < dp.Length; i++)
+                if (dp[i] > max)
+                    max = dp[i];
+            Console.WriteLine($" Longest Path in given Directed Unweighted graph is : {max}");
+        }
+
+        public static void LongestPathInUnWightedDAG_Util(DiGraph dg, ref int[] depthArr, int u)
+        {
+            if (dg._IsVisitedVertex[u] == 1) return;
+            dg._IsVisitedVertex[u] = 1;                             // mark current Vertex as visited
+            foreach (var adjacentVertex in dg._Graph[u])
+            {
+                if (dg._IsVisitedVertex[adjacentVertex] == -1)      // if adjacent not visited find the longest path for it
+                    LongestPathInUnWightedDAG_Util(dg, ref depthArr, u);
+                depthArr[u] = Math.Max(depthArr[u], depthArr[adjacentVertex] + 1);
+            }
+        }
+
+        /// <summary>
+        /// Returns Longest path from a given source Vertex in an Weighted DAG using Topological Sorting
+        /// Time O(V+E) || Space O(V)
+        /// </summary>
+        /// <param name="dGW"></param>
+        /// <param name="source"></param>
+        public static void LongestPathInWightedDAG(DiGraphWeighted dGW, int source)
+        {
+            if (dGW?._Graph == null) return;
+
+            // Reset/Create Visited array which indicates if Vertex has been visited or not
+            dGW.Reset_VisitedArr();
+            
+            // Find Topolical Sorting of Graph
+            var topolicalOrder = TopologicalSortingOnDAGWeighted(dGW);                                  // Time O(V+E)
+
+            // create an distance array which holds max distance fr each Vertex
+            int[] distance = new int[dGW.NoOfVertex];
+            for (int i = 0; i < distance.Length; i++)
+                distance[i] = int.MinValue;
+            distance[source] = 0;
+
+            // now update the edge weight for each Vertex in Topolical stack
+            foreach (var Vertex in topolicalOrder)                                                      // Time O(V+E)
+                if (distance[Vertex] != int.MinValue)
+                    foreach (var adjacentVertex in dGW._Graph[Vertex])
+                        if (distance[adjacentVertex.Index] < distance[Vertex] + adjacentVertex.Weight)
+                            distance[adjacentVertex.Index] = distance[Vertex] + adjacentVertex.Weight;
+
+            // print all longest distance fr each vertex from source
+            for (int i = 0; i < distance.Length; i++)
+                Console.WriteLine($" Distance from source {source} to destination {i} : {distance[i]}");
+        }
+
+        public static Stack<int> TopologicalSortingOnDAGWeighted(DiGraphWeighted dGW)
+        {
+            // Step1 create a stack to hold the Vertex in the reverse order of when they appear in call-stack
+            Stack<int> st = new Stack<int>();
+
+            // Reset InVisited Arr
+            dGW.Reset_VisitedArr();
+
+            //Calling recursive TopologicalSort on graph for every node to cover disconnected graph (in which every is not reachble from single Node)
+            for (int startingNode = 0; startingNode < dGW.NoOfVertex; startingNode++)
+                if (dGW._IsVisitedArr[startingNode] != 1)
+                    TopologicalSort_Util(dGW, startingNode, ref st);
+
+            Console.Write("\nTopological Sort of above DAG is :\t");
+            foreach (var Vertex in st)
+                Console.Write($" {Vertex} ");
+
+            return st;
+        }
+
+        public static void TopologicalSort_Util(DiGraphWeighted dGW, int vertex, ref Stack<int> st)
+        {
+            if (dGW?._Graph == null || dGW._IsVisitedArr[vertex] == 1) return;
+            dGW._IsVisitedArr[vertex] = 1;
+            foreach (var adjacentVertex in dGW._Graph[vertex])
+                TopologicalSort_Util(dGW, adjacentVertex.Index, ref st);
+            st.Push(vertex);
+        }
+
     }
 }

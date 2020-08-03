@@ -27,7 +27,7 @@ namespace Graph
                 _Graph[i] = new List<int>();
         }
 
-        public void Reset_VisitedArr() => _IsVisitedVertex = new int[NoOfVertex];
+        public void Reset_VisitedVertexArr() => _IsVisitedVertex = new int[NoOfVertex];
 
         public int NoOfVertex { get { return _Graph.Length; } }
 

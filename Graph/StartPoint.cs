@@ -22,6 +22,7 @@ namespace Graph
             FindEulerianCircuit();
             DetectCycleInUnDirectedGraph_UsingBFS();
             DetectCycleInDirectedGraph_UsingDFS();
+            LongestPathInDAG();
             Console.ReadKey();
         }
 
@@ -235,7 +236,7 @@ namespace Graph
             */
             // initialize visited Flag as -1 for all Vertices
             int[] parent = new int[DG.NoOfVertex];
-            DG.Reset_VisitedArr();
+            DG.Reset_VisitedVertexArr();
             for (int i = 0; i < DG.NoOfVertex; i++)
                 DG._IsVisitedVertex[i] = parent[i] = -1;
 
@@ -243,6 +244,22 @@ namespace Graph
                 if (DG._IsVisitedVertex[i] == -1)
                     GraphUtility.DetectCycleInDiGraph(DG, ref parent);
 
+        }
+
+        // Awesome GFG vdo using DP way -> https://www.youtube.com/watch?v=YxF-x3imVFA
+        // GFG using Topological Sort way -> https://www.geeksforgeeks.org/find-longest-path-directed-acyclic-graph/
+        public static void LongestPathInDAG()
+        {
+            GraphUtility.Print("Longest Path in a Directed Acyclic Graph (UnWeighted) || (p. 486)");
+            DiGraph DG = GraphUtility.GetDAG();
+            DG.PrintGraph();
+            GraphUtility.LongestPathInUnWightedDAG(DG);
+
+
+            GraphUtility.Print("Longest Path in a Directed Acyclic Graph (Weighted)");
+            DiGraphWeighted DGW = GraphUtility.GetDiGraphWeighted();
+            DGW.PrintGraph();
+            GraphUtility.LongestPathInWightedDAG(DGW, 0);
         }
     }
 }
