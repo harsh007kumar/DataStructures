@@ -160,7 +160,7 @@ namespace Graph
         /// Time Complexity: O(V+E) its simply DFS with an extra stack, complexity same as DFS || Auxiliary space: O(V) needed for the stack.
         /// </summary>
         /// <param name="DG"></param>
-        public static void TopologicalSortingOnDAG(DiGraph DG)
+        public static Stack<int> TopologicalSortingOnDAG(DiGraph DG)
         {
             // Step1 create a stack to hold the Vertex in the reverse order of when they appear in call-stack
             Stack<int> st = new Stack<int>();
@@ -178,6 +178,7 @@ namespace Graph
                 Console.Write($" {Vertex} ");
 
             Console.WriteLine();
+            return st;
         }
 
         public static void PrintMatrix(int[,] graph)
@@ -989,7 +990,7 @@ namespace Graph
             Console.Write("\nTopological Sort of above DAG is :\t");
             foreach (var Vertex in st)
                 Console.Write($" {Vertex} ");
-
+            Console.WriteLine();
             return st;
         }
 
@@ -1000,6 +1001,25 @@ namespace Graph
             foreach (var adjacentVertex in dGW._Graph[vertex])
                 TopologicalSort_Util(dGW, adjacentVertex.Index, ref st);
             st.Push(vertex);
+        }
+
+        public static void CheckHamiltonianPathInDAG(DiGraph dG)
+        {
+            if (dG?._Graph == null) return;
+
+            var topologicalSort = TopologicalSortingOnDAG(dG);
+            // Approximation approach, if there exists a edge b/w each Vertex in Top Sort, than its Hamiltonian Path
+            var u = topologicalSort.Pop();
+            while (topologicalSort.Count > 1)
+            {
+                var v = topologicalSort.Peek();
+                var edgeExists = false;
+                foreach (var adj in dG._Graph[u])
+                    if (adj == v) { edgeExists = true; break; }
+                if (!edgeExists) { Console.WriteLine("Hamiltonian Path Not Found"); return; }
+                u = topologicalSort.Pop();
+            }
+            Console.WriteLine("Given Graph contain at Hamiltonian Path");
         }
 
     }

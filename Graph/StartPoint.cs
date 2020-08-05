@@ -23,6 +23,7 @@ namespace Graph
             DetectCycleInUnDirectedGraph_UsingBFS();
             DetectCycleInDirectedGraph_UsingDFS();
             LongestPathInDAG();
+            HamiltonionPathInDAG();
             Console.ReadKey();
         }
 
@@ -260,6 +261,14 @@ namespace Graph
             DiGraphWeighted DGW = GraphUtility.GetDiGraphWeighted();
             DGW.PrintGraph();
             GraphUtility.LongestPathInWightedDAG(DGW, 0);
+        }
+
+        public static void HamiltonionPathInDAG()
+        {
+            GraphUtility.Print("Hamiltonian path in DAGs:(p. 492)");
+            DiGraph DG = GraphUtility.GetDAG();
+            DG.PrintGraph();
+            GraphUtility.CheckHamiltonianPathInDAG(DG);
         }
     }
 }
