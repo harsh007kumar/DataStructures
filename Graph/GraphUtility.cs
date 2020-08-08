@@ -1,4 +1,5 @@
 ﻿using BinaryHeap;
+using RangeMinimumQueries_RMQ;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -1022,5 +1023,64 @@ namespace Graph
             Console.WriteLine("Given Graph contain at Hamiltonian Path");
         }
 
+        /// <summary>
+        /// Find LCA for any two Vertex based upon Eulers Tour + RMQ, https://youtu.be/sD1IoalFomA?list=PLDV1Zeh2NRsDGO4--qE8yH72HFL1Km93P
+        /// Time for 1st run/Setup Max[ O(2vLogv) , O(V+E) ], subsequent LCA queries can be made in O(1) time
+        /// Auxillary Space O(v), here V = No of vertex in Directed Acyclic Graph
+        /// </summary>
+        /// <param name="dG"></param>
+        public static void LowestCommonAnsectorInDirectedAcyclicGraph(DiGraph dG, int vertex1, int vertex2)
+        {
+            if (dG?._Graph == null) return;
+
+            var eulersTourLen = dG.NoOfVertex * 2 - 1;              // (NoOfVertex * 2) - 1;
+            // create a depth array to store the depth of Vertices as encountered during modified Euler's Tour
+            int[] depth = new int[eulersTourLen];
+
+            // create a nodes array to store the index of Vertex as encountered during modified Euler's tour
+            int[] nodes = new int[eulersTourLen];
+
+            // array to store the 'last position' seen for each Vertex when going thru modified Euler's tour
+            int[] lastSeenAt = new int[dG.NoOfVertex];
+
+            var root = 0;       // Vertex with Indegree 0 in DAG (root in case of BinaryTree)
+            var tourIndex = 0;
+            Console.WriteLine("Eulerian Tour for given Graph along imaginary green edges[one in direction of directed edge (u,v) and 1 in opp. (v,u)]");
+            EulersTourModifiedDFSForLCAOnDAG(dG, root, depth, nodes, lastSeenAt, ref tourIndex);                // Time O(V+E)
+
+            // Construct an 'Sparse table' on depth array,
+            // which return Minimum Index of the value from 'depth array' to allow RMQ queris in O(1) b/w given Lower n Upper Bound (array subset)
+            SparseTable spTable = new SparseTable(depth);                                                       // Time O(nLogn), here n = 2V-1
+
+            // RMQ on Vertices who's LCA we need, index of Vertices is fetched from 'lastSeenAt' array
+            int LCA_Index = spTable.IndexQuery(lastSeenAt[vertex1], lastSeenAt[vertex2]);                       // Time O(1)
+
+            // print the LCA
+            Console.WriteLine($" \nFor Vertex '{vertex1}' n '{vertex2}' Lowest Common Anscetor is : \t{nodes[LCA_Index]}");
+
+        }
+
+        public static void EulersTourModifiedDFSForLCAOnDAG(DiGraph dG, int vertexU, int[] depthArr, int[] nodesArr, int[] lastseenArr, ref int tourIndex, int level = 0)
+        {
+            // registerVisit for vertex U
+            RegisterVisit(vertexU, depthArr, nodesArr, lastseenArr, ref tourIndex, level);
+            
+            foreach (var vertexV in dG._Graph[vertexU])
+            {
+                // registerVisit for every adjacent VertexV
+                EulersTourModifiedDFSForLCAOnDAG(dG, vertexV, depthArr, nodesArr, lastseenArr, ref tourIndex, level + 1);
+                // registerVisit for vertex U again
+                RegisterVisit(vertexU, depthArr, nodesArr, lastseenArr, ref tourIndex, level);
+            }
+        }
+
+        public static void RegisterVisit(int vertexID, int[] depthArr, int[] nodesArr, int[] lastseenArr, ref int tourIndex, int level)
+        {
+            Console.Write(vertexID+" ");
+            depthArr[tourIndex] = level;
+            nodesArr[tourIndex] = vertexID;
+            lastseenArr[vertexID] = tourIndex;
+            ++tourIndex;
+        }
     }
 }

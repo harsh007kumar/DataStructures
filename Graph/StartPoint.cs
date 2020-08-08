@@ -24,6 +24,7 @@ namespace Graph
             DetectCycleInDirectedGraph_UsingDFS();
             LongestPathInDAG();
             HamiltonionPathInDAG();
+            LCA_In_DAG();
             Console.ReadKey();
         }
 
@@ -269,6 +270,35 @@ namespace Graph
             DiGraph DG = GraphUtility.GetDAG();
             DG.PrintGraph();
             GraphUtility.CheckHamiltonianPathInDAG(DG);
+        }
+
+        // Algo to return multiple LCA queries b/w pair of Vertex in Graph/Nodes in Binary Tree in O(1) time
+        // https://youtu.be/sD1IoalFomA?list=PLDV1Zeh2NRsDGO4--qE8yH72HFL1Km93P
+        // Eulerian Path + RMQ (Range Minimum Queries) [using Sparse Table https://www.youtube.com/watch?v=uUatD9AudXo ]
+        public static void LCA_In_DAG()
+        {
+            GraphUtility.Print("Find LCA in Directed Acyclic Graph/ LCA in Binary Tree");
+            var NoOfVertex = 7;
+            DiGraph dG = new DiGraph(NoOfVertex);
+            #region creating DAG
+            dG.AddEdge(0, 1);
+            dG.AddEdge(0, 2);
+            dG.AddEdge(1, 3);
+            dG.AddEdge(2, 4);
+            dG.AddEdge(2, 5);
+            dG.AddEdge(4, 6);
+            ///*                      0
+            // *                    /   \
+            // *                   1     2
+            // *                  /     / \
+            // *                 3     4   5
+            // *                      /
+            // *                     6
+            // */
+            dG.PrintGraph();
+            #endregion
+            int vertex1 = 6, vertex2 = 5;
+            GraphUtility.LowestCommonAnsectorInDirectedAcyclicGraph(dG, vertex1, vertex2);
         }
     }
 }
