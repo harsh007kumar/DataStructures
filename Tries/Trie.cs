@@ -78,7 +78,7 @@ namespace Tries
                 else
                     return false;
             }
-            Console.WriteLine($" Word Match \t'{word}' found in Trie");
+            if (temp.isEndOfWord) Console.WriteLine($" Word Match \t'{word}' found in Trie");
             return temp.isEndOfWord;
         }
 
