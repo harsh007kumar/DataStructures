@@ -7,13 +7,13 @@ using System.Threading.Tasks;
 
 namespace TernarySearchTree
 {
-    public class TNTNode
+    public class TSTNode
     {
         public char data;
         public bool isEndOfWord;
-        public TNTNode left, equal, right;
+        public TSTNode left, equal, right;
 
-        public TNTNode(char character)
+        public TSTNode(char character)
         {
             data = character;
             left = equal = right = null;
@@ -26,7 +26,7 @@ namespace TernarySearchTree
     /// </summary>
     public class TernarySearchTree
     {
-        public TNTNode root;
+        public TSTNode root;
         public TernarySearchTree() => root = null;
 
         /// <summary>
@@ -36,12 +36,12 @@ namespace TernarySearchTree
         /// <param name="current"></param>
         /// <param name="newWord"></param>
         /// <param name="index"></param>
-        public void Insert(ref TNTNode current, string newWord, int index = 0)
+        public void Insert(ref TSTNode current, string newWord, int index = 0)
         {
             if (index >= newWord.Length) return;
 
             if (current == null)                                // add new node with required character
-                current = new TNTNode(newWord[index]);
+                current = new TSTNode(newWord[index]);
             if (newWord[index] == current.data)                 // required character already present insert next character in sequence
                 Insert(ref current.equal, newWord, index + 1);
             else if (newWord[index] < current.data)             // required character smaller(ASCII value) insert onto left side
@@ -98,7 +98,7 @@ namespace TernarySearchTree
         {
             Console.Write($"Searching for Word '{word}' in Ternary Search Tree \t");
             var temp = root;
-            TNTNode previous = null;
+            TSTNode previous = null;
             var index = 0;
             while (index < word.Length)
             {
@@ -118,11 +118,11 @@ namespace TernarySearchTree
         // https://youtu.be/bWaXdxEHaag?list=PLGeS6vuu3w_mM_n2nRYlgrI85nUMrfOK_
         /// <summary>
         /// Traverse and print all the words in lexographical order in Ternary Search Tree
-        /// Time O(N), N = no of nodes in TNT || Space O(1)
+        /// Time O(N), N = no of nodes in TST || Space O(1)
         /// </summary>
         /// <param name="current"></param>
         /// <param name="lastWord"></param>
-        public void TraverseTNT(TNTNode current, string lastWord = null)
+        public void TraverseTST(TSTNode current, string lastWord = null)
         {
             // if current node is null return
             // if isEndOFString == True, print 'lastWord + current.data'
@@ -134,20 +134,20 @@ namespace TernarySearchTree
                 Console.Write($" {lastWord + current.data} >>");
 
             // traverse left subtree
-            TraverseTNT(current.left, lastWord);
+            TraverseTST(current.left, lastWord);
             // traverse equal subtree
-            TraverseTNT(current.equal, lastWord + current.data);
+            TraverseTST(current.equal, lastWord + current.data);
             // traverse right subtree
-            TraverseTNT(current.right, lastWord);
+            TraverseTST(current.right, lastWord);
         }
 
         /// <summary>
-        /// Time Complexity O(N), N is no of nodes in TNT || Auxillary Space O(1) || Recursion Stack Space O(height of TNT)
+        /// Time Complexity O(N), N is no of nodes in TST || Auxillary Space O(1) || Recursion Stack Space O(height of TST)
         /// </summary>
         /// <param name="current"></param>
         /// <param name="length"></param>
         /// <returns></returns>
-        public int LengthOfLargestWord(TNTNode current, int length = 0)
+        public int LengthOfLargestWord(TSTNode current, int length = 0)
         {
             if (current == null) return length;
             length++;

@@ -27,11 +27,11 @@ namespace TernarySearchTree
             }
             t.SearchWord("harsh");
 
-            // traverse and print all words in TNT
-            Console.WriteLine($"\n Printing Dictonary/All Words in 'Ternary Search Tree' in Lexographical Order :");
-            t.TraverseTNT(t.root);
+            // traverse and print all words in TST
+            Console.WriteLine($"\n\nPrinting Dictonary/All Words in 'Ternary Search Tree' in Lexographical Order :");
+            t.TraverseTST(t.root);
 
-            Console.WriteLine($"\n Length of the longest word in 'Ternary Search Tree' : {t.LengthOfLargestWord(t.root)}");
+            Console.WriteLine($"\n\nLength of the longest word in 'Ternary Search Tree' : {t.LengthOfLargestWord(t.root)}");
             Console.ReadKey();
         }
     }
