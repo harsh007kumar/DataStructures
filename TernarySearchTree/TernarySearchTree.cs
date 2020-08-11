@@ -125,13 +125,13 @@ namespace TernarySearchTree
         public void TraverseTNT(TNTNode current, string lastWord = null)
         {
             // if current node is null return
-            // Print is IsEndOFString is True, print 'lastWord + current.data'
+            // if isEndOFString == True, print 'lastWord + current.data'
             // a) call Traverse(current.left,lastWord)
             // b) call Traverse(current.equal,lastWord + current.data)
             // c) call Traverse(current.right,lastWord)
             if (current == null) return;
             if (current.isEndOfWord == true)
-                Console.WriteLine($" {lastWord + current.data}");
+                Console.Write($" {lastWord + current.data} >>");
 
             // traverse left subtree
             TraverseTNT(current.left, lastWord);
@@ -139,6 +139,22 @@ namespace TernarySearchTree
             TraverseTNT(current.equal, lastWord + current.data);
             // traverse right subtree
             TraverseTNT(current.right, lastWord);
+        }
+
+        /// <summary>
+        /// Time Complexity O(N), N is no of nodes in TNT || Auxillary Space O(1) || Recursion Stack Space O(height of TNT)
+        /// </summary>
+        /// <param name="current"></param>
+        /// <param name="length"></param>
+        /// <returns></returns>
+        public int LengthOfLargestWord(TNTNode current, int length = 0)
+        {
+            if (current == null) return length;
+            length++;
+            var leftLongest = LengthOfLargestWord(current.left, length - 1);    // since we searching to smaller character we don't count current node character for largest word
+            var middleLongest = LengthOfLargestWord(current.equal, length);
+            var rtLongest = LengthOfLargestWord(current.right, length - 1);     // since we searching to larger character we don't count current node character for largest word
+            return Math.Max(leftLongest, Math.Max(middleLongest, rtLongest));
         }
     }
 }
