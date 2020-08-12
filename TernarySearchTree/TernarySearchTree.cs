@@ -149,11 +149,11 @@ namespace TernarySearchTree
         /// <returns></returns>
         public int LengthOfLargestWord(TSTNode current, int length = 0)
         {
-            if (current == null) return length;
-            length++;
-            var leftLongest = LengthOfLargestWord(current.left, length - 1);    // since we searching to smaller character we don't count current node character for largest word
-            var middleLongest = LengthOfLargestWord(current.equal, length);
-            var rtLongest = LengthOfLargestWord(current.right, length - 1);     // since we searching to larger character we don't count current node character for largest word
+            if (current == null) return 0;
+            
+            var leftLongest = LengthOfLargestWord(current.left, length);    // since we searching to smaller character we don't count current node character for largest word
+            var middleLongest = LengthOfLargestWord(current.equal, length) + 1;
+            var rtLongest = LengthOfLargestWord(current.right, length);     // since we searching to larger character we don't count current node character for largest word
             return Math.Max(leftLongest, Math.Max(middleLongest, rtLongest));
         }
     }
