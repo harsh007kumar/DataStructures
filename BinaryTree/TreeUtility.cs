@@ -130,15 +130,14 @@ namespace BinaryTree
                     }
                     while (current == null && st.Count > 0)
                     {
-                        current = st.Peek();
-                        if (current.Right == null || current.Right == prv)
+                        var temp = st.Peek();
+                        if (temp.Right == null || temp.Right == prv)
                         {
-                            Console.Write($" {current.Data}");
+                            Console.Write($" {temp.Data}");
                             prv = st.Pop();
-                            current = null;
                         }
                         else
-                            current = current.Right;
+                            current = temp.Right;
                     }
                     if (st.Count <= 0) break;
                 }
@@ -375,7 +374,7 @@ namespace BinaryTree
         /// <param name="max"></param>
         /// <param name="head"></param>
         /// <returns></returns>
-        public static int LevelWithMaxSum(ref int max, Node head)
+        public static int LevelWithMaxSumOld(ref int max, Node head)
         {
             int level = -1;
             if (head == null) return level;
@@ -409,6 +408,38 @@ namespace BinaryTree
                 }
             }
             return level;
+        }
+
+        // Calculate the sum at each level in the tree and returns the Level and updates the max (ref variable with the actual max sum) in Binary Tree
+        // Time O(n) || Space O(n)
+        public static int LevelWithMaxSum(ref int maxSum, Node head)
+        {
+            int level = -1;
+            if (head == null) return level;
+
+            Queue<Node> q = new Queue<Node>();
+            Node nullNode = null;
+            q.Enqueue(head);
+            q.Enqueue(nullNode);                // To mark end of root level
+            int levelSum = 0, maxLevel = -1;
+            while (q.Count > 0)
+            {
+                Node currNode = q.Dequeue();
+                if (currNode == null)
+                {
+                    level++;
+                    if (levelSum > maxSum)
+                    { maxLevel = level; maxSum = levelSum; }
+                    levelSum = 0;
+
+                    if (q.Count == 0) break;    // No more elements left to process
+                    else { q.Enqueue(nullNode); continue; }
+                }
+                levelSum += currNode.Data;
+                if (currNode.Left != null) q.Enqueue(currNode.Left);
+                if (currNode.Right != null) q.Enqueue(currNode.Right);
+            }
+            return maxLevel;
         }
 
         /// <summary>
@@ -955,12 +986,11 @@ namespace BinaryTree
         public static bool CheckIfBST(Node root)
         {
             if (root == null) return true;
-            bool leftCheck = true, rtCheck = true;
             if (root.Left != null && root.Left.Data > root.Data)
-                leftCheck = false;
+                return false;
             if (root.Right != null && root.Right.Data < root.Data)
-                rtCheck = false;
-            return (leftCheck && rtCheck && CheckIfBST(root.Left) && CheckIfBST(root.Right));
+                return false;
+            return CheckIfBST(root.Left) && CheckIfBST(root.Right);
         }
 
         /// <summary>

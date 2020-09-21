@@ -126,7 +126,7 @@ namespace BinaryTree
             // Deepest Node in the Tree
             TreeUtility.DeepestNodeInTree(bst.root);
 
-            // Min Value in Tree
+            // Min Value in Binary Search Tree
             Console.WriteLine($"Min Value in Tree (Recursive) :\t'{bst.FindMin_Recursive(bst.root)}'");
             Console.WriteLine($"Min Value in Tree (Iterative) :\t'{bst.FindMin_Iterative(bst.root)}'");
 
