@@ -460,7 +460,7 @@ namespace BinaryTree
             int data = 16, ciel = -1, floor = -1;
             TreeUtility.CielAndFloorInBST(bst.root, data, ref ciel, ref floor);
 
-            Console.WriteLine($" In abvove BST for : {data}\tCiel : {ciel}\tFloor : {floor}");
+            Console.WriteLine($" In abvove BST for data:{data} \tCiel: {ciel} \tFloor: {floor}");
         }
 
         /// <summary>
@@ -605,6 +605,7 @@ namespace BinaryTree
             TreeUtility.ConnectNodesAtSameLevelInBinaryTree(ref bt);
             TreeUtility.DFS.InOrderTraversal_Iterative(bt);
         }
+
         public static void CalculateMaxPathSumInBinaryTree()
         {
             TreeUtility.Print("Problem - 92 Given a binary tree, find the maximum path sum. The path may start and end at any node in the tree.(p. 351)");

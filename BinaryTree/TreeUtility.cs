@@ -506,8 +506,8 @@ namespace BinaryTree
         }
 
         /// <summary>
-        /// Time Complexity O(n) same as FindLeastCommonAnscestor_InBinarySearchTree() but scans required is 1
-        /// Space Complexity O(n) required for CallStack in System for recursion
+        /// Time Complexity O(h), where h is the height of the tree.
+        /// Space Complexity O(h) required for CallStack in System for recursion
         /// Assumption both Nodes are present in the tree
         /// </summary>
         /// <param name="head"></param>
@@ -993,6 +993,28 @@ namespace BinaryTree
             return CheckIfBST(root.Left) && CheckIfBST(root.Right);
         }
 
+        // Do Inorder traversal n keeping checking next element should be greater than previous one, if not return false
+        // Time O(n) || Space O(n)
+        public static bool IsValidBST(Node root)
+        {
+            Node prv = null;
+            Stack<Node> st = new Stack<Node>();
+            while (true)
+            {
+                while (root != null)
+                {
+                    st.Push(root);
+                    root = root.Left;
+                }
+                if (st.Count < 1) break;
+                root = st.Pop();
+                if (prv != null && prv.Data >= root.Data) return false;
+                prv = root;
+                root = root.Right;
+            }
+            return true;
+        }
+
         /// <summary>
         /// Converts BST to Doubly Circular Linked List (In-Place) and returns List Head
         /// Time Complexity O(n) || Space Complexity O(n) for recursion stack
@@ -1270,6 +1292,7 @@ namespace BinaryTree
             if (root.Data <= max) RangePrinterInBST(root.Right, min, max);
         }
 
+        // Also known as Catalan Number
         public static int NoOfPossilbeBST(int n)
         {
             if (n <= 1) return 1;
@@ -1545,9 +1568,12 @@ namespace BinaryTree
         {
             if (root == null) return 0;
 
-            int ltSubTreeSum = 0, rtSubTreeSum = 0;
+            int ltSubTreeSum = Int32.MinValue, rtSubTreeSum = Int32.MinValue;                   // Set Min value
             var leftSingleLongestPathSum = MaxPathSumInBinaryTree(root.Left, ref ltSubTreeSum);
             var rtSingleLongestPathSum = MaxPathSumInBinaryTree(root.Right, ref rtSubTreeSum);
+
+            leftSingleLongestPathSum = Math.Max(leftSingleLongestPathSum, 0);                   // if left longest is -ve don't include in calculation for maxPathSum
+            rtSingleLongestPathSum = Math.Max(rtSingleLongestPathSum, 0);                       // if right longest is -ve don't include in calculation for maxPathSum
 
             var maxPathSum = leftSingleLongestPathSum + rtSingleLongestPathSum + root.Data;     // sum of max single path in left tree + max single path in rt tree path + root->Data
             maxSubTree = Math.Max(maxPathSum, Math.Max(ltSubTreeSum, rtSubTreeSum));            // Max of either left subtree / rt subtree / maxPathSum which includes root->Data

@@ -257,7 +257,7 @@ namespace BinaryTree
             middle.Right = unBalancedNode;
 
             unBalancedNode.Height = 1 + Math.Max(Height(unBalancedNode.Left), Height(unBalancedNode.Right));
-            middle.Height = 1 + Math.Abs(Height(middle.Left) + unBalancedNode.Height);
+            middle.Height = 1 + Math.Max(Height(middle.Left), unBalancedNode.Height);
             return middle;
         }
 

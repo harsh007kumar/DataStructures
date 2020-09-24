@@ -237,7 +237,7 @@ namespace BinaryHeap
             var leftHeavyOrRight = lowerHalf.Count - upperHalf.Count;
             if (leftHeavyOrRight > 1)       // lower Half Contain 2 value more than upper
                 upperHalf.Enqueue(lowerHalf.ExtractHighest().Key);
-            else if (leftHeavyOrRight < -1) // upper Half Contain 2 value more than lower
+            else if (leftHeavyOrRight < 0) // upper Half Contain 2 value more than lower
                 lowerHalf.Enqueue(upperHalf.ExtractHighest().Key);
         }
 
