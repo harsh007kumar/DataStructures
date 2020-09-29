@@ -266,7 +266,7 @@ namespace Graph
         /// <summary>
         /// Time Complexity O((V+E)LogV) ~ O(ELogV), V = No Of Vertex & E = No Of Edges (as we are performing E times update/insert operation in Priority Queue)
         /// Auxillary Space O(3V) ~ O(V) (for storing Priority Queue, Path & Distance)
-        /// Supports Only Graphs with Non-Negative Edges || Single Source Shortest Path
+        /// Supports Only Weighted Graphs with Non-Negative Edges || Single Source Shortest Path
         /// </summary>
         /// <param name="graph_adjacency_list"></param>
         /// <param name="source"></param>
@@ -294,20 +294,20 @@ namespace Graph
             // traverse thru the Graph
             while (pq.Count > 0)
             {
-                var prvNode = pq.ExtractHighest();
+                var prvNode = pq.ExtractHighest();                                          // Time O(VLogV)
                 foreach (var adjacentVertex in graph_adjacency_list._Graph[prvNode.Value])
                 {
                     var distanceFromSource = dist[prvNode.Value] + adjacentVertex.Weight;
                     // check if this Vertex is being processed for first time than add it to priority queue by Key = its distance from source
                     if (dist[adjacentVertex.Index] == -1)
                     {
+                        pq.Enqueue(distanceFromSource, adjacentVertex.Index);               // Max 'E' times insert in O(LogV)
                         dist[adjacentVertex.Index] = distanceFromSource;
-                        pq.Enqueue(distanceFromSource, adjacentVertex.Index);
                         path[adjacentVertex.Index] = prvNode.Value;
                     }
                     else if (distanceFromSource < dist[adjacentVertex.Index])
                     {
-                        pq.UpdatePriority(dist[adjacentVertex.Index], distanceFromSource);  // Update O(LogN), as Position Dictonary used which holds index for all Nodes
+                        pq.UpdatePriority(dist[adjacentVertex.Index], distanceFromSource);  // Max 'E' times Update O(LogV), as Position Dictonary/Array used which holds index for all Nodes
                         dist[adjacentVertex.Index] = distanceFromSource;
                         path[adjacentVertex.Index] = prvNode.Value;
                     }
@@ -484,7 +484,7 @@ namespace Graph
         }
 
         /// <summary>
-        /// BellManFordAlgo_ForAdjacencyListRepresentation || Time Complexity O(V*E) || Auxillary Space O(V)
+        /// BellManFordAlgo for Weighted Graph(with -ve wt) represented as Pair of Edges(src,dest,wt) || Time Complexity O(V*E) || Auxillary Space O(V)
         /// Doesn't work in case of -ve weight cycle, i.e, Total of wt of all edges in cycle is -ve
         /// </summary>
         /// <param name="graph"></param>
@@ -624,7 +624,7 @@ namespace Graph
         }
 
         /// <summary>
-        /// Prim’s Algorithm to find MST of a Graph represented using AdjacencyList || Time Complexity O(V+E)LogV) || Space O(V)
+        /// Prim’s Algorithm to find MST of a 'UnDirected Weighted Connected Graph' represented using AdjacencyList || Time Complexity O(V+E)LogV) || Space O(V)
         /// </summary>
         /// <param name="graph"></param>
         public static void PrimAlgo_AdjacencyList(UnDirectedWeightedGraph graph)
@@ -638,6 +638,9 @@ namespace Graph
             // to store prv Vertex for each vertex
             int[] path = new int[Vertex];
 
+            // create mstSet to keep track of Vertices included in MST
+            bool[] mstSet = new bool[Vertex];
+
             for (int i = 0; i < Vertex; i++)
                 dist[i] = path[i] = -1;
 
@@ -650,9 +653,12 @@ namespace Graph
             while (pq.Count > 0)                                                    // Time O(V)
             {
                 var parent = pq.ExtractHighest();                                   // O(LogV)
+                mstSet[parent.Value] = true;
                 // Extract Vertex which has min key associated with it
                 foreach (var adjacentVertex in graph._Graph[parent.Value])          // Time O(E)
                 {
+                    if (mstSet[adjacentVertex.Index]) continue;                     // Don't Process Vertices which are already included in MST
+
                     var newDistance = adjacentVertex.Weight;
                     // processing this Vertex for 1st time
                     if (dist[adjacentVertex.Index] == -1)
@@ -760,7 +766,7 @@ namespace Graph
         }
 
         /// <summary>
-        /// Only works and applied on Strongly Connected Graphs (Ex- Find optiomal Path for PostMan so that he begins and end at Postoffice after delivering mails)
+        /// Only works and applied on Strongly Connected Graphs (Ex- Find optiomal Path for PostMan so that he begins and end at Postoffice after delivering mails on every possible street without repeating)
         /// Time Complexity O(V+E) as worst case would be visiting all the Vertex after traversing thru all present edges || Auxillary Space O(V+1)
         /// •A connected undirected graph is Eulerian if and only if every graph vertex has an even degree, or exactly two vertices with an odd degree. 
         /// •​A directed graph is Eulerian if it is strongly connected and every vertex has an equal in and out degree.

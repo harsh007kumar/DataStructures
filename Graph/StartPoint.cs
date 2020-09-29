@@ -172,8 +172,10 @@ namespace Graph
         {
             GraphUtility.Print("Kruskal’s Algorithm(p. 459)");
             // Sets representation is easier
+            // UnDirected Weighted Connected Graph => Kruskal's Algo (keep selecting min weight edge such that choosing it doesn't create cycle)
         }
 
+        // Abdul Bari https://youtu.be/jFZsDDB0-vo
         // GFG https://www.geeksforgeeks.org/articulation-points-or-cut-vertices-in-a-graph/ [TarjanAlgorithm]
         public static void ArticulationPointsORCutVerticesInAGraph()
         {
