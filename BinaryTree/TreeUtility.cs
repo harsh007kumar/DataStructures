@@ -1579,5 +1579,49 @@ namespace BinaryTree
             maxSubTree = Math.Max(maxPathSum, Math.Max(ltSubTreeSum, rtSubTreeSum));            // Max of either left subtree / rt subtree / maxPathSum which includes root->Data
             return Math.Max(leftSingleLongestPathSum, rtSingleLongestPathSum)+root.Data;        // root->Data + bigger of left or rt child single max path
         }
+
+        /// <summary>
+        /// Serializes BinaryTree/BST // Time O(n) || Space O(2n)~O(n), n = no of nodes in Tree
+        /// </summary>
+        /// <param name="root"></param>
+        /// <param name="serializedTree"></param>
+        public static void SerializeTree(Node root, ref Queue<int> serializedTree)
+        {
+            if (root == null)
+            { serializedTree.Enqueue(-1); return; }                                             // if null append specialCharacter ex- -1/$/# & return
+
+            serializedTree.Enqueue(root.Data);                                                  // add Root->Data
+            SerializeTree(root.Left, ref serializedTree);                                       // recursively call Left
+            SerializeTree(root.Right, ref serializedTree);                                      // recursively call Right
+        }
+
+        /// <summary>
+        /// DeSerializes 'SerializedTree' and returns Tree Head Node // Time O(n) || Space O(n), n = no of nodes in Tree
+        /// </summary>
+        /// <param name="serializedTree"></param>
+        /// <returns></returns>
+        public static Node DeSerializeTree(Queue<int> serializedTree)
+        {
+            if (serializedTree.Count <= 0) return null;                                         // Queue empty return null
+
+            var data = serializedTree.Dequeue();
+            if (data == -1) return null;                                                        // special character indicating null found
+
+            Node root = new Node(data);                                                         // Create Root Node
+            root.Left = DeSerializeTree(serializedTree);                                        // recursively call Left
+            root.Right= DeSerializeTree(serializedTree);                                        // recursively call Right
+            return root;
+        }
+
+        /// <summary>
+        /// Extension Method for Queue of Int type which prints the content on Console // Time O(n)
+        /// </summary>
+        /// <param name="input"></param>
+        public static void Print(this Queue<int> input)
+        {
+            foreach (var value in input)
+                Console.Write($" {value}");
+            Console.WriteLine();
+        }
     }
 }

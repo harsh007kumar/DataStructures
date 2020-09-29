@@ -52,6 +52,7 @@ namespace BinaryTree
             RemoveHalf_RemoveLeafs_RemoveNodesNotInRange();
             ConnectAdjacentNodesInBinaryTree();
             CalculateMaxPathSumInBinaryTree();
+            SerializeDeserializeBinaryTree();
             Console.ReadKey();
         }
 
@@ -614,6 +615,23 @@ namespace BinaryTree
             var sum = TreeUtility.MaxPathSumInBinaryTree(bt.root, ref treeMax);
             TreeUtility.DFS.InOrderTraversal_Iterative(bt.root);
             Console.WriteLine($"Maximum sum of any path in above BinaryTree is :\t'{Math.Max(sum,treeMax)}'");
+        }
+
+        public static void SerializeDeserializeBinaryTree()
+        {
+            TreeUtility.Print("Serialize - Deserialize BinaryTree");
+            BinarySearchTree bt = TreeUtility.GetBinarySearchTree();
+            Console.Write("Original Tree: \t");
+            TreeUtility.DFS.InOrderTraversal(bt.root);
+
+            Console.Write("\n\n Serialized Tree: \t");
+            var serialized = new Queue<int>();
+            TreeUtility.SerializeTree(bt.root, ref serialized);
+            serialized.Print();
+
+            Console.Write("\n DeSerialized Tree: \t");
+            var DeSerializedTreeRoot = TreeUtility.DeSerializeTree(serialized);
+            TreeUtility.DFS.InOrderTraversal(DeSerializedTreeRoot);
         }
     }
 }
