@@ -1585,14 +1585,14 @@ namespace BinaryTree
         /// </summary>
         /// <param name="root"></param>
         /// <param name="serializedTree"></param>
-        public static void SerializeTree(Node root, ref Queue<int> serializedTree)
+        public static void SerializeTree(Node root, Queue<int> serializedTree)
         {
             if (root == null)
-            { serializedTree.Enqueue(-1); return; }                                             // if null append specialCharacter ex- -1/$/# & return
+            { serializedTree.Enqueue(Int32.MinValue); return; }                                 // if null append specialCharacter ex- -1/$/# & return
 
             serializedTree.Enqueue(root.Data);                                                  // add Root->Data
-            SerializeTree(root.Left, ref serializedTree);                                       // recursively call Left
-            SerializeTree(root.Right, ref serializedTree);                                      // recursively call Right
+            SerializeTree(root.Left, serializedTree);                                       // recursively call Left
+            SerializeTree(root.Right, serializedTree);                                      // recursively call Right
         }
 
         /// <summary>
@@ -1605,7 +1605,7 @@ namespace BinaryTree
             if (serializedTree.Count <= 0) return null;                                         // Queue empty return null
 
             var data = serializedTree.Dequeue();
-            if (data == -1) return null;                                                        // special character indicating null found
+            if (data == Int32.MinValue) return null;                                                        // special character indicating null found
 
             Node root = new Node(data);                                                         // Create Root Node
             root.Left = DeSerializeTree(serializedTree);                                        // recursively call Left
@@ -1623,5 +1623,33 @@ namespace BinaryTree
                 Console.Write($" {value}");
             Console.WriteLine();
         }
+
+        #region SLOWER THAN QUEUE APPROACH for Serializing & DeSerializing Tree
+        // Encodes a Tree to a single string.
+        public static void SerializeTree(Node root, StringBuilder sb)
+        {
+            if (root == null) { sb.Append("null,"); return; }
+            sb.Append(root.Data + ",");
+            SerializeTree(root.Left, sb);
+            SerializeTree(root.Right, sb);
+        }
+
+        // Decodes your encoded data to Tree.
+        public static Node DeSerializeTree(ref string serializedString)
+        {
+            if (serializedString == null || serializedString.Length == 0) return null;
+            var index = serializedString.IndexOf(",");
+            var val = serializedString.Substring(0, index - 0);       // fetch next value
+            serializedString = serializedString.Substring(index + 1); // remove current data from remaing string
+
+            if (val == "null") return null;
+
+            return new Node(int.Parse(val))
+            {
+                Left = DeSerializeTree(ref serializedString),
+                Right = DeSerializeTree(ref serializedString)
+            };
+        }
+        #endregion
     }
 }

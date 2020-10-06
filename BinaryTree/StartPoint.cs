@@ -621,12 +621,12 @@ namespace BinaryTree
         {
             TreeUtility.Print("Serialize - Deserialize BinaryTree");
             BinarySearchTree bt = TreeUtility.GetBinarySearchTree();
-            Console.Write("Original Tree: \t");
+            Console.Write(" Original Tree: \t");
             TreeUtility.DFS.InOrderTraversal(bt.root);
 
             Console.Write("\n\n Serialized Tree: \t");
             var serialized = new Queue<int>();
-            TreeUtility.SerializeTree(bt.root, ref serialized);
+            TreeUtility.SerializeTree(bt.root, serialized);
             serialized.Print();
 
             Console.Write("\n DeSerialized Tree: \t");
