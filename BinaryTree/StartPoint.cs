@@ -53,6 +53,7 @@ namespace BinaryTree
             ConnectAdjacentNodesInBinaryTree();
             CalculateMaxPathSumInBinaryTree();
             SerializeDeserializeBinaryTree();
+            BinarySearchTreeIterator();
             Console.ReadKey();
         }
 
@@ -632,6 +633,21 @@ namespace BinaryTree
             Console.Write("\n DeSerialized Tree: \t");
             var DeSerializedTreeRoot = TreeUtility.DeSerializeTree(serialized);
             TreeUtility.DFS.InOrderTraversal(DeSerializedTreeRoot);
+        }
+
+        public static void BinarySearchTreeIterator()
+        {
+            // https://leetcode.com/problems/binary-search-tree-iterator/
+            TreeUtility.Print("173. Binary Search Tree Iterator");
+            BinarySearchTree bt = TreeUtility.GetBinarySearchTree();
+            Console.Write(" Original Tree: \t");
+            TreeUtility.DFS.InOrderTraversal(bt.root);
+
+            var iterator = new BSTIterator(bt.root);
+            Console.Write($"\n Printing 'Next' in BST using created Iterator [if(HasNext()) Print(Next()) ]: ");
+            while (iterator.HasNext())
+                Console.Write($" {iterator.Next()}");
+            Console.WriteLine();
         }
     }
 }
