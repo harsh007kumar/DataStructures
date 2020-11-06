@@ -592,6 +592,7 @@ namespace BinaryTree
 
         public static void ConnectAdjacentNodesInBinaryTree()
         {
+            // https://leetcode.com/problems/populating-next-right-pointers-in-each-node/
             TreeUtility.Print("Problem - 88 Given a binary tree, how do you connect all the adjacent nodes at the same level?" +
                 " Assume that given binary tree has next pointer along with left and right(p. 348)");
             #region Create BinaryTree
@@ -604,7 +605,11 @@ namespace BinaryTree
             bt.Right.Right = new NodeWithNext(7);
             #endregion
             Console.WriteLine("\n Connecting Nodes At Same Level In BinaryTree");
-            TreeUtility.ConnectNodesAtSameLevelInBinaryTree(ref bt);
+            // Iterative Solution
+            //TreeUtility.ConnectNodesAtSameLevelInBinaryTree(ref bt);
+            // Recursive Solution
+            TreeUtility.ConnectNodesNextInBinaryTree(bt);
+
             TreeUtility.DFS.InOrderTraversal_Iterative(bt);
         }
 

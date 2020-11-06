@@ -1557,6 +1557,16 @@ namespace BinaryTree
                 }
             }
         }
+        // Recursive Solution || Time O(n) || Space O(1)
+        public static NodeWithNext ConnectNodesNextInBinaryTree(NodeWithNext root)
+        {
+            if (root == null) return root;
+            if (root.Left != null) ((NodeWithNext)(root.Left)).Next = (NodeWithNext)root.Right;
+            if (root.Right != null && root.Next != null) ((NodeWithNext)(root.Right)).Next = (NodeWithNext)root.Next.Left;
+            ConnectNodesNextInBinaryTree((NodeWithNext)root.Left);
+            ConnectNodesNextInBinaryTree((NodeWithNext)root.Right);
+            return root;
+        }
 
         /// <summary>
         /// Time Complexity O(n) || Space Complexity O(depth of tree) worst case is n (Skewed tree)
