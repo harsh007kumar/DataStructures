@@ -51,6 +51,7 @@ namespace BinaryTree
             ClosetElementToGivenKeyInBST();
             RemoveHalf_RemoveLeafs_RemoveNodesNotInRange();
             ConnectAdjacentNodesInBinaryTree();
+            PopulatingNextRightPointersInEachNodeII();
             CalculateMaxPathSumInBinaryTree();
             SerializeDeserializeBinaryTree();
             BinarySearchTreeIterator();
@@ -612,6 +613,29 @@ namespace BinaryTree
 
             TreeUtility.DFS.InOrderTraversal_Iterative(bt);
         }
+
+
+        public static void PopulatingNextRightPointersInEachNodeII()
+        {
+            // https://leetcode.com/problems/populating-next-right-pointers-in-each-node-ii/
+            TreeUtility.Print("117. Populating Next Right Pointers in Each Node II");
+            #region Create BinaryTree
+            var bt = new NodeWithNext(1);
+            bt.Left = new NodeWithNext(2);
+            bt.Right = new NodeWithNext(3);
+            bt.Left.Left = new NodeWithNext(4);
+            bt.Left.Right = new NodeWithNext(5);
+            bt.Right.Right = new NodeWithNext(7);
+            #endregion
+            Console.WriteLine("\n Connecting Nodes At Same Level In BinaryTree");
+            // Iterative Solution
+            //TreeUtility.ConnectNodesAtSameLevelInBinaryTree(ref bt);
+            // Recursive Solution
+            TreeUtility.PopulatingNextRightPointersInEachNodeII(bt);
+
+            TreeUtility.DFS.InOrderTraversal_Iterative(bt);
+        }
+
 
         public static void CalculateMaxPathSumInBinaryTree()
         {

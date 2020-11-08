@@ -1568,6 +1568,44 @@ namespace BinaryTree
             return root;
         }
 
+        // Function Update ->Next pointer of all nodes at same level in Non Perfect Binary Tree
+        // Time O(n) || Space O(1)
+        public static NodeWithNext PopulatingNextRightPointersInEachNodeII(NodeWithNext root)
+        {
+            var leftMost = root;
+            while (leftMost != null)
+            {
+                var curr = leftMost;
+                NodeWithNext prv = null;
+                // Set Next Pointers for the level below current level
+                while (curr != null)
+                {
+                    if (curr.Left != null)
+                    {
+                        if (prv != null) prv.Next = (NodeWithNext)curr.Left;
+                        prv = (NodeWithNext)curr.Left;
+                    }
+                    if (curr.Right != null)
+                    {
+                        if (prv != null) prv.Next = (NodeWithNext)curr.Right;
+                        prv = (NodeWithNext)curr.Right;
+                    }
+                    curr = curr.Next;
+                }
+                // Travere as one would in LinkedList till you find left most node for level below
+                while (leftMost != null)
+                {
+                    if (leftMost.Left != null)
+                    { leftMost = (NodeWithNext)leftMost.Left; break; }
+                    else if (leftMost.Right != null)
+                    { leftMost = (NodeWithNext)leftMost.Right; break; }
+                    leftMost = leftMost.Next;
+                }
+            }
+            return root;
+        }
+
+
         /// <summary>
         /// Time Complexity O(n) || Space Complexity O(depth of tree) worst case is n (Skewed tree)
         /// </summary>
