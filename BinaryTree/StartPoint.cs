@@ -297,10 +297,13 @@ namespace BinaryTree
 
         public static void PrintBinaryTreeInZigZagOrder()
         {
+            // https://leetcode.com/problems/binary-tree-zigzag-level-order-traversal/
             TreeUtility.Print("Problem - 30 Zigzag Tree Traversal: Give an algorithm to traverse a binary tree in Zigzag order.(p. 262)");
+            TreeUtility.Print("103. Binary Tree Zigzag Level Order Traversal");
             BinaryTree bt = TreeUtility.GetBinaryTree();
             TreeUtility.BFS.LevelOrderTraversal(bt.root);
             TreeUtility.BFS.ZigZagTraversal(bt.root);
+            TreeUtility.BFS.ZigZagTraversalViaQueue(bt.root);
         }
 
         public static void CalculateVerticalSumInBinaryTree()

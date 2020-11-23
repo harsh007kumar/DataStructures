@@ -237,7 +237,7 @@ namespace BinaryTree
                 bool leftToRight = false;
                 currlevel.Push(null);
                 currlevel.Push(root);
-                Console.Write($" Printing Tree in Zig-Zag order :\t");
+                Console.Write($" Printing Tree in Zig-Zag order using 2 Stack:\t");
                 while (currlevel.Count > 0)
                 {
                     var temp = currlevel.Pop();
@@ -266,7 +266,42 @@ namespace BinaryTree
                 }
                 Console.WriteLine();
             }
+            // Via 1 Queue + Reverse
+            // Time Complexity O(n) || Space Complexity O(n)
+            public static void ZigZagTraversalViaQueue(Node root)
+            {
+                if (root == null) return;
+                Queue<Node> q = new Queue<Node>();
+
+                q.Enqueue(root);
+                q.Enqueue(null);
+
+                bool LtoR = true;
+                List<int> levelList = new List<int>();
+                Console.Write($" Printing Tree in Zig-Zag order using 1 Queue :\t");
+                while (q.Count > 0)
+                {
+                    var cur = q.Dequeue();
+                    if (cur == null)
+                    {
+                        if (!LtoR) levelList.Reverse();
+                        foreach (var node in levelList) Console.Write($" {node}");
+                        levelList = new List<int>();
+                        if (q.Count != 0) q.Enqueue(null);
+                        LtoR = !LtoR;
+                    }
+                    else
+                    {
+                        levelList.Add(cur.Data);
+                        if (cur.Left != null)
+                            q.Enqueue(cur.Left);
+                        if (cur.Right != null)
+                            q.Enqueue(cur.Right);
+                    }
+                }
+            }
         }
+        
 
         internal static bool BinaryTreesIdentical(Node bt1, Node bt2)
         {
