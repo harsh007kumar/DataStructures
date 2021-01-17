@@ -12,6 +12,17 @@ using System.Threading.Tasks;
 using LinkedList;
 namespace BinaryTree
 {
+    public static class CommonFunctions
+    {
+        public static void Print(this int[] arr, string msg = "")
+        {
+            if (msg != "") Console.Write($" {msg}\t");
+            for (int i = 0; i < arr.Length; i++)
+                Console.Write($" {arr[i]}");
+            Console.WriteLine();
+        }
+    }
+
     public static class TreeUtility
     {
         /// <summary>
@@ -25,16 +36,11 @@ namespace BinaryTree
             /// <param name="current"></param>
             public static void InOrderTraversal(Node current)
             {
-                if (current == null)
-                    return;
+                if (current == null) return;
 
-                if (current.Left != null)
-                    InOrderTraversal(current.Left);
-
+                InOrderTraversal(current.Left);
                 Console.Write($" {current.Data}");
-
-                if (current.Right != null)
-                    InOrderTraversal(current.Right);
+                InOrderTraversal(current.Right);
             }
 
             /// <summary>
@@ -229,7 +235,7 @@ namespace BinaryTree
             /// Time Complexity O(n) || Space Complexity O(n)
             /// </summary>
             /// <param name="root"></param>
-            public static void ZigZagTraversal(Node root)
+            public static void ZigZagTraversalViaStacks(Node root)
             {
                 if (root == null) return;
                 Stack<Node> currlevel = new Stack<Node>();
@@ -518,25 +524,25 @@ namespace BinaryTree
         /// <summary>
         /// Time Complexity O(n)
         /// </summary>
-        /// <param name="st"></param>
+        /// <param name="q"></param>
         /// <param name="head"></param>
         /// <param name="data"></param>
         /// <returns></returns>
-        public static bool TracePathFromRoot(ref Queue<int> st, Node head, int data)
+        public static bool TracePathFromRoot(ref Queue<int> q, Node head, int data)
         {
             if (head == null) return false;
 
             bool found = false;
-            st.Enqueue(head.Data);
+            q.Enqueue(head.Data);
             if (head.Data == data)
             {
                 Console.WriteLine($" '{data}' Node found");
                 found = true;
             }
             else if (data < head.Data)
-                found = TracePathFromRoot(ref st, head.Left, data);
+                found = TracePathFromRoot(ref q, head.Left, data);
             else if (data > head.Data)
-                found = TracePathFromRoot(ref st, head.Right, data);
+                found = TracePathFromRoot(ref q, head.Right, data);
             return found;
         }
 
@@ -830,6 +836,31 @@ namespace BinaryTree
                     return i;
             return -1;
         }
+
+        // Time = Space = O(n), n = no of nodes in Binary Tree
+        public static Node BuildTreeFromInOrderAndPostOrder(int[] inOrder, int[] postOrder, int inStart, int inLast, ref int postIndex)
+        {
+            if (inStart > inLast || postIndex < 0) return null;
+            int rootIndexInInOrder = GetRootIndex(postOrder[postIndex]);
+            Node root = new Node(postOrder[postIndex--]);       // Create Root and decreament the postIndex
+
+            root.Right = BuildTreeFromInOrderAndPostOrder(inOrder, postOrder, rootIndexInInOrder + 1, inLast, ref postIndex);
+            root.Left = BuildTreeFromInOrderAndPostOrder(inOrder, postOrder, inStart, rootIndexInInOrder - 1, ref postIndex);
+            return root;
+
+            // Local Func
+            // Use Dictionary to Store all Nodes 'index' from 'inOrder' before starting the algo to find index in O(1)
+            //Dictionary<int, int> getIndex = new Dictionary<int, int>(postOrder.Length);
+            //for (int i = 0; i < inOrder.Length; i++) getIndex.Add(inOrder[i], i);
+            int GetRootIndex(int num)           
+            {
+                for (int i = inStart; i <= inLast; i++)
+                    if (inOrder[i] == num) return i;
+                return -1;
+            }
+        }
+
+
 
         public static bool PrintAllAnscestorsInBinaryTree(Node root, int data)
         {

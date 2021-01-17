@@ -30,6 +30,7 @@ namespace BinaryTree
             ConverTreeIntoMirror();
             FindLCAInBinaryTree();
             ConstructBinaryTreeFromItsInOrderAndPreOrderTraversals();
+            ConstructBinaryTreeFromItsInOrderAndPostOrderTraversals();
             PrintingAllAnscestorsOfAnNodeInBinaryTree();
             PrintBinaryTreeInZigZagOrder();
             CalculateVerticalSumInBinaryTree();
@@ -286,6 +287,25 @@ namespace BinaryTree
             }
         }
 
+
+        public static void ConstructBinaryTreeFromItsInOrderAndPostOrderTraversals()
+        {
+            // https://leetcode.com/problems/construct-binary-tree-from-inorder-and-postorder-traversal/
+            TreeUtility.Print("106. Construct Binary Tree from Inorder and Postorder Traversal");
+            int[] inOrder = { 9, 3, 15, 20, 7 };
+            int[] postOrder = { 9, 15, 7, 20, 3 };
+            inOrder.Print("Tree-InOrder");
+            postOrder.Print("Tree-PostOrder");
+            int postIndex = postOrder.Length - 1;
+
+            Console.WriteLine($"\n\n Building BinaryTree from above InOrder & PostOrder Traversals");
+            Node root = TreeUtility.BuildTreeFromInOrderAndPostOrder(inOrder, postOrder, 0, inOrder.Length - 1, ref postIndex);
+            TreeUtility.DFS.InOrderTraversal(root);
+            TreeUtility.DFS.PostOrderTraversal_Iterartive(root);
+            TreeUtility.DFS.PreOrderTraversal_Iterative(root);
+        }
+
+
         public static void PrintingAllAnscestorsOfAnNodeInBinaryTree()
         {
             TreeUtility.Print("Problem - 29 Give an algorithm for printing all the ancestors of a node in a Binary tree.(p. 261)");
@@ -302,7 +322,7 @@ namespace BinaryTree
             TreeUtility.Print("103. Binary Tree Zigzag Level Order Traversal");
             BinaryTree bt = TreeUtility.GetBinaryTree();
             TreeUtility.BFS.LevelOrderTraversal(bt.root);
-            TreeUtility.BFS.ZigZagTraversal(bt.root);
+            TreeUtility.BFS.ZigZagTraversalViaStacks(bt.root);
             TreeUtility.BFS.ZigZagTraversalViaQueue(bt.root);
         }
 
@@ -541,6 +561,8 @@ namespace BinaryTree
             TreeUtility.Print("Problem - 77 Given a binary search tree, check whether it is an AVL tree or not? (p. 337)");
             TreeUtility.BFS.BreadthFirstTraversal(Node);
             Console.WriteLine($" Above BST is AVL Tree : {TreeUtility.isAVLTree(Node)}");
+            // https://leetcode.com/problems/balanced-binary-tree/
+            TreeUtility.Print("110. Balanced Binary Tree");
             Console.WriteLine($" Above BST is AVL Tree Alternate Approach : {TreeUtility.isAVLTree_Alternate(Node) != -1}");
 
 
