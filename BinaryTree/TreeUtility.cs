@@ -1765,5 +1765,19 @@ namespace BinaryTree
             };
         }
         #endregion
+
+
+        // Time O(n) || Space O(1) // Recursive Soln
+        public static Node DeleteLeavesWithAGivenValue(Node root, int target)
+        {
+            if (root == null) return null;
+            root.Left = DeleteLeavesWithAGivenValue(root.Left, target);
+            root.Right = DeleteLeavesWithAGivenValue(root.Right, target);
+            if (root.Left == null && root.Right == null && root.Data == target)
+                return null;
+            return root;
+        }
+
+
     }
 }

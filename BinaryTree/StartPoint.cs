@@ -56,6 +56,7 @@ namespace BinaryTree
             CalculateMaxPathSumInBinaryTree();
             SerializeDeserializeBinaryTree();
             BinarySearchTreeIterator();
+            DeleteLeavesWithAGivenValue();
             Console.ReadKey();
         }
 
@@ -703,5 +704,23 @@ namespace BinaryTree
                 Console.Write($" {iterator.Next()}");
             Console.WriteLine();
         }
+
+
+        public static void DeleteLeavesWithAGivenValue()
+        {
+            // https://leetcode.com/problems/delete-leaves-with-a-given-value/
+            TreeUtility.Print("1325. Delete Leaves With a Given Value");
+            Node root = new Node(1)
+            {
+                Left = new Node(1),
+                Right = new Node(1)
+            };
+            int target = 1;
+            TreeUtility.DFS.InOrderTraversal_Iterative(root);
+            Console.WriteLine($" Deleting all Leaf Nodes with Val: \'{target}\'");
+            root = TreeUtility.DeleteLeavesWithAGivenValue(root, target);
+            TreeUtility.DFS.InOrderTraversal_Iterative(root);
+        }
+
     }
 }
