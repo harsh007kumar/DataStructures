@@ -175,10 +175,13 @@ namespace Graph
             // UnDirected Weighted Connected Graph => Kruskal's Algo (keep selecting min weight edge such that choosing it doesn't create cycle)
         }
 
+        // Jenny https://youtu.be/CsGP_s_3GWg
         // Abdul Bari https://youtu.be/jFZsDDB0-vo
         // GFG https://www.geeksforgeeks.org/articulation-points-or-cut-vertices-in-a-graph/ [TarjanAlgorithm]
         public static void ArticulationPointsORCutVerticesInAGraph()
         {
+            // https://leetcode.com/problems/critical-connections-in-a-network/
+            GraphUtility.Print("1192. Critical Connections in a Network");
             GraphUtility.Print("Problem - 14 DFS Application: Cut Vertex or Articulation Points(p. 471)");
             UnDirectedGraph UG = new UnDirectedGraph(5);
             UG.AddEdge(1, 0);
@@ -187,7 +190,12 @@ namespace Graph
             UG.AddEdge(0, 3);
             UG.AddEdge(3, 4);
             UG.PrintGraph();
+            
+            // Find Articulation-Point/Cut-Vertices
             GraphUtility.FindArticulartionPoint_TarjanAlgorithm(UG);
+            
+            // Find Single-Bridges/ Cut-Edges
+            GraphUtility.FindAllBridges(UG);
         }
 
         // Euler's Circuit/Tour a.k.a Hamiltonian Cycle

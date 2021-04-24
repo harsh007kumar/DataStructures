@@ -726,7 +726,7 @@ namespace Graph
 
             for (int i = 0; i < V; i++)
                 if (aps[i] == true)
-                    Console.WriteLine($" Vertex {i} is ArticulationPoint/CutVertex whose failure can divide from into 2 or more parts");
+                    Console.WriteLine($" Vertex/Server: '{i}' is ArticulationPoint/CutVertex whose failure can divide network into 2 or more parts");
         }
 
         public static void ArticulartionPoint_Recursive(int u, UnDirectedGraph graph, int[] parent, int[] depth, int[] low, bool[] aps, ref int time)
@@ -764,6 +764,64 @@ namespace Graph
                     low[u] = Math.Min(low[u], depth[v]);                // back track edge
             }
         }
+
+        // Finds Bridges in UnDirected-Graph removing which can divide the Graph in 2 or more connected components
+        // Time Complexity O(V+E) || Space O(V)
+        public static IList<IList<int>> FindAllBridges(UnDirectedGraph g)
+        {
+            List<IList<int>> bridges = new List<IList<int>>();
+            if (g == null) return bridges;
+
+            int n = g.NoOfVertex, time = 1, source = 0;     // we can choose any Vertex as source for Tarjan's Algo
+            bool[] isVisited = new bool[n];                 // to mark is Vertex is already visited or not
+            int[] startingTime = new int[n];                // to store the time at which Vertex was 1st visited
+            int[] parent = new int[n];                      // to store the time at which Vertex was 1st visited
+            int[] nodeWithEarlistTimeReachable = new int[n];// to store the the min-time node avalible via all any of the connected edges (except Parent)
+            
+            for (int i = 0; i < n; i++)
+                startingTime[i] = parent[i] = nodeWithEarlistTimeReachable[i] = -1; // set default values
+
+            FindAllBridges(source);                              // we can start from any vertex, taking 0th node as source
+
+            foreach (var bridge in bridges)                 // Printing potentially Risky-Connection
+                Console.WriteLine($" Edge/Cable: '{bridge[0]}---{bridge[1]}' is Only connection & its failure/damage to this can divide network into 2 or more parts");
+
+            return bridges;
+
+            // local func
+            // DFS
+            void FindAllBridges(int u)
+            {
+                isVisited[u] = true;            // Mark visited
+
+                // update the starting time of newly visited node, also update the min-time-node reachable as self only for now
+                startingTime[u] = nodeWithEarlistTimeReachable[u] = time++;
+
+                foreach (var v in g._Graph[u])
+                    if (!isVisited[v])              // not visited yet
+                    {
+                        parent[v] = u;          // mark parent
+                        FindAllBridges(v);      // recursively check for adjacent Vertex
+
+                        // Update 'starting time' of parent node is found one via Adjacent Vertex
+                        nodeWithEarlistTimeReachable[u] = Math.Min(nodeWithEarlistTimeReachable[u], nodeWithEarlistTimeReachable[v]);
+
+                        //-- now coming back i.e. back-tracking after above recursive call --//
+
+                        // if Vertex 'V' can say to Vertex 'U' that i have found a Vertex better than you or i have found another way to reach to you
+                        if (nodeWithEarlistTimeReachable[v] <= startingTime[u])
+                            continue;
+                        else // if (nodeWithEarlistTimeReachable[v] > startingTime[u]), meaning Vertex V only connection with Vertex 'U' is edge U---V
+                            bridges.Add(new int[] { u, v });
+                    }
+                    else if (v != parent[u])        // vertex 'v' we are looking at is not parent of 'u'
+                        // update if a node with even smaller start-time is reachable for Vertex 'u'
+                        nodeWithEarlistTimeReachable[u] = Math.Min(nodeWithEarlistTimeReachable[u], startingTime[v]);
+            }
+        }
+
+
+
 
         /// <summary>
         /// Only works and applied on Strongly Connected Graphs (Ex- Find optiomal Path for PostMan so that he begins and end at Postoffice after delivering mails on every possible street without repeating)
