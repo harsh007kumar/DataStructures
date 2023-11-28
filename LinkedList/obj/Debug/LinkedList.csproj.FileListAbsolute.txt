@@ -21,3 +21,10 @@ C:\Users\harkuma\source\repos\DataStructures\LinkedList\obj\Debug\LinkedList.csp
 C:\Users\harkuma\source\repos\DataStructures\LinkedList\obj\Debug\Create_LinkedList.exe
 C:\Users\harkuma\source\repos\DataStructures\LinkedList\obj\Debug\Create_LinkedList.pdb
 C:\Users\harkuma\source\repos\DataStructures\LinkedList\obj\Debug\LinkedList.csprojAssemblyReference.cache
+D:\Git\DataStructures\LinkedList\bin\Debug\Create_LinkedList.exe.config
+D:\Git\DataStructures\LinkedList\bin\Debug\Create_LinkedList.exe
+D:\Git\DataStructures\LinkedList\bin\Debug\Create_LinkedList.pdb
+D:\Git\DataStructures\LinkedList\obj\Debug\LinkedList.csproj.AssemblyReference.cache
+D:\Git\DataStructures\LinkedList\obj\Debug\LinkedList.csproj.CoreCompileInputs.cache
+D:\Git\DataStructures\LinkedList\obj\Debug\Create_LinkedList.exe
+D:\Git\DataStructures\LinkedList\obj\Debug\Create_LinkedList.pdb

@@ -186,7 +186,7 @@ namespace BinaryHeap
         {
             HeapUtility.Print("Problem - 22 Merge k sorted lists of Size N each (p. 390)");
             int k = 3;  // Number of linked lists 
-            int n = 4;  // Number of elements in each list 
+            // int n = 4;  // Number of elements in each list 
             LinkedList.Node[] arrOfKList = new LinkedList.Node[k];
             arrOfKList[0] = new LinkedList.Node(1);
             arrOfKList[0].next = new LinkedList.Node(3);
